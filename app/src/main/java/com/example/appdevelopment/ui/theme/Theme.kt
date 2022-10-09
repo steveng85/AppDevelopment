@@ -15,16 +15,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 
-private val DarkColorScheme = darkColorScheme(
-        primary = Purple80,
-        secondary = PurpleGrey80,
-        tertiary = Pink80
+private val LightColorScheme = lightColorScheme(
+    primary = Blue,
+    secondary = Blue,
+    tertiary = White,
 )
 
-private val LightColorScheme = lightColorScheme(
-        primary = Purple40,
-        secondary = PurpleGrey40,
-        tertiary = Pink40
+private val DarkColorScheme = darkColorScheme(
+        primary = DarkBlue,
+        secondary = Navy,
+        tertiary = White,
+)
 
         /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -35,7 +36,6 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
-)
 
 @Composable
 fun AppDevelopmentTheme(
@@ -59,7 +59,7 @@ fun AppDevelopmentTheme(
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
-
+    
     MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
