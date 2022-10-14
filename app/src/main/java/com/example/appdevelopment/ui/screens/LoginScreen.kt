@@ -4,8 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,10 +15,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
@@ -30,18 +39,20 @@ fun LoginScreen(
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+
 
         ) {
             Text(
                     modifier = Modifier.clickable {
                         navController.navigate(route = Screen.Welcome.route)
                     },
-                    text = "LoginScreen",
-                    color = MaterialTheme.colorScheme.primary,
+                    text = "Welcome to NameName",
+                    color = Color.Black,
                     fontSize = MaterialTheme.typography.displayLarge.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
             )
 
             Column(
@@ -54,10 +65,11 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                UserNameBox()
+
                 EmailBox()
                 PasswordBox()
                 LoginButton()
+                forgotPassword()
             }
         }
     }
@@ -70,35 +82,42 @@ fun LoginScreenPreview() {
 }
 
 @Composable
-fun UserNameBox(){
-    val userNameState = remember { mutableStateOf("TextFieldValue") }
-    //OutlinedTextField(value = userNameState.value, onValueChange = {userNameState.value })
-    TextField(value = userNameState.value, onValueChange = {userNameState.value })
-}
-@Composable
 fun EmailBox(){
-    OutlinedButton(onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.fillMaxWidth()
+    val emailState = remember { mutableStateOf("h") }
 
-    ) {
-        Text(text = "Email")
-    }
+    OutlinedTextField(
+        value = emailState.value,
+        onValueChange = {emailState.value },
+        label = { Text("E-mail")},
+        placeholder = { Text("E-mail")},
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.LightGray,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = Color.Black
+        )
+    )
 }
+
 
 @Composable
 fun PasswordBox(){
-    OutlinedButton(onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.primary
+    val passwordState = remember { mutableStateOf("h") }
+
+    OutlinedTextField(
+        value = passwordState.value,
+        onValueChange = {passwordState.value },
+        label = { Text("Password")},
+        placeholder = { Text("Password")},
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color(0xFF007FFF),
+            unfocusedBorderColor = Color.LightGray,
+            focusedLabelColor = Color(0xFF007FFF),
+            unfocusedLabelColor = Color.Black
         )
-    ) {
-        Text(text = "Password",
-            color = MaterialTheme.colorScheme.background)
-    }
+    )
 }
 
 @Composable
@@ -115,10 +134,33 @@ fun LoginButton(){
             disabledElevation = 4.dp,
             hoveredElevation = 4.dp,
             focusedElevation = 0.dp
+        ),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color.White,
+            containerColor = Color(0xFF007FFF)
         )
     ) {
         Text(text = "Login")
     }
+}
+
+@Composable
+fun forgotPassword(){
+    val annotatedString = buildAnnotatedString {
+
+        withStyle(
+            style = SpanStyle(
+                color = Color(0xFF007FFF)
+            )
+        ){
+            append("forgot password?")
+        }
+    }
+    ClickableText(
+        text = annotatedString,
+        onClick = { /*TODO*/ },
+    )
+
 }
 
 
