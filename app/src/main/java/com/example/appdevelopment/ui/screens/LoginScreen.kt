@@ -48,12 +48,19 @@ fun LoginScreen(
                     modifier = Modifier.clickable {
                         navController.navigate(route = Screen.Welcome.route)
                     },
-                    text = "Welcome to NameName",
+                    text = "Login to your account",
                     color = Color.Black,
-                    fontSize = MaterialTheme.typography.displayLarge.fontSize,
+                    fontSize = MaterialTheme.typography.displayMedium.fontSize,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
             )
+
+            Text(
+                modifier = Modifier.padding(start = 100.dp, end = 100.dp),
+                text = "Welcome back, login to your already existing account",
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center)
 
             Column(
                 modifier = Modifier
