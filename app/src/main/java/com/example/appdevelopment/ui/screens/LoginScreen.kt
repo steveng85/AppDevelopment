@@ -16,13 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.createSavedStateHandle
@@ -75,7 +72,9 @@ fun LoginScreen(
 
                 EmailBox()
                 PasswordBox()
+                textbox()
                 LoginButton()
+                testButton()
                 forgotPassword()
             }
         }
@@ -125,6 +124,68 @@ fun PasswordBox(){
             unfocusedLabelColor = Color.Black
         )
     )
+}
+
+@Composable
+fun textbox(){
+    DefaultFieldBox(
+        focusedColor = Color(0xFF007FFF),
+        unfocusedColor = Color.LightGray,
+        label = "test",
+        placeholder = "test" )
+}
+
+@Composable
+fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String, placeholder: String){
+
+    val state = remember { mutableStateOf("") }
+    OutlinedTextField(
+        value = state.value,
+        onValueChange = {state.value },
+        label = { Text(label)},
+        placeholder = { Text(placeholder)},
+        shape = RoundedCornerShape(8.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = focusedColor,
+            unfocusedBorderColor = unfocusedColor,
+            focusedLabelColor = focusedColor,
+            unfocusedLabelColor = unfocusedColor
+        )
+    )
+
+}
+
+@Composable
+fun DefaultButton(onClick: String, text: String, contentColor: Color, containerColor: Color){
+    Button(
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(1.dp, RoundedCornerShape(16.dp), true),
+        elevation = ButtonDefaults.elevatedButtonElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 8.dp,
+            disabledElevation = 4.dp,
+            hoveredElevation = 4.dp,
+            focusedElevation = 0.dp
+        ),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = contentColor,
+            containerColor = containerColor
+        )
+    ) {
+        Text(text = text)
+    }
+}
+
+@Composable
+fun testButton(){
+    DefaultButton(
+        onClick = "",
+        text = "Test",
+        contentColor = Color.Black,
+        containerColor = Color.White)
 }
 
 @Composable
