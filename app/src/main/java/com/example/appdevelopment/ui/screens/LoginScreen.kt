@@ -9,9 +9,8 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -26,6 +25,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
+
 
 
 
@@ -48,7 +48,7 @@ fun LoginScreen(
                     text = "Login to your account",
                     color = Color.Black,
                     fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
             )
 
@@ -72,9 +72,7 @@ fun LoginScreen(
 
                 EmailBox()
                 PasswordBox()
-                textbox()
                 LoginButton()
-                testButton()
                 forgotPassword()
             }
         }
@@ -89,41 +87,21 @@ fun LoginScreenPreview() {
 
 @Composable
 fun EmailBox(){
-    val emailState = remember { mutableStateOf("h") }
 
-    OutlinedTextField(
-        value = emailState.value,
-        onValueChange = {emailState.value },
-        label = { Text("E-mail")},
-        placeholder = { Text("E-mail")},
-        shape = RoundedCornerShape(8.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            unfocusedLabelColor = Color.Black
-        )
+    DefaultFieldBox(
+        focusedColor = Color(0xFF007FFF),
+        unfocusedColor = Color.LightGray,
+        label = "Email"
     )
 }
 
 
 @Composable
 fun PasswordBox(){
-    val passwordState = remember { mutableStateOf("h") }
-
-    OutlinedTextField(
-        value = passwordState.value,
-        onValueChange = {passwordState.value },
-        label = { Text("Password")},
-        placeholder = { Text("Password")},
-        shape = RoundedCornerShape(8.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(0xFF007FFF),
-            unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = Color(0xFF007FFF),
-            unfocusedLabelColor = Color.Black
-        )
-    )
+    DefaultFieldBox(
+        focusedColor = Color(0xFF007FFF) ,
+        unfocusedColor = Color.LightGray,
+        label = "Password")
 }
 
 @Composable
@@ -131,19 +109,20 @@ fun textbox(){
     DefaultFieldBox(
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
-        label = "test",
-        placeholder = "test" )
+        label = "test"
+    )
 }
 
 @Composable
-fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String, placeholder: String){
+fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String){
 
-    val state = remember { mutableStateOf("") }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue("", TextRange(0, 7)))
+    }
     OutlinedTextField(
-        value = state.value,
-        onValueChange = {state.value },
+        value = text,
+        onValueChange = {text = it},
         label = { Text(label)},
-        placeholder = { Text(placeholder)},
         shape = RoundedCornerShape(8.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = focusedColor,
@@ -159,10 +138,10 @@ fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String, p
 fun DefaultButton(onClick: String, text: String, contentColor: Color, containerColor: Color){
     Button(
         onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(40.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .shadow(1.dp, RoundedCornerShape(16.dp), true),
+            .fillMaxWidth(),
+            //.shadow(1.dp, RoundedCornerShape(10.dp), true),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = 2.dp,
             pressedElevation = 8.dp,
@@ -180,36 +159,12 @@ fun DefaultButton(onClick: String, text: String, contentColor: Color, containerC
 }
 
 @Composable
-fun testButton(){
+fun LoginButton(){
     DefaultButton(
         onClick = "",
-        text = "Test",
-        contentColor = Color.Black,
-        containerColor = Color.White)
-}
-
-@Composable
-fun LoginButton(){
-    Button(
-        onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(1.dp, RoundedCornerShape(16.dp), true),
-        elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 8.dp,
-            disabledElevation = 4.dp,
-            hoveredElevation = 4.dp,
-            focusedElevation = 0.dp
-        ),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
-            containerColor = Color(0xFF007FFF)
-        )
-    ) {
-        Text(text = "Login")
-    }
+        text = "Login",
+        contentColor = Color.White,
+        containerColor = Color(0xFF007FFF))
 }
 
 @Composable
