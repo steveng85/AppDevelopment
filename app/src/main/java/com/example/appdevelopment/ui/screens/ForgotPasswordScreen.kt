@@ -22,18 +22,19 @@ fun ForgotPasswordScreen(
     navController: NavController
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-
+            horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Text(
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.Welcome.route)
                 },
+
                 text = "Password have been reset",
+
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -42,12 +43,12 @@ fun ForgotPasswordScreen(
 
             Text(
                 modifier = Modifier.padding(start = 100.dp, end = 100.dp),
+
                 text = "You'll soon recieve an e-mail with guidance, to make a new password",
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-
         }
     }
 }
