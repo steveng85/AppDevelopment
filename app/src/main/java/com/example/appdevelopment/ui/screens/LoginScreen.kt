@@ -17,7 +17,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,7 +93,8 @@ fun EmailBox(){
     DefaultFieldBox(
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
-        label = "Email"
+        label = "Email",
+        password = false
     )
 }
 
@@ -101,24 +104,20 @@ fun PasswordBox(){
     DefaultFieldBox(
         focusedColor = Color(0xFF007FFF) ,
         unfocusedColor = Color.LightGray,
-        label = "Password")
-}
-
-@Composable
-fun textbox(){
-    DefaultFieldBox(
-        focusedColor = Color(0xFF007FFF),
-        unfocusedColor = Color.LightGray,
-        label = "test"
+        label = "Password",
+        password = true
     )
 }
 
+
 @Composable
-fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String){
+fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String, password: Boolean){
 
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue("", TextRange(0, 7)))
     }
+    var passwordVisible by remember { mutableStateOf(password) }
+
     OutlinedTextField(
         value = text,
         onValueChange = {text = it},
@@ -129,7 +128,8 @@ fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String){
             unfocusedBorderColor = unfocusedColor,
             focusedLabelColor = focusedColor,
             unfocusedLabelColor = unfocusedColor
-        )
+        ),
+        visualTransformation = if (!passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
     )
 
 }
