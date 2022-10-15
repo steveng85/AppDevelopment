@@ -22,17 +22,19 @@ fun ForgotPasswordScreen(
     navController: NavController
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(35.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
 
-
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Text(
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.Welcome.route)
                 },
-                text = "Forgot your password?",
+
+                text = "Password have been reset",
+
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -41,25 +43,12 @@ fun ForgotPasswordScreen(
 
             Text(
                 modifier = Modifier.padding(start = 100.dp, end = 100.dp),
-                text = "Write your e-mail below to reset your password",
+
+                text = "You'll soon recieve an e-mail with guidance, to make a new password",
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center)
-
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = 75.dp,
-                        end = 75.dp
-                    )
-                    .fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(35.dp)
-            ) {
-
-                EmailBox()
-                ResetPasswordButton()
-            }
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -68,13 +57,4 @@ fun ForgotPasswordScreen(
 @Composable
 fun ForgotPasswordScreenPreview() {
     ForgotPasswordScreen(navController = rememberNavController())
-}
-
-@Composable
-fun ResetPasswordButton(){
-    DefaultButton(
-        onClick = "",
-        text = "Reset Password",
-        contentColor = Color.White,
-        containerColor = Color(0xFF007FFF))
 }
