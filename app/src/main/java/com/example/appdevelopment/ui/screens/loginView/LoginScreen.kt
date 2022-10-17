@@ -27,10 +27,9 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
-
-
-
-
+import com.example.appdevelopment.ui.components.DefaultButton
+import com.example.appdevelopment.ui.components.DefaultFieldBox
+import com.example.appdevelopment.ui.components.LoginButton
 
 
 @Composable
@@ -75,7 +74,7 @@ fun LoginScreen(
 
                 EmailBox()
                 PasswordBox()
-                LoginButton()
+                LoginButton("")
                 forgotPassword()
             }
         }
@@ -90,7 +89,6 @@ fun LoginScreenPreview() {
 
 @Composable
 fun EmailBox(){
-
     DefaultFieldBox(
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
@@ -110,63 +108,6 @@ fun PasswordBox(){
     )
 }
 
-
-@Composable
-fun DefaultFieldBox(focusedColor: Color, unfocusedColor: Color, label: String, password: Boolean){
-
-    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue("", TextRange(0, 7)))
-    }
-    var passwordVisible by remember { mutableStateOf(password) }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = {text = it},
-        label = { Text(label)},
-        shape = RoundedCornerShape(8.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = focusedColor,
-            unfocusedBorderColor = unfocusedColor,
-            focusedLabelColor = focusedColor,
-            unfocusedLabelColor = unfocusedColor
-        ),
-        visualTransformation = if (!passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
-    )
-
-}
-
-@Composable
-fun DefaultButton(onClick: String, text: String, contentColor: Color, containerColor: Color){
-    Button(
-        onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(40.dp),
-        modifier = Modifier
-            .fillMaxWidth(),
-            //.shadow(1.dp, RoundedCornerShape(10.dp), true),
-        elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 8.dp,
-            disabledElevation = 4.dp,
-            hoveredElevation = 4.dp,
-            focusedElevation = 0.dp
-        ),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = contentColor,
-            containerColor = containerColor
-        )
-    ) {
-        Text(text = text)
-    }
-}
-
-@Composable
-fun LoginButton(){
-    DefaultButton(
-        onClick = "",
-        text = "Login",
-        contentColor = Color.White,
-        containerColor = Color(0xFF007FFF))
-}
 
 @Composable
 fun forgotPassword(){

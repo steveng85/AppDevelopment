@@ -1,4 +1,4 @@
-package com.example.appdevelopment.ui.screens
+package com.example.appdevelopment.ui.screens.loginView
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

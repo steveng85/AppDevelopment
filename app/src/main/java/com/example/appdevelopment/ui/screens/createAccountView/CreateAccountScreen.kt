@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.ui.components.DefaultFieldBox
+import com.example.appdevelopment.ui.components.LoginButton
 
 @Composable
 fun CreateAccountScreen(
@@ -60,7 +62,7 @@ fun CreateAccountScreen(
                 EmailBox()
                 PasswordBox()
                 ConfirmPassword()
-                LoginButton()
+                LoginButton("")
             }
         }
     }

@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.ui.components.DefaultButton
+import com.example.appdevelopment.ui.components.LoginButton
 
 @Composable
 fun ForgotPasswordScreen(
@@ -33,7 +35,7 @@ fun ForgotPasswordScreen(
                     navController.navigate(route = Screen.Welcome.route)
                 },
 
-                text = "Password have been reset",
+                text = "Forgot your password?",
 
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
@@ -44,11 +46,24 @@ fun ForgotPasswordScreen(
             Text(
                 modifier = Modifier.padding(start = 100.dp, end = 100.dp),
 
-                text = "You'll soon recieve an e-mail with guidance, to make a new password",
+                text = "Write your e-mail below to reset your password",
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
+            Column(
+                modifier = Modifier
+                    .padding(
+                        start = 75.dp,
+                        end = 75.dp
+                    )
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                EmailBox()
+                ResetPasswordButton()
+            }
         }
     }
 }
@@ -57,4 +72,14 @@ fun ForgotPasswordScreen(
 @Composable
 fun ForgotPasswordScreenPreview() {
     ForgotPasswordScreen(navController = rememberNavController())
+}
+
+@Composable
+fun ResetPasswordButton(){
+    DefaultButton(
+        onClick = "",
+        text = "Reset password",
+        contentColor = Color.White,
+        containerColor = Color(0xFF007FFF)
+    )
 }
