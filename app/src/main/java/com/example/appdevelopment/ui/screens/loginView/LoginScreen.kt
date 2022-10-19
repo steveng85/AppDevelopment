@@ -62,7 +62,7 @@ fun LoginScreen(
 
                 EmailBox()
                 PasswordBox()
-                LoginButton("")
+                LoginButton(Screen.Camera.route)
                 forgotPassword()
             }
         }

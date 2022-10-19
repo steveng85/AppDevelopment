@@ -13,6 +13,7 @@ import com.example.appdevelopment.ui.screens.CreateAccountScreen
 import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
 import com.example.appdevelopment.ui.screens.LoginScreen
 import com.example.appdevelopment.ui.screens.PasswordResetScreen
+import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
 
 @ExperimentalMaterial3Api
 @Composable
@@ -42,6 +43,9 @@ fun NavGraph(
             }
             composable(route = Screen.PwdReset.route) {
                 PasswordResetScreen(navController = navController)
+            }
+            composable(route = Screen.Camera.route) {
+                CameraScreen(navController = navController)
             }
         }
     }
