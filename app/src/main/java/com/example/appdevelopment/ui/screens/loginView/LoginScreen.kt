@@ -62,8 +62,8 @@ fun LoginScreen(
 
                 EmailBox()
                 PasswordBox()
-                LoginButton(Screen.Camera.route)
-                forgotPassword()
+                LoginButton { navController.navigate(Screen.Camera.route) }
+                forgotPassword { navController.navigate(Screen.ForgotPwd.route) }
             }
         }
     }
@@ -98,7 +98,7 @@ fun PasswordBox(){
 
 
 @Composable
-fun forgotPassword(){
+fun forgotPassword(route: (Int)-> Unit){
     val annotatedString = buildAnnotatedString {
 
         withStyle(
@@ -111,7 +111,8 @@ fun forgotPassword(){
     }
     ClickableText(
         text = annotatedString,
-        onClick = { /*TODO*/ },
+        modifier = Modifier.clickable { route },
+        onClick = route
     )
 
 }

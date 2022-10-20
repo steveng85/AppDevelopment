@@ -13,9 +13,9 @@ import androidx.navigation.NavController
 import com.example.appdevelopment.navigation.Screen
 
 @Composable
-fun DefaultButton(onClick: String, navController: NavController, text: String, contentColor: Color, containerColor: Color){
+fun DefaultButton(onClick: () -> Unit, text: String, contentColor: Color, containerColor: Color){
     Button(
-        onClick = { navController.navigate(route = onClick) },
+        onClick = onClick,
         shape = RoundedCornerShape(40.dp),
         modifier = Modifier
             .fillMaxWidth(),
