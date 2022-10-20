@@ -61,7 +61,7 @@ fun ForgotPasswordScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 EmailBox()
-                ResetPasswordButton()
+                ResetPasswordButton{navController.navigate(Screen.PwdReset.route)}
             }
         }
     }
@@ -74,9 +74,9 @@ fun ForgotPasswordScreenPreview() {
 }
 
 @Composable
-fun ResetPasswordButton(){
+fun ResetPasswordButton(route: ()->Unit){
     DefaultButton(
-        onClick = "",
+        onClick = route,
         text = "Reset password",
         contentColor = Color.White,
         containerColor = Color(0xFF007FFF)

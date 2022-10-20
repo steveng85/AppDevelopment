@@ -62,7 +62,7 @@ fun CreateAccountScreen(
                 EmailBox()
                 PasswordBox()
                 ConfirmPassword()
-                LoginButton("")
+                LoginButton { navController.navigate(Screen.Camera.route) }
             }
         }
     }
