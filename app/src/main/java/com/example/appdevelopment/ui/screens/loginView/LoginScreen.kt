@@ -13,11 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 
 @Composable
@@ -77,7 +79,11 @@ fun LoginScreenPreview() {
 
 @Composable
 fun EmailBox(){
+    val viewModel = viewModel<LoginViewModel>()
+    //val email = viewModel.
+    //viewModel.saveEmail(email = email)
     DefaultFieldBox(
+        value = "",
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Email",
@@ -89,6 +95,7 @@ fun EmailBox(){
 @Composable
 fun PasswordBox(){
     DefaultFieldBox(
+        value = "",
         focusedColor = Color(0xFF007FFF) ,
         unfocusedColor = Color.LightGray,
         label = "Password",

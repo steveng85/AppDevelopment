@@ -76,6 +76,7 @@ fun CreateAccountScreenPreview() {
 @Composable
 fun UserName(){
     DefaultFieldBox(
+        value = "",
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Username",
@@ -86,6 +87,7 @@ fun UserName(){
 fun ConfirmPassword(){
     //merge
     DefaultFieldBox(
+        value = "",
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
