@@ -60,7 +60,7 @@ fun ForgotPasswordScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                EmailBox()
+                //EmailBox()
                 ResetPasswordButton{navController.navigate(Screen.PwdReset.route)}
             }
         }

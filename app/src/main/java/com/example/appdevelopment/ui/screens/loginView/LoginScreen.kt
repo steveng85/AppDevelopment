@@ -19,12 +19,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.screens.loginView.LoginEvent
+import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    uiState: LoginUIState,
+    onEvent: (LoginEvent) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth(),
@@ -62,8 +66,8 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
 
-                EmailBox()
-                PasswordBox()
+                EmailBox(uiState.emailText, onEvent = {onEvent(it)})
+               // PasswordBox()
                 LoginButton { navController.navigate(Screen.Camera.route) }
                 ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
             }
@@ -74,16 +78,14 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(navController = rememberNavController(), LoginUIState(), {})
 }
 
 @Composable
-fun EmailBox(){
-    val viewModel = viewModel<LoginViewModel>()
-    //val email = viewModel.
-    //viewModel.saveEmail(email = email)
+fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
-        value = "",
+        currentValue = emailValue,
+        onEvent = {onEvent(LoginEvent.OnEmailChanged(it))},
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Email",
@@ -92,7 +94,7 @@ fun EmailBox(){
 }
 
 
-@Composable
+/*@Composable
 fun PasswordBox(){
     DefaultFieldBox(
         value = "",
@@ -101,7 +103,7 @@ fun PasswordBox(){
         label = "Password",
         password = true
     )
-}
+}*/
 
 
 @Composable

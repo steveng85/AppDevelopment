@@ -58,10 +58,10 @@ fun CreateAccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                UserName()
-                EmailBox()
-                PasswordBox()
-                ConfirmPassword()
+                //UserName()
+                //EmailBox()
+                //PasswordBox()
+                //ConfirmPassword()
                 LoginButton { navController.navigate(Screen.Camera.route) }
             }
         }
@@ -73,7 +73,7 @@ fun CreateAccountScreen(
 fun CreateAccountScreenPreview() {
     CreateAccountScreen(navController = rememberNavController())
 }
-@Composable
+/*@Composable
 fun UserName(){
     DefaultFieldBox(
         value = "",
@@ -93,4 +93,4 @@ fun ConfirmPassword(){
         label = "Confirm Password",
         password = true
     )
-}
+}*/

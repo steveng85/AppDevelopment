@@ -5,16 +5,21 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class LoginViewModel(
-    private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class LoginViewModel() : ViewModel() {
     private val _emailText = MutableStateFlow("")
     val emailText = _emailText.asStateFlow()
 
-    val email = savedStateHandle.getStateFlow("email", "")
+    private val _uiState = MutableStateFlow(LoginUIState())
+    val uiState = _uiState.asStateFlow()
 
-    fun saveEmail(email: String){
-        savedStateHandle["email"] = email
+    fun onEvent(event: LoginEvent){
+        when(event){
+            is LoginEvent.OnEmailChanged -> onEmailChanged(event.email)
+        }
+    }
+
+    fun onEmailChanged(email: String){
+        _uiState.value = _uiState.value.copy(emailText = email)
     }
 
 }
