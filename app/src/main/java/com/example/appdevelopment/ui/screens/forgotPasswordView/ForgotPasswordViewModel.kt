@@ -1,10 +1,11 @@
 package com.example.appdevelopment.ui.screens.forgotPasswordView
 
 
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ForgotPasswordViewModel {
+class ForgotPasswordViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(ForgotPasswordUIState())
     val uiState = _uiState.asStateFlow()
 
