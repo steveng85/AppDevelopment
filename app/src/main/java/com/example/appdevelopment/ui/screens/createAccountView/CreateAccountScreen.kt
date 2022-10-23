@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,10 +18,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountEvent
+import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUIState
 
 @Composable
 fun CreateAccountScreen(
-    navController: NavController
+    navController: NavController,
+    uiState: CreateAccountUIState,
+    onEvent: (CreateAccountEvent) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth(),
@@ -57,10 +60,10 @@ fun CreateAccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                //UserName()
-                //EmailBox()
-                //PasswordBox()
-                //ConfirmPassword()
+                UserName(uiState.usernameText, onEvent = {onEvent(it)})
+                CEmailBox(uiState.emailText, onEvent = {onEvent(it)})
+                CPasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
+                ConfirmPasswordBox(uiState.confirmPasswordText, onEvent = {onEvent(it)})
                 LoginButton { navController.navigate(Screen.Camera.route) }
             }
         }
@@ -70,12 +73,13 @@ fun CreateAccountScreen(
 @Preview(showBackground = true)
 @Composable
 fun CreateAccountScreenPreview() {
-    CreateAccountScreen(navController = rememberNavController())
+    CreateAccountScreen(navController = rememberNavController(), CreateAccountUIState(), {})
 }
-/*@Composable
-fun UserName(){
+@Composable
+fun UserName(usernameValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
-        value = "",
+        currentValue = usernameValue,
+        onEvent = {onEvent(CreateAccountEvent.OnUsernameChanged(it))},
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Username",
@@ -83,13 +87,36 @@ fun UserName(){
 }
 
 @Composable
-fun ConfirmPassword(){
-    //merge
+fun CEmailBox(emailValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
-        value = "",
+        currentValue = emailValue,
+        onEvent = {onEvent(CreateAccountEvent.OnEmailChanged(it))},
+        focusedColor = Color(0xFF007FFF),
+        unfocusedColor = Color.LightGray,
+        label = "Username",
+        password = false)
+}
+
+@Composable
+fun CPasswordBox(passwordValue: String, onEvent: (CreateAccountEvent) -> Unit){
+    DefaultFieldBox(
+        currentValue = passwordValue,
+        onEvent = {onEvent(CreateAccountEvent.OnPasswordChanged(it))},
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
         password = true
     )
-}*/
+}
+
+@Composable
+fun ConfirmPasswordBox(confirmPasswordValue: String, onEvent: (CreateAccountEvent) -> Unit){
+    DefaultFieldBox(
+        currentValue = confirmPasswordValue,
+        onEvent = {onEvent(CreateAccountEvent.OnConfirmPasswordChanged(it))},
+        focusedColor = Color(0xFF007FFF),
+        unfocusedColor = Color.LightGray,
+        label = "Confirm Password",
+        password = true
+    )
+}

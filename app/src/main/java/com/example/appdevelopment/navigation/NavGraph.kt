@@ -14,8 +14,8 @@ import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
 import com.example.appdevelopment.ui.screens.LoginScreen
 import com.example.appdevelopment.ui.screens.PasswordResetScreen
 import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
+import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
-import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 @ExperimentalMaterial3Api
@@ -36,7 +36,12 @@ fun NavGraph(
                 WelcomeScreen(navController = navController)
             }
             composable(route = Screen.CreateAcc.route) {
-                CreateAccountScreen(navController = navController)
+                val createAccountVM by remember {
+                    mutableStateOf(CreateAccountViewModel())
+                }
+                CreateAccountScreen(navController = navController, createAccountVM.uiState.collectAsState().value){
+                    createAccountVM.onEvent(it)
+                }
             }
             composable(route = Screen.Login.route) {
                 val loginVM by remember {

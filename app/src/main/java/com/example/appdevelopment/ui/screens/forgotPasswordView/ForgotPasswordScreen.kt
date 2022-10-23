@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +20,6 @@ import com.example.appdevelopment.ui.components.DefaultButton
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordEvent
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordUIState
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 
 @Composable
 fun ForgotPasswordScreen(
