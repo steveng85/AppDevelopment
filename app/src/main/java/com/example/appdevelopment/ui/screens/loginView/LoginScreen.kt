@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
@@ -13,16 +12,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.screens.loginView.LoginEvent
+import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    uiState: LoginUIState,
+    onEvent: (LoginEvent) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth(),
@@ -32,14 +36,12 @@ fun LoginScreen(
 
         ) {
             Text(
-                    modifier = Modifier.clickable {
-                        navController.navigate(route = Screen.Welcome.route)
-                    },
                     text = "Login to your account",
                     color = Color.Black,
                     fontSize = MaterialTheme.typography.displayMedium.fontSize,
                     fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    lineHeight = 1.em
             )
 
             Text(
@@ -60,10 +62,10 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
 
-                EmailBox()
-                PasswordBox()
-                LoginButton("")
-                forgotPassword()
+                EmailBox(uiState.emailText, onEvent = {onEvent(it)})
+                PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
+                LoginButton { navController.navigate(Screen.Camera.route) }
+                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
             }
         }
     }
@@ -72,12 +74,14 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(navController = rememberNavController(), LoginUIState(), {})
 }
 
 @Composable
-fun EmailBox(){
+fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
+        currentValue = emailValue,
+        onEvent = {onEvent(LoginEvent.OnEmailChanged(it))},
         focusedColor = Color(0xFF007FFF),
         unfocusedColor = Color.LightGray,
         label = "Email",
@@ -87,8 +91,10 @@ fun EmailBox(){
 
 
 @Composable
-fun PasswordBox(){
+fun PasswordBox(passwordValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
+        currentValue = passwordValue,
+        onEvent = {onEvent(LoginEvent.OnPasswordChanged(it))},
         focusedColor = Color(0xFF007FFF) ,
         unfocusedColor = Color.LightGray,
         label = "Password",
@@ -98,7 +104,7 @@ fun PasswordBox(){
 
 
 @Composable
-fun forgotPassword(){
+fun ForgotPassword(route: (Int)-> Unit){
     val annotatedString = buildAnnotatedString {
 
         withStyle(
@@ -111,7 +117,7 @@ fun forgotPassword(){
     }
     ClickableText(
         text = annotatedString,
-        onClick = { /*TODO*/ },
+        onClick = route
     )
 
 }
