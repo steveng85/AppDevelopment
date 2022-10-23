@@ -18,10 +18,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultButton
+import com.example.appdevelopment.ui.components.DefaultFieldBox
+import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordEvent
+import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordUIState
+import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 
 @Composable
 fun ForgotPasswordScreen(
-    navController: NavController
+    navController: NavController,
+    uiState: ForgotPasswordUIState,
+    onEvent: (ForgotPasswordEvent) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -57,7 +63,7 @@ fun ForgotPasswordScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                //EmailBox()
+                FEmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 ResetPasswordButton{navController.navigate(Screen.PwdReset.route)}
             }
         }
@@ -67,7 +73,19 @@ fun ForgotPasswordScreen(
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen(navController = rememberNavController())
+    ForgotPasswordScreen(navController = rememberNavController(), ForgotPasswordUIState(), {})
+}
+
+@Composable
+fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
+    DefaultFieldBox(
+        currentValue = emailValue,
+        onEvent = {onEvent(ForgotPasswordEvent.OnEmailChanged(it))},
+        focusedColor = Color(0xFF007FFF),
+        unfocusedColor = Color.LightGray,
+        label = "Email",
+        password = false
+    )
 }
 
 @Composable
