@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
@@ -31,14 +32,13 @@ fun CreateAccountScreen(
 
             ) {
             Text(
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.Welcome.route)
-                },
+                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
                 text = "Welcome to the Hunt",
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 1.em
             )
 
             Text(
@@ -53,8 +53,7 @@ fun CreateAccountScreen(
                     .padding(
                         start = 75.dp,
                         end = 75.dp
-                    )
-                    .fillMaxHeight(),
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {

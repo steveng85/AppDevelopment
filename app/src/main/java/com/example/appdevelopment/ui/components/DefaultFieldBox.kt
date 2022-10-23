@@ -28,7 +28,7 @@ fun DefaultFieldBox(
         onValueChange = {
             onEvent(it)
                         },
-        label = { Text("email") },
+        label = { Text(label) },
         shape = RoundedCornerShape(8.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = focusedColor,

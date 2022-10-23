@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
@@ -30,16 +31,12 @@ fun ForgotPasswordScreen(
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Text(
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.Welcome.route)
-                },
-
                 text = "Forgot your password?",
-
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 1.em
             )
 
             Text(

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -38,14 +39,12 @@ fun LoginScreen(
 
         ) {
             Text(
-                    modifier = Modifier.clickable {
-                        navController.navigate(route = Screen.Welcome.route)
-                    },
                     text = "Login to your account",
                     color = Color.Black,
                     fontSize = MaterialTheme.typography.displayMedium.fontSize,
                     fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    lineHeight = 1.em
             )
 
             Text(
@@ -67,7 +66,7 @@ fun LoginScreen(
             ) {
 
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
-               // PasswordBox()
+                PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { navController.navigate(Screen.Camera.route) }
                 ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
             }
@@ -94,16 +93,17 @@ fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
 }
 
 
-/*@Composable
-fun PasswordBox(){
+@Composable
+fun PasswordBox(passwordValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
-        value = "",
+        currentValue = passwordValue,
+        onEvent = {onEvent(LoginEvent.OnPasswordChanged(it))},
         focusedColor = Color(0xFF007FFF) ,
         unfocusedColor = Color.LightGray,
         label = "Password",
         password = true
     )
-}*/
+}
 
 
 @Composable
