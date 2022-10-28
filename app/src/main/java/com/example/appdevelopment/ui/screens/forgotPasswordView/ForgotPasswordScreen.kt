@@ -79,7 +79,7 @@ fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
     DefaultFieldBox(
         currentValue = emailValue,
         onEvent = {onEvent(ForgotPasswordEvent.OnEmailChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
         password = false
@@ -92,6 +92,6 @@ fun ResetPasswordButton(route: ()->Unit){
         onClick = route,
         text = "Reset password",
         contentColor = Color.White,
-        containerColor = Color(0xFF007FFF)
+        containerColor = MaterialTheme.colorScheme.primary
     )
 }
