@@ -29,7 +29,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.style.TextOverflow
 
-
 @ExperimentalMaterial3Api
 @Composable
 fun WelcomeScreen(navController: NavController) {

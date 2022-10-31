@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.mockData.leaderboards.Board
 import com.example.appdevelopment.mockData.leaderboards.boards
+//import com.example.appdevelopment.ui.components.BottomHomeBar
 
 @Composable
 fun LeaderboardScreen(
@@ -32,6 +33,13 @@ fun LeaderboardScreen(
     Surface(modifier = Modifier.fillMaxSize()) {
 
         LeaderboardsList(boards)
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            //BottomHomeBar(navController)
+        }
     }
 }
 
