@@ -8,5 +8,7 @@ sealed class Screen(val route: String) {
     object ForgotPwd: Screen(route = "forgot_password_screen")
     object PwdReset: Screen(route = "password_reset_screen")
     object Camera: Screen(route = "camera_screen")
+    object Profile: Screen(route = "profile_screen")
     object Leaderboards: Screen(route = "leaderboards_screen")
+    object Feed: Screen(route = "feed_screen")
 }
