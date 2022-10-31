@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -60,7 +60,6 @@ fun LeaderboardsList(boardList: List<Board>){
 
         items(boardList){ board ->
             BoardCard(rank = board.rank, name = board.name, points = board.point)
-
         }
     }
 
@@ -73,7 +72,7 @@ fun BoardCard(rank: Int, name: String, points: Int){
     val silver = Color(0xffC0C0C0)
     val bronze = Color(0xffCD7F32)
     var backgroundColor = Color.White
-    var borderColor = MaterialTheme.colors.primary
+    var borderColor = MaterialTheme.colorScheme.primary
     if (rank == 1){
         backgroundColor = gold
         borderColor = gold
@@ -87,39 +86,54 @@ fun BoardCard(rank: Int, name: String, points: Int){
 
     Box(
         modifier = Modifier
-            //.padding(start = 20.dp, end = 20.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(color = backgroundColor)
             .height(80.dp)
             .fillMaxWidth()
-            .border(border = BorderStroke(2.dp, borderColor), RoundedCornerShape(15.dp))
+            .border(border = BorderStroke(2.5.dp, borderColor), RoundedCornerShape(15.dp))
     ) {
         Row(
             Modifier
                 .fillMaxSize()
                 .padding(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(30.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalAlignment = Alignment.CenterVertically,
 
         ) {
             RankingText(text = "#$rank")
-            Text(text = name)
+            NameText(text = name)
             Text(text = "$points")
         }
     }
 }
 
 @Composable
+fun NameText(text: String, modifier: Modifier = Modifier){
+    Surface(
+        color = MaterialTheme.colorScheme.onSurface.copy(0.01f),
+        modifier = modifier.semantics { heading() }
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = modifier
+                .width(215.dp)
+                .padding(horizontal = 1.dp, vertical = 5.dp)
+        )
+    }
+}
+
+@Composable
 fun RankingText(text: String, modifier: Modifier = Modifier){
     Surface(
-        color = MaterialTheme.colors.onSurface.copy(0.01f),
+        color = MaterialTheme.colorScheme.onSurface.copy(0.01f),
         modifier = modifier.semantics { heading() }
         ) {
         Text(text = text,
-            style = MaterialTheme.typography.subtitle1,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = modifier
                 .width(40.dp)
-                .padding(horizontal = 10.dp, vertical = 5.dp))
+                .padding(horizontal = 5.dp, vertical = 5.dp))
     }
 }
 

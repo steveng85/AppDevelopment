@@ -31,4 +31,40 @@ val boards = listOf(
         "Lotte",
         2
     ),
+    Board(
+        5,
+        8,
+        "Lotte",
+        0
+    ),
+    Board(
+        5,
+        7,
+        "Lotte",
+        2
+    ),
+    Board(
+        5,
+        6,
+        "Lotte",
+        2
+    ),
+    Board(
+        5,
+        9,
+        "Lotte",
+        2
+    ),
+    Board(
+        5,
+        10,
+        "Lotte",
+        2
+    ),
+    Board(
+        5,
+        11,
+        "Lotte",
+        2
+    ),
 )

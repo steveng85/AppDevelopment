@@ -65,7 +65,7 @@ fun LoginScreen(
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { navController.navigate(Screen.Camera.route) }
-                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
+                ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
             }
         }
     }
