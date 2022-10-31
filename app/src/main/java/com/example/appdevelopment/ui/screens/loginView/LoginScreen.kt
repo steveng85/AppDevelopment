@@ -82,7 +82,7 @@ fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
         currentValue = emailValue,
         onEvent = {onEvent(LoginEvent.OnEmailChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
         password = false
@@ -95,7 +95,7 @@ fun PasswordBox(passwordValue: String, onEvent: (LoginEvent) -> Unit){
     DefaultFieldBox(
         currentValue = passwordValue,
         onEvent = {onEvent(LoginEvent.OnPasswordChanged(it))},
-        focusedColor = Color(0xFF007FFF) ,
+        focusedColor = MaterialTheme.colorScheme.primary ,
         unfocusedColor = Color.LightGray,
         label = "Password",
         password = true
@@ -109,7 +109,7 @@ fun ForgotPassword(route: (Int)-> Unit){
 
         withStyle(
             style = SpanStyle(
-                color = Color(0xFF007FFF)
+                color = MaterialTheme.colorScheme.primary
             )
         ){
             append("forgot password?")

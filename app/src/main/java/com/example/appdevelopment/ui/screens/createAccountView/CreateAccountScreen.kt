@@ -80,7 +80,7 @@ fun UserName(usernameValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
         currentValue = usernameValue,
         onEvent = {onEvent(CreateAccountEvent.OnUsernameChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Username",
         password = false)
@@ -91,7 +91,7 @@ fun CEmailBox(emailValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
         currentValue = emailValue,
         onEvent = {onEvent(CreateAccountEvent.OnEmailChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Username",
         password = false)
@@ -102,7 +102,7 @@ fun CPasswordBox(passwordValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
         currentValue = passwordValue,
         onEvent = {onEvent(CreateAccountEvent.OnPasswordChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
         password = true
@@ -114,7 +114,7 @@ fun ConfirmPasswordBox(confirmPasswordValue: String, onEvent: (CreateAccountEven
     DefaultFieldBox(
         currentValue = confirmPasswordValue,
         onEvent = {onEvent(CreateAccountEvent.OnConfirmPasswordChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
         password = true
