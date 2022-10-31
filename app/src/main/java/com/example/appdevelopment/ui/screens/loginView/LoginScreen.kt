@@ -18,10 +18,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 
-
+@ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -29,13 +30,24 @@ fun LoginScreen(
     onEvent: (LoginEvent) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            LoginTopBar("Login") { navController.navigate(Screen.Welcome.route) }
+        }
+
         Column(modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
+                modifier = Modifier.padding(
+                    top = 70.dp,
+                    bottom = 20.dp,
+                    start = 60.dp,
+                    end = 60.dp),
                     text = "Login to your account",
                     color = Color.Black,
                     fontSize = MaterialTheme.typography.displayMedium.fontSize,
@@ -65,12 +77,13 @@ fun LoginScreen(
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { navController.navigate(Screen.Camera.route) }
-                ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
             }
         }
     }
 }
 
+@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {

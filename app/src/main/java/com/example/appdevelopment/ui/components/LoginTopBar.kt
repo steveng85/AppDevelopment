@@ -3,32 +3,29 @@ package com.example.appdevelopment.ui.components
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.navigation.NavController
-import com.example.appdevelopment.navigation.Screen
 
 @ExperimentalMaterial3Api
 @Composable
-fun LoginTopBar() {
+fun LoginTopBar(text: String, route: ()-> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Create account",
+                        text = text,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.primary
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* doSomething() */ }) {
+                    IconButton(onClick = route) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Localized description",
+                            contentDescription = "backButton",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
