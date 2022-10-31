@@ -15,9 +15,11 @@ import com.example.appdevelopment.ui.screens.LoginScreen
 import com.example.appdevelopment.ui.screens.PasswordResetScreen
 import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
+import com.example.appdevelopment.ui.screens.feedView.FeedScreen
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
+import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 
 @ExperimentalMaterial3Api
 @Composable
@@ -66,8 +68,14 @@ fun NavGraph(
             composable(route = Screen.Camera.route) {
                 CameraScreen(navController = navController)
             }
+            composable(route = Screen.Profile.route) {
+                ProfileScreen(navController = navController)
+            }
             composable(route = Screen.Leaderboards.route){
                 LeaderboardScreen(navController = navController)
+            }
+            composable(route = Screen.Feed.route){
+                FeedScreen(navController = navController)
             }
         }
     }
