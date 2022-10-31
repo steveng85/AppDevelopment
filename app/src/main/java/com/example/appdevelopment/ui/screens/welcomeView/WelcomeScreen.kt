@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,10 +16,24 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.text.style.TextOverflow
+
 
 @ExperimentalMaterial3Api
 @Composable
 fun WelcomeScreen(navController: NavController) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +90,7 @@ fun WelcomeScreen(navController: NavController) {
 }
 
 @ExperimentalMaterial3Api
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(navController = rememberNavController())
