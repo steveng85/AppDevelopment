@@ -1,8 +1,10 @@
 package com.example.appdevelopment.ui.screens.loginView
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.AuthRepository
+import com.example.appdevelopment.data.AuthViewModel
 import com.example.appdevelopment.data.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,16 +16,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val viewModel: AuthViewModel?
 ) : ViewModel() {
+
+    val loginFlow = viewModel?.loginFlow?.collectAsState()
 
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState = _uiState.asStateFlow()
 
-    private val _loginFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
-    val loginFlow: StateFlow<Resource<FirebaseUser>?> = _loginFlow
-
     fun onEvent(event: LoginEvent){
+        loginFlow?.value?.let {
+            when(it){
+                is Resource.Failure -> TODO()
+                Resource.Loading -> TODO()
+                is Resource.Success -> {
+                    TODO()
+                }
+            }
+        }
         when(event){
             is LoginEvent.OnEmailChanged -> onEmailChanged(event.email)
             is LoginEvent.OnPasswordChanged -> onPasswordChanged(event.password)
@@ -38,10 +48,6 @@ class LoginViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(passwordText = password)
     }
 
-    fun login(email: String, password: String) = viewModelScope.launch {
-        _loginFlow.value = Resource.Loading
-        val result = repository.login(email, password)
-        _loginFlow.value = result
-    }
+
 
 }
