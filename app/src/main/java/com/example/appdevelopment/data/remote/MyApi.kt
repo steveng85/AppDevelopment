@@ -1,7 +1,9 @@
 package com.example.appdevelopment.data.remote
 
+import retrofit2.http.GET
+
 interface MyApi {
 
-    @get("text")
+    @GET("test")
     suspend fun networkCall()
 }
