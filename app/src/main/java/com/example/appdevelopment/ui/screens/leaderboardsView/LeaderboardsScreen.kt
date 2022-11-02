@@ -24,6 +24,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.mockData.leaderboards.Board
 import com.example.appdevelopment.mockData.leaderboards.boards
+import com.example.appdevelopment.ui.theme.Bronze
+import com.example.appdevelopment.ui.theme.Gold
+import com.example.appdevelopment.ui.theme.Silver
+
 //import com.example.appdevelopment.ui.components.BottomHomeBar
 
 @Composable
@@ -76,20 +80,17 @@ fun LeaderboardsList(boardList: List<Board>){
 
 @Composable
 fun BoardCard(rank: Int, name: String, points: Int){
-    val gold = Color(0xffFFD700)
-    val silver = Color(0xffC0C0C0)
-    val bronze = Color(0xffCD7F32)
     var backgroundColor = Color.White
     var borderColor = MaterialTheme.colorScheme.primary
     if (rank == 1){
-        backgroundColor = gold
-        borderColor = gold
+        backgroundColor = Gold
+        borderColor = Gold
     } else if(rank == 2){
-        backgroundColor = silver
-        borderColor = silver
+        backgroundColor = Silver
+        borderColor = Silver
     } else if(rank == 3){
-        backgroundColor = bronze
-        borderColor = bronze
+        backgroundColor = Bronze
+        borderColor = Bronze
     }
 
     Box(
