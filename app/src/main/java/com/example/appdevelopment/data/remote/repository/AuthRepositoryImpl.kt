@@ -1,5 +1,7 @@
-package com.example.appdevelopment.data
+package com.example.appdevelopment.data.remote.repository
 
+import com.example.appdevelopment.data.Resource
+import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

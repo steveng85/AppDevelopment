@@ -1,5 +1,6 @@
-package com.example.appdevelopment.data
+package com.example.appdevelopment.data.domain.repository
 
+import com.example.appdevelopment.data.Resource
 import com.google.firebase.auth.FirebaseUser
 
 

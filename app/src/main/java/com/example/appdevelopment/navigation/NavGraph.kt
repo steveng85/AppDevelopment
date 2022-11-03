@@ -5,9 +5,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.screens.CreateAccountScreen
 import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
@@ -40,6 +42,7 @@ fun NavGraph(
                 val createAccountVM by remember {
                     mutableStateOf(CreateAccountViewModel())
                 }
+                //val vmhej = hiltViewModel<CreateAccountViewModel>()
                 CreateAccountScreen(navController = navController, createAccountVM.uiState.collectAsState().value){
                     createAccountVM.onEvent(it)
                 }
@@ -48,8 +51,15 @@ fun NavGraph(
                 val loginVM by remember {
                     mutableStateOf(LoginViewModel())
                 }
-                LoginScreen(navController = navController, loginVM.uiState.collectAsState().value){
+                LoginScreen(navController = navController, loginVM.uiState.collectAsState().value){ it ->
                     loginVM.onEvent(it)
+                    loginVM.loginFlow?.value?.let {
+                        when(it){
+                            is Resource.Failure -> TODO()
+                            Resource.Loading -> TODO()
+                            is Resource.Success -> {
+                                TODO()
+                            }
                 }
             }
             composable(route = Screen.ForgotPwd.route) {

@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 
 @Composable
-fun LoginButton(route: ()-> Unit){
+fun LoginButton(onEvent: ()-> Unit){
     DefaultButton(
-        onClick = route,
+        onClick = onEvent,
         text = "Login",
         contentColor = Color.White,
         containerColor = MaterialTheme.colorScheme.primary

@@ -15,11 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
+import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 
 @Composable
@@ -64,8 +66,18 @@ fun LoginScreen(
 
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
-                LoginButton { navController.navigate(Screen.Camera.route) }
+                LoginButton { onEvent(LoginEvent.OnLogin) }
                 ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+
+                loginFlow?.value?.let {
+                    when(it){
+                        is Resource.Failure -> TODO()
+                        Resource.Loading -> TODO()
+                        is Resource.Success -> {
+                        TODO()
+                }
+            }
+        }
             }
         }
     }
@@ -76,6 +88,7 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     LoginScreen(navController = rememberNavController(), LoginUIState(), {})
 }
+
 
 @Composable
 fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
