@@ -59,7 +59,7 @@ fun NavGraph(
                     navController = navController,
                     viewModel.uiState.collectAsState().value,
                     viewModel
-                ) { it ->
+                ) {
                     viewModel.onEvent(it)
                 }
             }

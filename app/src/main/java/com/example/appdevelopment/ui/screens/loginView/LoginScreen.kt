@@ -30,7 +30,7 @@ import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 
 
-@SuppressLint("StateFlowValueCalledInComposition")
+//@SuppressLint("StateFlowValueCalledInComposition")
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
