@@ -1,9 +1,7 @@
 package com.example.appdevelopment.ui.screens.loginView
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appdevelopment.data.AuthViewModel
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
@@ -26,15 +24,6 @@ class LoginViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun onEvent(event: LoginEvent){
-        /*loginFlow?.value?.let {
-            when(it){
-                is Resource.Failure -> TODO()
-                Resource.Loading -> TODO()
-                is Resource.Success -> {
-                    TODO()
-                }
-            }
-        }*/
         when(event){
             is LoginEvent.OnEmailChanged -> onEmailChanged(event.email)
             is LoginEvent.OnPasswordChanged -> onPasswordChanged(event.password)
@@ -60,6 +49,11 @@ class LoginViewModel @Inject constructor(
         if(repository.currentUser != null){
             _loginFlow.value = Resource.Success(repository.currentUser!!)
         }
+    }
+
+    fun logout(){
+        repository.logout()
+        _loginFlow.value = null
     }
 
 
