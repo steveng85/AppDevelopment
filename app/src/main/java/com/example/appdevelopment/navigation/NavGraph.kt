@@ -25,7 +25,8 @@ import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    createAccViewModel: CreateAccountViewModel
 ) {
 
     Scaffold() { innerPadding ->
@@ -41,20 +42,17 @@ fun NavGraph(
                 WelcomeScreen(navController = navController)
             }
             composable(route = Screen.CreateAcc.route) {
-                val createAccountVM by remember {
-                    mutableStateOf(CreateAccountViewModel())
-                }
-                //val vmhej = hiltViewModel<CreateAccountViewModel>()
+
                 CreateAccountScreen(
                     navController = navController,
-                    createAccountVM.uiState.collectAsState().value
+                    createAccViewModel.uiState.collectAsState().value,
+                    createAccViewModel
                 ) {
-                    createAccountVM.onEvent(it)
+                    createAccViewModel.onEvent(it)
                 }
             }
             composable(route = Screen.Login.route) {
 
-                //val viewModel = hiltViewModel<LoginViewModel>()
                 LoginScreen(
                     navController = navController,
                     viewModel.uiState.collectAsState().value,

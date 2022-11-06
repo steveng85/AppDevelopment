@@ -19,6 +19,7 @@ import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountEvent
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUIState
+import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 
 
 @ExperimentalMaterial3Api
@@ -26,6 +27,7 @@ import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUISt
 fun CreateAccountScreen(
     navController: NavController,
     uiState: CreateAccountUIState,
+    viewModel: CreateAccountViewModel?,
     onEvent: (CreateAccountEvent) -> Unit
 ) {
 
@@ -74,7 +76,7 @@ fun CreateAccountScreen(
                 CEmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 CPasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 ConfirmPasswordBox(uiState.confirmPasswordText, onEvent = {onEvent(it)})
-                LoginButton { navController.navigate(Screen.Camera.route) }
+                LoginButton { onEvent(CreateAccountEvent.OnCreateUser) }
             }
         }
     }
@@ -84,7 +86,7 @@ fun CreateAccountScreen(
 @Preview(showBackground = true)
 @Composable
 fun CreateAccountScreenPreview() {
-    CreateAccountScreen(navController = rememberNavController(), CreateAccountUIState(), {})
+    CreateAccountScreen(navController = rememberNavController(), CreateAccountUIState(), null, {} )
 }
 
 @Composable
