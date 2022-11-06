@@ -1,5 +1,19 @@
 package com.example.appdevelopment.ui.screens.cameraView
 
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +32,14 @@ import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.components.TopHomeBar
 
+
 @ExperimentalMaterial3Api
 @Composable
-fun CameraScreen(navController: NavController) {
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
+fun CameraScreen(navController: NavController, viewModel: LoginViewModel?) {
+    Text(text = "Hey cameraX")
+    
+     Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -38,7 +55,21 @@ fun CameraScreen(navController: NavController) {
             //BottomHomeBar(navController)
         }
     }
+
+    Button(
+        onClick = {
+            viewModel?.logout()
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Login.route) { inclusive = true }
+            }
+            println("logged out")
+        },
+        modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
+    ) {
+        Text(text = "logout")
+    }
 }
+
 
 @ExperimentalMaterial3Api
 @Preview
@@ -46,4 +77,5 @@ fun CameraScreen(navController: NavController) {
 fun CameraScreenPreview() {
     //CameraScreen(navController = NavController())
 }
+
 

@@ -1,12 +1,16 @@
 package com.example.appdevelopment.ui.screens
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -15,20 +19,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
+import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
+
+
+@SuppressLint("StateFlowValueCalledInComposition")
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
     navController: NavController,
     uiState: LoginUIState,
+    viewModel: LoginViewModel?,
     onEvent: (LoginEvent) -> Unit
 ) {
+    val authResource = viewModel?.loginFlow?.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -76,8 +87,29 @@ fun LoginScreen(
 
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
-                LoginButton { navController.navigate(Screen.Camera.route) }
-                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
+                LoginButton { onEvent(LoginEvent.OnLogin) }
+                ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+
+            }
+        }
+    }
+    authResource?.value?.let {
+        when (it) {
+            is Resource.Failure -> {
+                val context = LocalContext.current
+                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                println("faulire")
+            }
+            Resource.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            }
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Camera.route) {
+                        popUpTo(Screen.Camera.route) { inclusive = true }
+                    }
+                }
+                println("loggein")
             }
         }
     }
@@ -87,8 +119,9 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController(), LoginUIState(), {})
+    LoginScreen(navController = rememberNavController(), LoginUIState(), null ) {}
 }
+
 
 @Composable
 fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){

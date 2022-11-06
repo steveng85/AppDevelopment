@@ -24,8 +24,10 @@ import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 @ExperimentalMaterial3Api
 @Composable
 fun NavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: LoginViewModel
 ) {
+
     Scaffold() { innerPadding ->
         NavHost(
             navController = navController,
@@ -42,23 +44,33 @@ fun NavGraph(
                 val createAccountVM by remember {
                     mutableStateOf(CreateAccountViewModel())
                 }
-                CreateAccountScreen(navController = navController, createAccountVM.uiState.collectAsState().value){
+                //val vmhej = hiltViewModel<CreateAccountViewModel>()
+                CreateAccountScreen(
+                    navController = navController,
+                    createAccountVM.uiState.collectAsState().value
+                ) {
                     createAccountVM.onEvent(it)
                 }
             }
             composable(route = Screen.Login.route) {
-                val loginVM by remember {
-                    mutableStateOf(LoginViewModel())
-                }
-                LoginScreen(navController = navController, loginVM.uiState.collectAsState().value){
-                    loginVM.onEvent(it)
+
+                //val viewModel = hiltViewModel<LoginViewModel>()
+                LoginScreen(
+                    navController = navController,
+                    viewModel.uiState.collectAsState().value,
+                    viewModel
+                ) { it ->
+                    viewModel.onEvent(it)
                 }
             }
             composable(route = Screen.ForgotPwd.route) {
                 val forgotPasswordVM by remember {
                     mutableStateOf(ForgotPasswordViewModel())
                 }
-                ForgotPasswordScreen(navController = navController, forgotPasswordVM.uiState.collectAsState().value){
+                ForgotPasswordScreen(
+                    navController = navController,
+                    forgotPasswordVM.uiState.collectAsState().value
+                ) {
                     forgotPasswordVM.onEvent(it)
                 }
             }
@@ -66,14 +78,17 @@ fun NavGraph(
                 PasswordResetScreen(navController = navController)
             }
             composable(route = Screen.Camera.route) {
-                CameraScreen(navController = navController)
+                CameraScreen(navController = navController, viewModel)
             }
+            
             composable(route = Screen.Profile.route) {
                 ProfileScreen(navController = navController)
             }
+            
             composable(route = Screen.Leaderboards.route){
                 LeaderboardScreen(navController = navController)
             }
+            
             composable(route = Screen.Feed.route){
                 FeedScreen(navController = navController)
             }
