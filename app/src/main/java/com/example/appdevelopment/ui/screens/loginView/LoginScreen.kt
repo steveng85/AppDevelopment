@@ -23,12 +23,15 @@ import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 
+
 @SuppressLint("StateFlowValueCalledInComposition")
+@ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -38,13 +41,24 @@ fun LoginScreen(
 ) {
     val authResource = viewModel?.loginFlow?.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            LoginTopBar("Login") { navController.navigate(Screen.Welcome.route) }
+        }
+
         Column(modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
+                modifier = Modifier.padding(
+                    top = 70.dp,
+                    bottom = 20.dp,
+                    start = 60.dp,
+                    end = 60.dp),
                     text = "Login to your account",
                     color = Color.Black,
                     fontSize = MaterialTheme.typography.displayMedium.fontSize,
@@ -75,6 +89,7 @@ fun LoginScreen(
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { onEvent(LoginEvent.OnLogin) }
                 ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+
             }
         }
     }
@@ -100,6 +115,7 @@ fun LoginScreen(
     }
 }
 
+@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {

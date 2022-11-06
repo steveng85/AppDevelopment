@@ -1,9 +1,7 @@
 package com.example.appdevelopment.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,24 +16,35 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
+import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountEvent
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUIState
 
+
+@ExperimentalMaterial3Api
 @Composable
 fun CreateAccountScreen(
     navController: NavController,
     uiState: CreateAccountUIState,
     onEvent: (CreateAccountEvent) -> Unit
 ) {
+
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxWidth(),
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            LoginTopBar("Create account") { navController.navigate(Screen.Welcome.route) }
+        }
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-
+            horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
             Text(
-                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
+                modifier = Modifier.padding(top = 70.dp, bottom = 20.dp, start = 60.dp, end = 60.dp),
                 text = "Welcome to the Hunt",
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
@@ -46,7 +55,7 @@ fun CreateAccountScreen(
 
             Text(
                 modifier = Modifier.padding(start = 100.dp, end = 100.dp),
-                text = "Create an acoount, and let's get started!",
+                text = "Create an account, and let's get started!",
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center)
@@ -54,6 +63,7 @@ fun CreateAccountScreen(
             Column(
                 modifier = Modifier
                     .padding(
+                        top = 20.dp,
                         start = 75.dp,
                         end = 75.dp
                     ),
@@ -70,11 +80,13 @@ fun CreateAccountScreen(
     }
 }
 
+@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun CreateAccountScreenPreview() {
     CreateAccountScreen(navController = rememberNavController(), CreateAccountUIState(), {})
 }
+
 @Composable
 fun UserName(usernameValue: String, onEvent: (CreateAccountEvent) -> Unit){
     DefaultFieldBox(
@@ -93,7 +105,7 @@ fun CEmailBox(emailValue: String, onEvent: (CreateAccountEvent) -> Unit){
         onEvent = {onEvent(CreateAccountEvent.OnEmailChanged(it))},
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
-        label = "Username",
+        label = "E-mail",
         password = false)
 }
 
@@ -104,7 +116,7 @@ fun CPasswordBox(passwordValue: String, onEvent: (CreateAccountEvent) -> Unit){
         onEvent = {onEvent(CreateAccountEvent.OnPasswordChanged(it))},
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
-        label = "Confirm Password",
+        label = "Password",
         password = true
     )
 }
