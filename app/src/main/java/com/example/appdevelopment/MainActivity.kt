@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.theme.AppDevelopmentTheme
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterial3Api

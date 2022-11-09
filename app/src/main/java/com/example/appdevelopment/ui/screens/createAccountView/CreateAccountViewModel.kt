@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.domain.repository.AuthRepository
+import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.appdevelopment.data.dataClasses.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateAccountViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val firebaseRepository: FireStoreRepository
 ) : ViewModel() {
 
     private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
@@ -59,6 +62,14 @@ class CreateAccountViewModel @Inject constructor(
             _signupFlow.value = Resource.Loading
             val result = repository.signup(name, email, password)
             _signupFlow.value = result
+           val userId = repository.currentUser
+            if(!userId?.uid.isNullOrEmpty()) {
+                userId?.uid?.let { onSaveUser(name, it, email) }
+            }
         }
+    }
+
+    suspend fun onSaveUser(username: String, token: String, email: String) {
+        firebaseRepository.saveUser(User(token, username, email))
     }
 }

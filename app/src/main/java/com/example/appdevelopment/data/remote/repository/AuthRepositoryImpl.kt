@@ -23,7 +23,6 @@ class AuthRepositoryImpl @Inject constructor(
             e.printStackTrace()
             Resource.Failure(e)
         }
-
     }
 
     override suspend fun signup(

@@ -1,11 +1,16 @@
 package com.example.appdevelopment.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.components.LoginButton
@@ -30,7 +36,7 @@ fun CreateAccountScreen(
     viewModel: CreateAccountViewModel?,
     onEvent: (CreateAccountEvent) -> Unit
 ) {
-
+    val authResource = viewModel?.signupFlow?.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -77,6 +83,26 @@ fun CreateAccountScreen(
                 CPasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 ConfirmPasswordBox(uiState.confirmPasswordText, onEvent = {onEvent(it)})
                 LoginButton { onEvent(CreateAccountEvent.OnCreateUser) }
+            }
+        }
+    }
+    authResource?.value?.let {
+        when (it) {
+            is Resource.Failure -> {
+                val context = LocalContext.current
+                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                println("Chould not create user")
+            }
+            Resource.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            }
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Camera.route) {
+                        popUpTo(Screen.CreateAcc.route) { inclusive = true }
+                    }
+                }
+                println("Created user")
             }
         }
     }
