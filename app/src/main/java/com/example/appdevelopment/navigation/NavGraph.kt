@@ -90,7 +90,7 @@ fun NavGraph(
             }
             
             composable(route = Screen.Feed.route){
-                //FeedScreen(navController = navController)
+                FeedScreen(navController = navController)
             }
         }
     }
