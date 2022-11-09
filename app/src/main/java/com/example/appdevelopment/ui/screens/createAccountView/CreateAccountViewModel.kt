@@ -1,10 +1,28 @@
 package com.example.appdevelopment.ui.screens.createAccountView
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.appdevelopment.data.Resource
+import com.example.appdevelopment.data.domain.repository.AuthRepository
+import com.example.appdevelopment.data.domain.repository.FireStoreRepository
+import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.appdevelopment.data.dataClasses.User
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreateAccountViewModel() : ViewModel() {
+@HiltViewModel
+class CreateAccountViewModel @Inject constructor(
+    private val repository: AuthRepository,
+    private val firebaseRepository: FireStoreRepository
+) : ViewModel() {
+
+    private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
+    val signupFlow: StateFlow<Resource<FirebaseUser>?> = _signupFlow
+
     private val _uiState = MutableStateFlow(CreateAccountUIState())
     val uiState = _uiState.asStateFlow()
 
@@ -14,6 +32,12 @@ class CreateAccountViewModel() : ViewModel() {
             is CreateAccountEvent.OnEmailChanged -> onEmailChanged(event.email)
             is CreateAccountEvent.OnPasswordChanged -> onPasswordChanged(event.password)
             is CreateAccountEvent.OnConfirmPasswordChanged -> onConfirmPasswordChanged(event.confirmPassword)
+            is CreateAccountEvent.OnCreateUser -> onCreateUser(
+                _uiState.value.usernameText,
+                _uiState.value.emailText,
+                _uiState.value.passwordText,
+                _uiState.value.confirmPasswordText
+            )
         }
     }
 
@@ -33,4 +57,19 @@ class CreateAccountViewModel() : ViewModel() {
         _uiState.value = _uiState.value.copy(confirmPasswordText = confirmPassword)
     }
 
+    fun onCreateUser(name: String, email: String, password: String, confirmPassword: String) = viewModelScope.launch{
+        if(password == confirmPassword){
+            _signupFlow.value = Resource.Loading
+            val result = repository.signup(name, email, password)
+            _signupFlow.value = result
+           val userId = repository.currentUser
+            if(!userId?.uid.isNullOrEmpty()) {
+                userId?.uid?.let { onSaveUser(name, it, email) }
+            }
+        }
+    }
+
+    suspend fun onSaveUser(username: String, token: String, email: String) {
+        firebaseRepository.saveUser(User(token, username, email))
+    }
 }

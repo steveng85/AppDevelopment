@@ -106,7 +106,7 @@ fun LoginScreen(
             is Resource.Success -> {
                 LaunchedEffect(Unit) {
                     navController.navigate(Screen.Camera.route) {
-                        popUpTo(Screen.Camera.route) { inclusive = true }
+                        popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
                 println("loggein")

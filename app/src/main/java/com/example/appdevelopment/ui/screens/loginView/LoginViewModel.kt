@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.domain.repository.AuthRepository
+import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +55,7 @@ class LoginViewModel @Inject constructor(
     fun logout(){
         repository.logout()
         _loginFlow.value = null
+
     }
 
 

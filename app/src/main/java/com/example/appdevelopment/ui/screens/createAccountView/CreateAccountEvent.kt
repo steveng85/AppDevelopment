@@ -5,4 +5,5 @@ sealed class CreateAccountEvent {
     data class OnEmailChanged(val email: String): CreateAccountEvent()
     data class OnPasswordChanged(val password: String): CreateAccountEvent()
     data class OnConfirmPasswordChanged(val confirmPassword: String): CreateAccountEvent()
+    object OnCreateUser: CreateAccountEvent()
 }
