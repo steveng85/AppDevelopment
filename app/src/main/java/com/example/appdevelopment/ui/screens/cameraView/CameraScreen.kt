@@ -35,7 +35,7 @@ import com.example.appdevelopment.ui.screens.feedView.Scaffoldlayout
 @ExperimentalMaterial3Api
 @Composable
 
-fun CameraScreen(navController: NavController, viewModel: LoginViewModel?) {
+fun CameraScreen(navController: NavController) {
     Scaffoldcamlayout(navController = navController, "Sailboat")
 
 //    Text(text = "Hey cameraX")
