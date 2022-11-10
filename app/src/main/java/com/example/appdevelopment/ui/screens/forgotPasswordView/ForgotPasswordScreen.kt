@@ -1,6 +1,7 @@
 package com.example.appdevelopment.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,9 +19,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultButton
 import com.example.appdevelopment.ui.components.DefaultFieldBox
+import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordEvent
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordUIState
 
+@ExperimentalMaterial3Api
 @Composable
 fun ForgotPasswordScreen(
     navController: NavController,
@@ -30,11 +33,22 @@ fun ForgotPasswordScreen(
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            LoginTopBar("Forgot password") { navController.navigate(Screen.CreateAcc.route) }
+        }
+
+        Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Text(
+                modifier = Modifier.padding(
+                    top = 70.dp,
+                    bottom = 20.dp,
+                    start = 60.dp,
+                    end = 60.dp),
                 text = "Forgot your password?",
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
@@ -68,6 +82,7 @@ fun ForgotPasswordScreen(
     }
 }
 
+@ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
@@ -79,7 +94,7 @@ fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
     DefaultFieldBox(
         currentValue = emailValue,
         onEvent = {onEvent(ForgotPasswordEvent.OnEmailChanged(it))},
-        focusedColor = Color(0xFF007FFF),
+        focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
         password = false
@@ -92,6 +107,6 @@ fun ResetPasswordButton(route: ()->Unit){
         onClick = route,
         text = "Reset password",
         contentColor = Color.White,
-        containerColor = Color(0xFF007FFF)
+        containerColor = MaterialTheme.colorScheme.primary
     )
 }

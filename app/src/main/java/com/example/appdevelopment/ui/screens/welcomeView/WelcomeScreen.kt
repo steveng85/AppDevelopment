@@ -1,9 +1,10 @@
 package com.example.appdevelopment
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,49 +16,80 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.navigation.Screen
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.text.style.TextOverflow
 
 @ExperimentalMaterial3Api
 @Composable
-fun WelcomeScreen(
-    navController: NavController
-) {
-    Surface(modifier = Modifier.fillMaxSize()) {
+fun WelcomeScreen(navController: NavController) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(
+                PaddingValues(
+                    start = 75.dp,
+                    top = 12.dp,
+                    end = 75.dp,
+                    bottom = 12.dp
+                ),
+            )
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight()
                 .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            Card() {
-
-            }
-        }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
+                .padding(top = 20.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = 75.dp,
-                        end = 75.dp
-                    )
-                    .fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                WelcomeAnimation(navController = navController)
-                GetStartedButton(navController = navController)
-                LoginButton(navController = navController)
-            }
+            WelcomeTitle()
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+//                .padding(top = 50.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            WelcomeText()
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 560.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            GetStartedButton(navController = navController)
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 620.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoginButton(navController = navController)
         }
     }
 }
 
 @ExperimentalMaterial3Api
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(navController = rememberNavController())
@@ -65,27 +97,28 @@ fun WelcomeScreenPreview() {
 
 @ExperimentalMaterial3Api
 @Composable
-fun WelcomeAnimation(navController: NavController) {
-    Box(
-        modifier = Modifier.padding(bottom = 500.dp),
-
-    ) {
+fun WelcomeTitle() {
         Text(
-            modifier = Modifier.clickable {
-                navController.navigate(route = Screen.Splash.route)
-//                {
-//                    popUpTo(Screen.Splash.route) {
-//                        inclusive = true
-//                    }
-//                }
-            },
-            text = "Welcome",
+            text = "Hunt",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = MaterialTheme.typography.displayLarge.fontSize,
-            fontWeight = FontWeight.Bold
+            fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+            fontWeight = FontWeight.Bold,
         )
     }
 
+@Composable
+fun WelcomeText() {
+    Column(
+        modifier = Modifier.padding(top = 300.dp),
+
+        ) {
+        Text(
+            text = "You have the world at your feet. Go out and experience it.",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+            fontWeight = FontWeight.Light
+        )
+    }
 }
 
 @ExperimentalMaterial3Api
@@ -105,13 +138,12 @@ fun LoginButton(navController: NavController) {
          Button(
             onClick = { navController.navigate(route = Screen.Login.route) },
             modifier = Modifier.fillMaxWidth(),
-//            contentPadding = PaddingValues(
-//                start = 100.dp,
-//                top = 12.dp,
-//                end = 100.dp,
-//                bottom = 12.dp
-//            ),
-             shape = RoundedCornerShape(16.dp)
+             shape = RoundedCornerShape(16.dp),
+             colors = ButtonDefaults.buttonColors(
+                 contentColor = MaterialTheme.colorScheme.primary,
+                 containerColor = Color.White
+             ),
+             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
             Text(text = "Login")
         }

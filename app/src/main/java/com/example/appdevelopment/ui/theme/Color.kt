@@ -6,6 +6,12 @@ import androidx.compose.ui.graphics.Color
 val White = Color(0xFFFFFFFF)
 val Blue = Color(0xFF007FFF)
 
+
 // DarkColorScheme
 val Navy = Color(0xFF071A2F)
 val DarkBlue = Color(0xFF001E3C)
+
+// Leaderboard color
+val Gold = Color(0xffFFD700)
+val Silver = Color(0xffC0C0C0)
+val Bronze = Color(0xffCD7F32)
