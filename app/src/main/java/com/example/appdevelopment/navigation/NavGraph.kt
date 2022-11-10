@@ -76,11 +76,11 @@ fun NavGraph(
                 PasswordResetScreen(navController = navController)
             }
             composable(route = Screen.Camera.route) {
-                CameraScreen(navController = navController, viewModel)
+                CameraScreen(navController = navController)
             }
             
             composable(route = Screen.Profile.route) {
-                ProfileScreen(navController = navController)
+                ProfileScreen(navController = navController, viewModel)
             }
             
             composable(route = Screen.Leaderboards.route){

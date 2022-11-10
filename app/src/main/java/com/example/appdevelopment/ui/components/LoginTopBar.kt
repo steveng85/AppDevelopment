@@ -5,8 +5,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
+import com.example.appdevelopment.R
 
 @ExperimentalMaterial3Api
 @Composable
@@ -25,7 +27,7 @@ fun LoginTopBar(navController: NavController, text: String) {
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios),
                             contentDescription = "backButton",
                             tint = MaterialTheme.colorScheme.primary
                         )
