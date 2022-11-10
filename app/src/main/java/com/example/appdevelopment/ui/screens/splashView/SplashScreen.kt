@@ -22,11 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.AuthLogic
+import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, authLogic: AuthLogic?) {
 
     val animateLogo = remember { Animatable(0f) }
 
@@ -40,7 +42,11 @@ fun SplashScreen(navController: NavController) {
             initialVelocity = 5f
         )
         delay(1000)
-        navController.navigate(Screen.Welcome.route)
+        if(authLogic?.loginFlow?.value is Resource.Success){
+            navController.navigate(Screen.Camera.route)
+        }else {
+            navController.navigate(Screen.Welcome.route)
+        }
     }
 
     Box(
@@ -63,6 +69,6 @@ fun SplashScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen(navController = rememberNavController())
+    SplashScreen(navController = rememberNavController(), null)
 }
 

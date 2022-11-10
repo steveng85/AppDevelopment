@@ -2,6 +2,7 @@ package com.example.appdevelopment.ui.screens.createAccountView
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
@@ -16,12 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateAccountViewModel @Inject constructor(
-    private val repository: AuthRepository,
-    private val firebaseRepository: FireStoreRepository
+    private val authLogic: AuthLogic
 ) : ViewModel() {
-
-    private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
-    val signupFlow: StateFlow<Resource<FirebaseUser>?> = _signupFlow
 
     private val _uiState = MutableStateFlow(CreateAccountUIState())
     val uiState = _uiState.asStateFlow()
@@ -57,19 +54,8 @@ class CreateAccountViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(confirmPasswordText = confirmPassword)
     }
 
-    fun onCreateUser(name: String, email: String, password: String, confirmPassword: String) = viewModelScope.launch{
-        if(password == confirmPassword){
-            _signupFlow.value = Resource.Loading
-            val result = repository.signup(name, email, password)
-            _signupFlow.value = result
-           val userId = repository.currentUser
-            if(!userId?.uid.isNullOrEmpty()) {
-                userId?.uid?.let { onSaveUser(name, it, email) }
-            }
-        }
-    }
 
-    suspend fun onSaveUser(username: String, token: String, email: String) {
-        firebaseRepository.saveUser(User(token, username, email))
+    fun onCreateUser(name: String, email: String, password: String, confirmPassword: String) = viewModelScope.launch{
+        authLogic.createUser(name, email, password, confirmPassword)
     }
 }

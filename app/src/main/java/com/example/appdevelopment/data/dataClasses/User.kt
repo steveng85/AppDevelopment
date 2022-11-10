@@ -4,4 +4,4 @@ data class User (
     var token: String,
     var username: String,
     var email: String
-        )
+    )

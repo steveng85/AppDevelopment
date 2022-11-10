@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.R
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.mockData.posts.posts
 //import com.example.appdevelopment.ui.components.BottomHomeBar
 import com.example.appdevelopment.ui.components.TopHomeBar
@@ -35,7 +36,7 @@ import com.example.appdevelopment.ui.screens.feedView.Scaffoldlayout
 @ExperimentalMaterial3Api
 @Composable
 
-fun CameraScreen(navController: NavController, viewModel: LoginViewModel?) {
+fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
     Scaffoldcamlayout(navController = navController, "Sailboat")
 
 //    Text(text = "Hey cameraX")
@@ -57,18 +58,18 @@ fun CameraScreen(navController: NavController, viewModel: LoginViewModel?) {
 //        }
 //    }
 //
-//    Button(
-//        onClick = {
-//            viewModel?.logout()
-//            navController.navigate(Screen.Login.route) {
-//                popUpTo(Screen.Login.route) { inclusive = true }
-//            }
-//            println("logged out")
-//        },
-//        modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
-//    ) {
-//        Text(text = "logout")
-//    }
+   Button(
+       onClick = {
+           authLogic?.logout()
+           navController.navigate(Screen.Login.route) {
+               popUpTo(Screen.Login.route) { inclusive = true }
+            }
+            println("logged out")
+       },
+       modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
+   ) {
+       Text(text = "logout")
+   }
 }
 
 @ExperimentalMaterial3Api

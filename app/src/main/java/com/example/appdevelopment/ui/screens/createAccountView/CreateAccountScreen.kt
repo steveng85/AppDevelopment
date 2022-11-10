@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
@@ -33,10 +34,10 @@ import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountView
 fun CreateAccountScreen(
     navController: NavController,
     uiState: CreateAccountUIState,
-    viewModel: CreateAccountViewModel?,
+    authLogic: AuthLogic?,
     onEvent: (CreateAccountEvent) -> Unit
 ) {
-    val authResource = viewModel?.signupFlow?.collectAsState()
+    val authResource = authLogic?.signupFlow?.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(

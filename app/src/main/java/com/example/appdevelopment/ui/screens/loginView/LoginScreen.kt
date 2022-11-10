@@ -1,6 +1,7 @@
 package com.example.appdevelopment.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultFieldBox
@@ -36,10 +38,10 @@ import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 fun LoginScreen(
     navController: NavController,
     uiState: LoginUIState,
-    viewModel: LoginViewModel?,
+    authLogic: AuthLogic?,
     onEvent: (LoginEvent) -> Unit
 ) {
-    val authResource = viewModel?.loginFlow?.collectAsState()
+    val authResource = authLogic?.loginFlow?.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -87,7 +89,7 @@ fun LoginScreen(
 
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
-                LoginButton { onEvent(LoginEvent.OnLogin) }
+                LoginButton { onEvent(LoginEvent.OnLogin)}
                 ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
 
             }

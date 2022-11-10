@@ -26,7 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
@@ -38,31 +38,20 @@ import com.example.appdevelopment.navigation.Screen
 @ExperimentalMaterial3Api
 @Composable
 fun FeedScreen(navController: NavController) {
-//    Column(modifier = Modifier
-//        .fillMaxSize()
-//        .background(Color.Gray)) {
-//        Column(
-//            Modifier
-//                .fillMaxWidth(),
-//            verticalArrangement = Arrangement.Top
-//        ) {
-//            Scaffoldlayout(navController = navController, "Feed", PostList(posts))
-//        }
-//    }
-        Scaffoldlayout(navController = navController, "Feed", PostList(posts))
+        Scaffoldlayout(navController = navController, "Feed") { PostList(posts) }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun scaffoldprev() {
-    Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = PostList(posts))
+    Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
 }
 
 @ExperimentalMaterial3Api
 @Composable
-fun Scaffoldlayout(navController: NavController, text: String, screenContent: Unit) {
-    androidx.compose.material3.Scaffold(
+fun Scaffoldlayout(navController: NavController, text: String, screenContent: @Composable () -> Unit) {
+    Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 modifier = Modifier
@@ -127,11 +116,15 @@ fun Scaffoldlayout(navController: NavController, text: String, screenContent: Un
                     }
                 }
             }
-        },
-        content = { PaddingValues(0.dp)
-            screenContent
         }
-    )
+    ){
+        Column(
+            modifier = Modifier.padding(it)
+        ) {
+            screenContent()
+        }
+
+    }
 }
 
 @Composable
