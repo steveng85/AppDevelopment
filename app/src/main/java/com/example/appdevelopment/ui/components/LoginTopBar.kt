@@ -6,10 +6,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
 
 @ExperimentalMaterial3Api
 @Composable
-fun LoginTopBar(text: String, route: ()-> Unit) {
+fun LoginTopBar(navController: NavController, text: String) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -22,7 +23,7 @@ fun LoginTopBar(text: String, route: ()-> Unit) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = route) {
+                    IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "backButton",
@@ -32,7 +33,5 @@ fun LoginTopBar(text: String, route: ()-> Unit) {
                 }
             )
         }
-    ) {
-        // intet
-    }
+    ) { }
 }
