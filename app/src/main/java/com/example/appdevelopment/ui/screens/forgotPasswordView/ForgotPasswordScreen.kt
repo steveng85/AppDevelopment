@@ -35,7 +35,7 @@ fun ForgotPasswordScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar("Forgot password") { navController.navigate(Screen.CreateAcc.route) }
+            LoginTopBar(navController = navController, "Forgot password")
         }
 
         Column(

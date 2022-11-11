@@ -47,7 +47,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar("Login") { navController.navigate(Screen.Welcome.route) }
+            LoginTopBar(navController = navController, "Login")
         }
 
         Column(modifier = Modifier.fillMaxWidth(),

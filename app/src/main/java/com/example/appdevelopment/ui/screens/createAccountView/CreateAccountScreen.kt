@@ -43,7 +43,7 @@ fun CreateAccountScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar("Create account") { navController.navigate(Screen.Welcome.route) }
+            LoginTopBar(navController = navController, "Create account")
         }
 
         Column(

@@ -36,28 +36,11 @@ import com.example.appdevelopment.ui.screens.feedView.Scaffoldlayout
 @ExperimentalMaterial3Api
 @Composable
 
-fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
-    Scaffoldcamlayout(navController = navController, "Sailboat")
 
-//    Text(text = "Hey cameraX")
-//
-//     Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//        ) {
-//            TopHomeBar(dailyWord = "find Steven hehe") { navController.navigate(Screen.Profile.route) }
-//        }
-//
-//        //cameraX
-//
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            verticalArrangement = Arrangement.Bottom
-//        ) {
-//            //BottomHomeBar(navController)
-//        }
-//    }
-//
+fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
+
+    Scaffoldcamlayout(navController = navController, "Sailboat")
+    
    Button(
        onClick = {
            authLogic?.logout()

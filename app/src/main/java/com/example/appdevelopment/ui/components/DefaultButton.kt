@@ -27,9 +27,9 @@ fun DefaultButton(onClick: () -> Unit, text: String, contentColor: Color, contai
             hoveredElevation = 4.dp,
             focusedElevation = 0.dp
         ),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = contentColor,
-            containerColor = containerColor
+            colors = ButtonDefaults.buttonColors(
+                contentColor = contentColor,
+                containerColor = containerColor
         )
     ) {
         Text(text = text)
