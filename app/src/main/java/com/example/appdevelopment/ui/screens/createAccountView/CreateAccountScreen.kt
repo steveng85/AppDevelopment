@@ -100,7 +100,7 @@ fun CreateAccountScreen(
             is Resource.Success -> {
                 LaunchedEffect(Unit) {
                     navController.navigate(Screen.Camera.route) {
-                        popUpTo(Screen.CreateAcc.route) { inclusive = true }
+                        popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
                 println("Created user")
