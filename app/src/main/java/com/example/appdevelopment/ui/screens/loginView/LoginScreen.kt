@@ -90,7 +90,7 @@ fun LoginScreen(
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { onEvent(LoginEvent.OnLogin)}
-                ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
 
             }
         }
