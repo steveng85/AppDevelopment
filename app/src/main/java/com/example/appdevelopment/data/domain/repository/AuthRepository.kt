@@ -10,5 +10,6 @@ interface AuthRepository {
     //functions for the Auth Repository
     suspend fun login(email: String, password: String): Resource<FirebaseUser>
     suspend fun signup(username: String, email: String, password: String): Resource<FirebaseUser>
+    suspend fun forgotPassword(email: String): Resource<Void>
     fun logout()
 }

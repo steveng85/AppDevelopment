@@ -19,7 +19,6 @@ import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountView
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 
@@ -29,6 +28,7 @@ fun NavGraph(
     navController: NavHostController,
     viewModel: LoginViewModel,
     createAccViewModel: CreateAccountViewModel,
+    forgotPasswordViewModel: ForgotPasswordViewModel,
     authLogic: AuthLogic
 ) {
 
@@ -65,14 +65,13 @@ fun NavGraph(
                 }
             }
             composable(route = Screen.ForgotPwd.route) {
-                val forgotPasswordVM by remember {
-                    mutableStateOf(ForgotPasswordViewModel())
-                }
+
                 ForgotPasswordScreen(
                     navController = navController,
-                    forgotPasswordVM.uiState.collectAsState().value
+                    forgotPasswordViewModel.uiState.collectAsState().value,
+                    authLogic
                 ) {
-                    forgotPasswordVM.onEvent(it)
+                    forgotPasswordViewModel.onEvent(it)
                 }
             }
             composable(route = Screen.PwdReset.route) {

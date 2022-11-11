@@ -1,5 +1,7 @@
 package com.example.appdevelopment.data.remote.repository
 
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.data.utils.await
@@ -36,6 +38,16 @@ class AuthRepositoryImpl @Inject constructor(
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())?.await()
             Resource.Success(result.user!!)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
+    override suspend fun forgotPassword(email: String): Resource<Void> {
+        return try {
+            val result = firebaseAuth.sendPasswordResetEmail(email).await()
+            Resource.Success(result)
         } catch (e: Exception){
             e.printStackTrace()
             Resource.Failure(e)
