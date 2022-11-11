@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.screens.CreateAccountScreen
 import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
@@ -18,6 +19,7 @@ import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountView
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
+import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 
@@ -26,7 +28,8 @@ import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 fun NavGraph(
     navController: NavHostController,
     viewModel: LoginViewModel,
-    createAccViewModel: CreateAccountViewModel
+    createAccViewModel: CreateAccountViewModel,
+    authLogic: AuthLogic
 ) {
 
     Scaffold() { innerPadding ->
@@ -36,7 +39,7 @@ fun NavGraph(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = Screen.Splash.route) {
-                SplashScreen(navController = navController)
+                SplashScreen(navController = navController, authLogic)
             }
             composable(route = Screen.Welcome.route) {
                 WelcomeScreen(navController = navController)
@@ -46,7 +49,7 @@ fun NavGraph(
                 CreateAccountScreen(
                     navController = navController,
                     createAccViewModel.uiState.collectAsState().value,
-                    createAccViewModel
+                    authLogic
                 ) {
                     createAccViewModel.onEvent(it)
                 }
@@ -56,7 +59,7 @@ fun NavGraph(
                 LoginScreen(
                     navController = navController,
                     viewModel.uiState.collectAsState().value,
-                    viewModel
+                    authLogic
                 ) {
                     viewModel.onEvent(it)
                 }
@@ -76,8 +79,9 @@ fun NavGraph(
                 PasswordResetScreen(navController = navController)
             }
             composable(route = Screen.Camera.route) {
-                CameraScreen(navController = navController)
-            }
+
+                CameraScreen(navController = navController, authLogic)
+
             
             composable(route = Screen.Profile.route) {
                 ProfileScreen(navController = navController, viewModel)

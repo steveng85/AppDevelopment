@@ -9,9 +9,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@Singleton
 class FirestoreRepositoryImpl @Inject constructor(
-    private val firebaseFirestore: FirebaseFirestore,
-
+    private val firebaseFirestore: FirebaseFirestore
 ): FireStoreRepository{
 
     override suspend fun saveUser(user: com.example.appdevelopment.data.dataClasses.User) {
@@ -23,6 +23,4 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun getLeaderboards(): List<User> {
         TODO("Not yet implemented")
     }
-
-
 }

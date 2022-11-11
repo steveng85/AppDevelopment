@@ -1,11 +1,13 @@
 package com.example.appdevelopment.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -36,7 +38,8 @@ fun DefaultFieldBox(
             focusedLabelColor = focusedColor,
             unfocusedLabelColor = unfocusedColor
         ),
-        visualTransformation = if (!passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (!passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = if(password) KeyboardType.Password else  KeyboardType.Email)
     )
 
 }
