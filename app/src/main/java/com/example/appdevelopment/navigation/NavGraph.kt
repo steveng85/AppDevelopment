@@ -19,6 +19,7 @@ import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountView
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
+import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewModel
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 
@@ -29,6 +30,7 @@ fun NavGraph(
     viewModel: LoginViewModel,
     createAccViewModel: CreateAccountViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel,
+    leaderboardViewModel: LeaderboardViewModel,
     authLogic: AuthLogic
 ) {
 
@@ -88,7 +90,7 @@ fun NavGraph(
             }
             
             composable(route = Screen.Leaderboards.route){
-                LeaderboardScreen(navController = navController)
+                LeaderboardScreen(navController = navController, leaderboardViewModel)
             }
             
             composable(route = Screen.Feed.route){
