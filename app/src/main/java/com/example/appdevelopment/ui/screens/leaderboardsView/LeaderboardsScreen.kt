@@ -12,19 +12,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.appdevelopment.mockData.leaderboards.Board
-import com.example.appdevelopment.mockData.leaderboards.boards
+import com.example.appdevelopment.data.dataClasses.Board
 import com.example.appdevelopment.ui.theme.Bronze
 import com.example.appdevelopment.ui.theme.Gold
 import com.example.appdevelopment.ui.theme.Silver
@@ -33,11 +32,12 @@ import com.example.appdevelopment.ui.theme.Silver
 
 @Composable
 fun LeaderboardScreen(
-    navController: NavController
+    navController: NavController,
+    leaderboardViewModel: LeaderboardViewModel?
 ){
     Surface(modifier = Modifier.fillMaxSize()) {
-
-        LeaderboardsList(boards)
+        leaderboardViewModel?.onGet()
+        leaderboardViewModel?.leaderboard?.collectAsState()?.value?.let { LeaderboardsList(it) }
 
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -52,7 +52,7 @@ fun LeaderboardScreen(
 @Preview
 @Composable
 fun LeaderboardScreenPreview(){
-    LeaderboardScreen(navController = rememberNavController())
+    LeaderboardScreen(navController = rememberNavController(), null)
 }
 
 @Composable
@@ -72,7 +72,7 @@ fun LeaderboardsList(boardList: List<Board>){
         }
 
         items(boardList){ board ->
-            BoardCard(rank = board.rank, name = board.name, points = board.point)
+            BoardCard(rank = board.rank, name = board.name, points = board.points)
         }
     }
 
