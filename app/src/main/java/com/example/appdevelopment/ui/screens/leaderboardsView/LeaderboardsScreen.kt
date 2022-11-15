@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -24,17 +25,28 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.data.dataClasses.Board
+import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.ui.layout.Scaffoldlayout
+import com.example.appdevelopment.ui.screens.cameraView.CameraX
 import com.example.appdevelopment.ui.theme.Bronze
 import com.example.appdevelopment.ui.theme.Gold
 import com.example.appdevelopment.ui.theme.Silver
 
 //import com.example.appdevelopment.ui.components.BottomHomeBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardScreen(
     navController: NavController,
     leaderboardViewModel: LeaderboardViewModel?
 ){
+
+    Scaffoldlayout(navController = navController, "Leaderboard") { Leaderboard(leaderboardViewModel) }
+
+}
+
+@Composable
+fun Leaderboard(leaderboardViewModel: LeaderboardViewModel?) {
     Surface(modifier = Modifier.fillMaxSize()) {
         leaderboardViewModel?.onGet()
         leaderboardViewModel?.leaderboard?.collectAsState()?.value?.let { LeaderboardsList(it) }
@@ -42,12 +54,9 @@ fun LeaderboardScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom
-        ) {
-            //BottomHomeBar(navController)
-        }
+        ) { }
     }
 }
-
 
 @Preview
 @Composable
@@ -66,18 +75,12 @@ fun LeaderboardsList(boardList: List<Board>){
 
     //(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp)
     ){
-        
-        item { 
-            Text(text = "Leaderboards")
-        }
-
         items(boardList){ board ->
             BoardCard(rank = board.rank, name = board.name, points = board.points)
         }
     }
 
 }
-
 
 @Composable
 fun BoardCard(rank: Int, name: String, points: Int){
