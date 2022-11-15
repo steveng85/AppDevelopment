@@ -17,6 +17,7 @@ import com.example.appdevelopment.ui.screens.PasswordResetScreen
 import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
+import com.example.appdevelopment.ui.screens.feedView.FeedScreenViewModel
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewModel
@@ -31,6 +32,7 @@ fun NavGraph(
     createAccViewModel: CreateAccountViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel,
     leaderboardViewModel: LeaderboardViewModel,
+    feedScreenViewModel: FeedScreenViewModel,
     authLogic: AuthLogic
 ) {
 
@@ -94,7 +96,10 @@ fun NavGraph(
             }
             
             composable(route = Screen.Feed.route){
-                FeedScreen(navController = navController)
+                FeedScreen(
+                    navController = navController,
+                    feedScreenViewModel
+                )
             }
         }
     }
