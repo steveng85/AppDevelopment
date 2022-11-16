@@ -37,11 +37,11 @@ import com.example.appdevelopment.ui.screens.feedView.Scaffoldlayout
 @Composable
 
 
-fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
+fun CameraScreen(navController: NavController) {
 
     Scaffoldcamlayout(navController = navController, "Sailboat")
     
-   Button(
+   /*Button(
        onClick = {
            authLogic?.logout()
            navController.navigate(Screen.Login.route) {
@@ -52,7 +52,7 @@ fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
        modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
    ) {
        Text(text = "logout")
-   }
+   }*/
 }
 
 @ExperimentalMaterial3Api

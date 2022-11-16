@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.R
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.components.DefaultButton
@@ -40,7 +41,7 @@ import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavController, viewModel: LoginViewModel?) {
+fun ProfileScreen(navController: NavController, authLogic: AuthLogic?) {
     Surface(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -52,7 +53,7 @@ fun ProfileScreen(navController: NavController, viewModel: LoginViewModel?) {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileCard()
+            ProfileCard(authLogic)
         }
     }
 }
@@ -60,11 +61,11 @@ fun ProfileScreen(navController: NavController, viewModel: LoginViewModel?) {
 @Preview
 @Composable
 fun hej() {
-    ProfileCard()
+    ProfileCard(null)
 }
 
 @Composable
-fun ProfileCard() {
+fun ProfileCard(authLogic: AuthLogic?) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .height(650.dp),
@@ -96,7 +97,7 @@ fun ProfileCard() {
                 ProfileStats()
                 ProfileBio()
                 ProfileInfo()
-                LogoutButton(navController = rememberNavController())
+                LogoutButton(navController = rememberNavController(), authLogic)
             }
         }
     }
@@ -220,7 +221,7 @@ fun ProfileInfo() {
 
 // TODO: mangler viewmodel til at logge ud
 @Composable
-fun LogoutButton(navController: NavController) {
+fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -228,7 +229,13 @@ fun LogoutButton(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { navController.navigate(Screen.Login.route) },
+        Button(
+            onClick = {
+                authLogic?.logout()
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Login.route){ inclusive = true }
+                }
+                      },
             modifier = Modifier
                 .height(45.dp)
                 .width(120.dp),

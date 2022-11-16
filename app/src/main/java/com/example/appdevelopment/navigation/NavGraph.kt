@@ -84,11 +84,11 @@ fun NavGraph(
 
             composable(route = Screen.Camera.route) {
 
-                CameraScreen(navController = navController, authLogic)
+                CameraScreen(navController = navController)
             }
             
             composable(route = Screen.Profile.route) {
-                ProfileScreen(navController = navController, viewModel)
+                ProfileScreen(navController = navController, authLogic)
             }
             
             composable(route = Screen.Leaderboards.route){

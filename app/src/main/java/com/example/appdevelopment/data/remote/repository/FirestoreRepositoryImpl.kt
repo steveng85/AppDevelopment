@@ -82,4 +82,16 @@ class FirestoreRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun addFeed(feed: Feed) {
+        withContext(Dispatchers.IO) {
+            try {
+
+                firebaseFirestore.collection("feed").add(feed).await()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
