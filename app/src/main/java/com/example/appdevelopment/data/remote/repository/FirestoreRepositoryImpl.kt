@@ -8,6 +8,7 @@ import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 class FirestoreRepositoryImpl @Inject constructor(
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
 ): FireStoreRepository{
     private fun getReadableDateTime(date: Date): String {
         return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
@@ -83,11 +84,12 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addFeed(feed: Feed) {
+    override suspend fun addFeed(feed: Feed, user: User) {
         withContext(Dispatchers.IO) {
             try {
-
-                firebaseFirestore.collection("feed").add(feed).await()
+                val newRef = firebaseFirestore.collection("feed").document(user.token)
+                newRef.set(feed).await()
+                //firebaseFirestore.collection("feed").add(feed).await()
 
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -15,5 +15,5 @@ suspend fun getFeedList(): List<Feed>
 
 suspend fun updateLike(feed: Feed)
 
-suspend fun addFeed(feed: Feed)
+suspend fun addFeed(feed: Feed, user: User)
 }
