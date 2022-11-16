@@ -27,10 +27,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.R
+import com.example.appdevelopment.data.dataClasses.Feed
 import com.example.appdevelopment.mockData.posts.Post
 import com.example.appdevelopment.mockData.posts.posts
 import com.example.appdevelopment.navigation.Screen
@@ -38,19 +40,23 @@ import com.example.appdevelopment.ui.layout.Scaffoldlayout
 
 @ExperimentalMaterial3Api
 @Composable
-fun FeedScreen(navController: NavController) {
-        Scaffoldlayout(navController = navController, "Feed") { PostList(posts) }
+fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenViewModel?) {
+
+    feedScreenViewModel?.onGetFeedList()
+    feedScreenViewModel?.feed?.collectAsState()?.value?.let {it }
+
+    Scaffoldlayout(navController = navController, "Feed") { feedScreenViewModel?.feed?.collectAsState()?.value?.let { PostList(it) } }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun scaffoldprev() {
-    Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
+    //Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
 }
 
 @Composable
-fun PostList(posts: List<Post>) {
+fun PostList(posts: List<Feed>) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
@@ -65,7 +71,7 @@ fun PostList(posts: List<Post>) {
 }
 
 @Composable
-fun PostItem(post: Post) {
+fun PostItem(post: Feed) {
     Column(modifier = Modifier
         .wrapContentHeight()
         .wrapContentWidth(),
@@ -121,7 +127,7 @@ fun PostItem(post: Post) {
                             top = 5.dp,
                             end = 10.dp,
                             bottom = 5.dp),
-                        text = post.timestamp,
+                        text = post.timestamp.toString(),
                         fontSize = 12.5.sp,
                         fontWeight = FontWeight.Light,
                         color = Color.Gray

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
+import com.example.appdevelopment.ui.screens.feedView.FeedScreenViewModel
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewModel
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
@@ -24,11 +25,12 @@ class MainActivity : ComponentActivity() {
     private val createAccViewModel: CreateAccountViewModel by viewModels()
     private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
     private val leaderboardViewModel: LeaderboardViewModel by viewModels()
+    private val feedScreenViewModel: FeedScreenViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-            App(loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, authLogic)
+            App(loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, feedScreenViewModel, authLogic)
         }
     }
 }
@@ -40,10 +42,11 @@ fun App(
     createAccViewModel: CreateAccountViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel,
     leaderboardViewModel: LeaderboardViewModel,
+    feedScreenViewModel: FeedScreenViewModel,
     authLogic: AuthLogic
 ) {
     AppDevelopmentTheme {
         val navController = rememberNavController()
-        NavGraph(navController = navController, loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, authLogic)
+        NavGraph(navController = navController, loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, feedScreenViewModel, authLogic)
     }
 }

@@ -33,11 +33,13 @@ import com.example.appdevelopment.ui.screens.feedView.PostList
 
 @ExperimentalMaterial3Api
 @Composable
-fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
+
+fun CameraScreen(navController: NavController) {
+
 
     Scaffoldlayout(navController = navController, "Sailboat") { CameraX() }
     
-   Button(
+   /*Button(
        onClick = {
            authLogic?.logout()
            navController.navigate(Screen.Login.route) {
@@ -48,7 +50,7 @@ fun CameraScreen(navController: NavController, authLogic: AuthLogic?) {
        modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
    ) {
        Text(text = "logout")
-   }
+   }*/
 }
 
 @Composable
