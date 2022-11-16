@@ -20,6 +20,7 @@ import javax.inject.Singleton
 class FirestoreRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
 ): FireStoreRepository{
+
     private fun getReadableDateTime(date: Date): String {
         return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
     }
