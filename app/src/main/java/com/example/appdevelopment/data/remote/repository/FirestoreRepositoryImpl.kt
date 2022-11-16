@@ -23,11 +23,13 @@ class FirestoreRepositoryImpl @Inject constructor(
         return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
     }
 
-    override suspend fun saveUser(user: User) {
+    override suspend fun addUser(user: User) {
         withContext(Dispatchers.IO) {
             try {
+                val newRef = firebaseFirestore.collection("users").document(user.token)
 
-                firebaseFirestore.collection("users").add(user).await()
+                newRef.set(user).await()
+                //firebaseFirestore.collection("users").add(user).await()
 
             } catch (e: Exception) {
                 e.printStackTrace()

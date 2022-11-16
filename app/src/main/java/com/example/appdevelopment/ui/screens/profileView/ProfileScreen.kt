@@ -53,7 +53,7 @@ fun ProfileScreen(navController: NavController, authLogic: AuthLogic?) {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileCard(authLogic)
+            ProfileCard(navController, authLogic)
         }
     }
 }
@@ -61,11 +61,11 @@ fun ProfileScreen(navController: NavController, authLogic: AuthLogic?) {
 @Preview
 @Composable
 fun hej() {
-    ProfileCard(null)
+    ProfileCard(navController = rememberNavController(),null)
 }
 
 @Composable
-fun ProfileCard(authLogic: AuthLogic?) {
+fun ProfileCard(navController: NavController, authLogic: AuthLogic?) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .height(650.dp),
@@ -97,7 +97,7 @@ fun ProfileCard(authLogic: AuthLogic?) {
                 ProfileStats()
                 ProfileBio()
                 ProfileInfo()
-                LogoutButton(navController = rememberNavController(), authLogic)
+                LogoutButton(navController, authLogic)
             }
         }
     }
@@ -233,8 +233,9 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
             onClick = {
                 authLogic?.logout()
                 navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Login.route){ inclusive = true }
+                    popUpTo(Screen.Profile.route){ inclusive = true }
                 }
+                println("logged out")
                       },
             modifier = Modifier
                 .height(45.dp)
