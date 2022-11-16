@@ -36,6 +36,7 @@ import com.example.appdevelopment.data.dataClasses.Feed
 import com.example.appdevelopment.mockData.posts.Post
 import com.example.appdevelopment.mockData.posts.posts
 import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.ui.layout.Scaffoldlayout
 
 @ExperimentalMaterial3Api
 @Composable
@@ -52,85 +53,6 @@ fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenView
 @Composable
 fun scaffoldprev() {
     //Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
-}
-
-@ExperimentalMaterial3Api
-@Composable
-fun Scaffoldlayout(navController: NavController, text: String, screenContent: @Composable () -> Unit) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .background(Color.Magenta),
-                title = {
-                    androidx.compose.material3.Text(
-                        text = text,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = "Localized description",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            )
-        },
-        bottomBar = {
-            BottomAppBar(
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                backgroundColor = Color.Black,
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth(1f)
-                ) {
-                    IconButton(onClick = { navController.navigate(Screen.Feed.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_menu_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    IconButton(onClick = { navController.navigate(Screen.Camera.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_photo_camera_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    IconButton(onClick = { navController.navigate(Screen.Leaderboards.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_leaderboard_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-        }
-    ){
-        Column(
-            modifier = Modifier.padding(it)
-        ) {
-            screenContent()
-        }
-
-    }
 }
 
 @Composable
