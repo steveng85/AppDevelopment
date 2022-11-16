@@ -16,4 +16,10 @@ suspend fun getFeedList(): List<Feed>
 suspend fun updateLike(feed: Feed)
 
 suspend fun addFeed(feed: Feed, user: User)
+
+suspend fun updateStatsInUser(user: User, feed: Feed)
+
+suspend fun getFeed(user: User): Resource<Feed>
+
+suspend fun clearFeedCollection()
 }

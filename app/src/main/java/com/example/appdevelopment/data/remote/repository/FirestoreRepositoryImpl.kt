@@ -1,27 +1,24 @@
 package com.example.appdevelopment.data.remote.repository
 
 import com.example.appdevelopment.data.Resource
-import com.google.firebase.Timestamp
 import com.example.appdevelopment.data.dataClasses.Board
 import com.example.appdevelopment.data.dataClasses.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.appdevelopment.data.dataClasses.User
-import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class FirestoreRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
 ): FireStoreRepository{
 
-    private fun getReadableDateTime(date: Date): String {
+    private fun getReadableDateTime(date: Date?): String {
         return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
     }
 
@@ -92,6 +89,53 @@ class FirestoreRepositoryImpl @Inject constructor(
                 newRef.set(feed).await()
                 //firebaseFirestore.collection("feed").add(feed).await()
 
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override suspend fun updateStatsInUser(user: User, feed: Feed) {
+        withContext(Dispatchers.IO) {
+
+            try {
+                firebaseFirestore.collection("users").document(user.token).update(
+                    "totalLikes", user.totalLikes,
+                    "totalPhotos", user.photos )
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            }
+        }
+    }
+
+    override suspend fun getFeed(user: User): Resource<Feed> {
+
+            return try {
+                val result = firebaseFirestore.collection("feed").document(user.token).get().await()
+                Resource.Success(
+                    Feed(
+                        result.data?.get("image").toString().toInt(),
+                        result.data?.get("username").toString(),
+                        result.data?.get("description").toString(),
+                        result.data?.get("timestamp").let { getReadableDateTime(null) },
+                        result.data?.get("likes").toString().toInt(),
+                        result.data?.get("userID").toString()
+                    )
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Resource.Failure(e)
+            }
+    }
+
+    override suspend fun clearFeedCollection() {
+
+        withContext(Dispatchers.IO) {
+            try {
+                firebaseFirestore.collection("feed").get().await().map { doc ->
+                   firebaseFirestore.collection("feed").document(doc.id).delete()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

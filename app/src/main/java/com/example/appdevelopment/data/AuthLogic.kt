@@ -43,7 +43,7 @@ class AuthLogic @Inject constructor(
     }
 
     suspend fun saveUser(username: String, token: String, email: String) {
-        firebaseRepository.addUser(User(token, username, email, 0))
+        firebaseRepository.addUser(User(token, username, email, 0, 0,0))
     }
 
     suspend fun resetPassword(email: String){
