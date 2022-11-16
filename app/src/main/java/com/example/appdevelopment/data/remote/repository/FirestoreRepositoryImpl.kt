@@ -27,9 +27,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val newRef = firebaseFirestore.collection("users").document(user.token)
-
                 newRef.set(user).await()
-                //firebaseFirestore.collection("users").add(user).await()
 
             } catch (e: Exception) {
                 e.printStackTrace()
