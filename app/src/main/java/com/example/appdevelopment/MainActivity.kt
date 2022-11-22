@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
@@ -13,6 +14,7 @@ import com.example.appdevelopment.ui.screens.feedView.FeedScreenViewModel
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewModel
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
+import com.example.appdevelopment.ui.screens.profileView.ProfileViewModel
 import com.example.appdevelopment.ui.theme.AppDevelopmentTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -47,6 +49,7 @@ fun App(
 ) {
     AppDevelopmentTheme {
         val navController = rememberNavController()
-        NavGraph(navController = navController, loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, feedScreenViewModel, authLogic)
+        val profileViewModel: ProfileViewModel = hiltViewModel()
+        NavGraph(navController = navController, loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, profileViewModel, feedScreenViewModel, authLogic)
     }
 }

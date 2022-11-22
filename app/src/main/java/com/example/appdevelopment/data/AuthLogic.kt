@@ -23,6 +23,10 @@ class AuthLogic @Inject constructor(
     private val _resetPasswordFlow = MutableStateFlow<Resource<Void>?>(null)
     val resetPasswordFlow: StateFlow<Resource<Void>?> = _resetPasswordFlow
 
+    fun getCurrentUserId(): String?{
+        return repository.currentUser?.uid
+    }
+
 
     suspend fun login(email: String, password: String) {
         _loginFlow.value = Resource.Loading
@@ -43,7 +47,7 @@ class AuthLogic @Inject constructor(
     }
 
     suspend fun saveUser(username: String, token: String, email: String) {
-        firebaseRepository.addUser(User(token, username, email, 0))
+        firebaseRepository.addUser(User(token, username, email, 0, 0, 0, "",""))
     }
 
     suspend fun resetPassword(email: String){

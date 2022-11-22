@@ -91,7 +91,7 @@ fun PostItem(post: Feed) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(150.dp),
-                    painter = painterResource(id = post.image),
+                    painter = painterResource(id = R.drawable.ic_baseline_photo_camera_24),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
