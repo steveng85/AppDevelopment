@@ -7,5 +7,6 @@ data class User (
     var points: Int,
     var rank: Int,
     var totalLikes: Int,
-    var description: String
+    var description: String,
+    var gender: String
     )

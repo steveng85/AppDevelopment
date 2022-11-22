@@ -111,11 +111,12 @@ class FirestoreRepositoryImpl @Inject constructor(
                     result.data?.get("points").toString().toInt(),
                     result.data?.get("rank").toString().toInt(),
                     result.data?.get("totalLikes").toString().toInt(),
-                    result.data?.get("description").toString()
+                    result.data?.get("description").toString(),
+                    result.data?.get("gender").toString()
                 )
             } catch(e: Exception){
                 e.printStackTrace()
-                User("","","", 0, 0, 0, "")
+                User("","","", 0, 0, 0, "", "")
             }
     }
 

@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,12 +91,13 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
                 .wrapContentHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                viewModel.onGet()
+                LaunchedEffect(uiState.editState){
+                    viewModel.onGet()
+                }
                 val user = viewModel.user.collectAsState().value
                 ProfileStats(user)
                 ProfileBio(user, onEvent)
                 ProfileInfo(user, uiState, onEvent)
-                changeInfoButton{ onEvent(ProfileEvent.OnSave) }
                 LogoutButton(navController, authLogic)
             }
         }
@@ -187,12 +189,12 @@ fun ProfileBio(user: User?, onEvent: (ProfileEvent) -> Unit) {
 }
 
 @Composable
-fun changeInfoButton(onEvent: () -> Unit){
+fun editButton(text: String, onEvent: () -> Unit){
     Button(
         onClick =  onEvent ,
         modifier = Modifier
             .height(45.dp)
-            .width(120.dp)
+            .fillMaxWidth()
             .padding(top = 10.dp),
         shape = RoundedCornerShape(40.dp),
         border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
@@ -200,7 +202,7 @@ fun changeInfoButton(onEvent: () -> Unit){
             backgroundColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White)
     ) {
-        Text(text = "Save")
+        Text(text = text)
     }
 }
 
@@ -228,12 +230,18 @@ fun ProfileInfo(user: User?, uiState: ProfileUIState, onEvent: (ProfileEvent) ->
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
-                Text(text = "Username: ${user?.username}")
-                Text(text = "E-mail: ${user?.email}")
-                Text(text = "Birthday: 06-11-2000")
-                Text(text = "Gender: Male")
-                TextTest(text =  uiState.usernameText, label = "username", onEvent = {onEvent(ProfileEvent.OnUsernameChanged(it))})
-                TextTest(text = uiState.bioText, label = "bio", onEvent = {onEvent(ProfileEvent.OnBioChanged(it))})
+                if(!uiState.editState){
+                    Text(text = "Username: ${user?.username}")
+                    Text(text = "E-mail: ${user?.email}")
+                    Text(text = "Birthday: 06-11-2000")
+                    Text(text = "Gender: Male")
+                    editButton(text = "editInfo") { onEvent(ProfileEvent.OnEditInfo(true))}
+                } else {
+                    TextTest(text =  uiState.usernameText, label = "username", onEvent = {onEvent(ProfileEvent.OnUsernameChanged(it))})
+                    TextTest(text = uiState.bioText, label = "bio", onEvent = {onEvent(ProfileEvent.OnBioChanged(it))})
+                    TextTest(text = uiState.genderText, label = "gender", onEvent = {onEvent(ProfileEvent.OnGenderChanged(it))})
+                    editButton("save") { onEvent(ProfileEvent.OnSave) }
+                }
             }
         }
     }

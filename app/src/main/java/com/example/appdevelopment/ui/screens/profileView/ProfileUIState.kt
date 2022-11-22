@@ -8,6 +8,7 @@ data class ProfileUIState(
     val bioText: String = "",
     val usernameText: String = "",
     val genderText: String = "",
-    val birthdayText: Date = Date(0, 0, 0,)
+    val birthdayText: Date = Date(0, 0, 0,),
+    val editState: Boolean = false
 ) {
 }

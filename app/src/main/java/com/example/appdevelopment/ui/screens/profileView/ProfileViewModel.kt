@@ -37,6 +37,7 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.OnUsernameChanged -> onUsernameChanged(event.username)
             is ProfileEvent.OnGenderChanged -> onGenderChanged(event.gender)
             is ProfileEvent.OnBirtday -> onBirthdayChanged(event.birthday)
+            is ProfileEvent.OnEditInfo -> onEditInfo(event.edit)
             is ProfileEvent.OnSave -> onSave(
                 _uiState.value.bioText,
                 _uiState.value.usernameText,
@@ -58,19 +59,30 @@ class ProfileViewModel @Inject constructor(
     fun onBirthdayChanged(date: Date){
         _uiState.value = _uiState.value.copy(birthdayText = date)
     }
+    fun onEditInfo(edit: Boolean){
+        _uiState.value = _uiState.value.copy(editState = edit)
+    }
 
 
     fun onSave(bio: String, username: String, gender: String, birthday: Date) = viewModelScope.launch {
-        authLogic.getCurrentUserId()
-            ?.let { fireStoreRepository.updateUser(User(it, username,"",0, 0,0,bio)) }
-        onGet()
+        if(username != "") {
+            authLogic.getCurrentUserId()
+                ?.let { fireStoreRepository.updateUser(User(it, username, "", 0, 0, 0, bio, gender)) }
+            onGet()
+        }
+        onEditInfo(false)
     }
 
     fun onGet() = viewModelScope.launch{
         val userId = authLogic.getCurrentUserId()
         if (userId != null) {
             _user.value = fireStoreRepository.getUserInfo(userId)
+            onUsernameChanged(_user.value!!.username)
+            onGenderChanged(_user.value!!.gender)
+            onBioChanged(_user.value!!.description)
             println(_user.value)
         }
     }
+
+
 }
