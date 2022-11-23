@@ -67,7 +67,7 @@ class ProfileViewModel @Inject constructor(
     fun onSave(bio: String, username: String, gender: String, birthday: Date) = viewModelScope.launch {
         if(username != "") {
             authLogic.getCurrentUserId()
-                ?.let { fireStoreRepository.updateUser(User(it, username, "", 0, 0, 0, bio, gender)) }
+                ?.let { fireStoreRepository.updateUser(User(it, username, "", 0, 0, 0, bio, gender, 0)) }
             onGet()
         }
         onEditInfo(false)

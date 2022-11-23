@@ -7,8 +7,6 @@ import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.appdevelopment.data.dataClasses.User
-import com.example.appdevelopment.data.domain.repository.AuthRepository
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -90,7 +88,6 @@ class FirestoreRepositoryImpl @Inject constructor(
             try {
                 val newRef = firebaseFirestore.collection("feed").document(user.token)
                 newRef.set(feed).await()
-                //firebaseFirestore.collection("feed").add(feed).await()
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -158,11 +155,12 @@ class FirestoreRepositoryImpl @Inject constructor(
                     result.data?.get("rank").toString().toInt(),
                     result.data?.get("totalLikes").toString().toInt(),
                     result.data?.get("description").toString(),
-                    result.data?.get("gender").toString()
+                    result.data?.get("gender").toString(),
+                    result.data?.get("photos").toString().toInt()
                 )
             } catch(e: Exception){
                 e.printStackTrace()
-                User("","","", 0, 0, 0, "", "")
+                User("","","", 0, 0, 0, "", "", 0)
             }
     }
 
