@@ -1,13 +1,13 @@
 package com.example.appdevelopment.data.dataClasses
 
 data class User (
-    val token: String,
-    val username: String,
-    val email: String,
-    val points: Int,
-    val totalLikes: Int,
-    val description: String,
-    val gender: String,
-    val photos: Int,
-
+    var token: String,
+    var username: String,
+    var email: String,
+    var points: Int,
+    var rank: Int,
+    var totalLikes: Int,
+    var description: String,
+    var gender: String,
+    val photos: Int
     )

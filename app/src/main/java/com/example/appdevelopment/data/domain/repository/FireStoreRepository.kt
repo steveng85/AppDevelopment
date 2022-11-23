@@ -4,6 +4,7 @@ import com.example.appdevelopment.data.Resource
 import com.example.appdevelopment.data.dataClasses.Board
 import com.example.appdevelopment.data.dataClasses.Feed
 import com.example.appdevelopment.data.dataClasses.User
+import com.google.firebase.auth.FirebaseUser
 
 interface FireStoreRepository {
 
@@ -22,4 +23,9 @@ suspend fun updateStatsInUser(user: User, feed: Feed)
 suspend fun getFeed(user: User): Resource<Feed>
 
 suspend fun clearFeedCollection()
+
+suspend fun getUserInfo(userID: String): User
+
+suspend fun updateUser(user: User)
+
 }

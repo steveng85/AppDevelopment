@@ -7,6 +7,8 @@ import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.domain.repository.AuthRepository
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -41,6 +43,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             return@withContext try {
                 firebaseFirestore.collection("users").orderBy("points", Query.Direction.DESCENDING).get().await()
                     .map { doc ->
+                        firebaseFirestore.collection("users").document(doc.id).update("rank", i).await()
                         Board(i++,
                             doc.data["username"].toString(), doc.data["points"].toString().toInt())
                     }
@@ -95,6 +98,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
+
     override suspend fun updateStatsInUser(user: User, feed: Feed) {
         withContext(Dispatchers.IO) {
 
@@ -137,6 +141,39 @@ class FirestoreRepositoryImpl @Inject constructor(
                    firebaseFirestore.collection("feed").document(doc.id).delete()
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override suspend fun getUserInfo(userID: String): User {
+
+            return try {
+                var result = firebaseFirestore.collection("users").document(userID).get().await()
+                User(
+                    result.data?.get("token").toString(),
+                    result.data?.get("username").toString(),
+                    result.data?.get("email").toString(),
+                    result.data?.get("points").toString().toInt(),
+                    result.data?.get("rank").toString().toInt(),
+                    result.data?.get("totalLikes").toString().toInt(),
+                    result.data?.get("description").toString(),
+                    result.data?.get("gender").toString()
+                )
+            } catch(e: Exception){
+                e.printStackTrace()
+                User("","","", 0, 0, 0, "", "")
+            }
+    }
+
+    override suspend fun updateUser(user: User) {
+        withContext(Dispatchers.IO){
+            try {
+                firebaseFirestore.collection("users").document(user.token).update(
+                    "description", user.description,
+                    "username", user.username
+                )
+            } catch (e: Exception){
                 e.printStackTrace()
             }
         }
