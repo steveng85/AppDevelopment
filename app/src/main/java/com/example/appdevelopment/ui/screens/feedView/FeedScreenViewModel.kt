@@ -4,12 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.dataClasses.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
-import com.example.appdevelopment.ui.screens.loginView.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +15,8 @@ class FeedScreenViewModel @Inject constructor(
     private val fireStoreRepository: FireStoreRepository
 ): ViewModel(){
 
-    private val _feed = MutableStateFlow<List<Feed>>(emptyList())
-    val feed: StateFlow<List<Feed>?> = _feed
+    private val _feedList = MutableStateFlow<List<Feed>>(emptyList())
+    val feedList: StateFlow<List<Feed>?> = _feedList
 
     /*private val _uiState = MutableStateFlow(FeedScreenUIState())
     val uiState = _uiState.asStateFlow()
@@ -36,7 +33,7 @@ class FeedScreenViewModel @Inject constructor(
 
     fun onGetFeedList() = viewModelScope.launch {
         val result = fireStoreRepository.getFeedList()
-        _feed.value = result
-        println(_feed.value)
+        _feedList.value = result
+        println(_feedList.value)
     }
 }
