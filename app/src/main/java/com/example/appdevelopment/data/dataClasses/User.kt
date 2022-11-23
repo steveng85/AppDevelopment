@@ -6,5 +6,8 @@ data class User (
     val email: String,
     val points: Int,
     val totalLikes: Int,
-    val photos: Int
+    val description: String,
+    val gender: String,
+    val photos: Int,
+
     )

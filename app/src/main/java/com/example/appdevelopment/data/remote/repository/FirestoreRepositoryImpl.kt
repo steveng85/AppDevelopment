@@ -70,7 +70,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun updateLike(feed: Feed) {
+    override suspend fun updateLikeForFeed(feed: Feed) {
         withContext(Dispatchers.IO) {
 
             try {
@@ -101,7 +101,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             try {
                 firebaseFirestore.collection("users").document(user.token).update(
                     "totalLikes", user.totalLikes,
-                    "totalPhotos", user.photos )
+                    "photos", user.photos )
             } catch (e: Exception) {
                 e.printStackTrace()
 

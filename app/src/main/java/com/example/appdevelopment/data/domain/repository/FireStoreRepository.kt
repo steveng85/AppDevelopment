@@ -13,7 +13,7 @@ suspend fun getLeaderboardList(): List<Board>
 
 suspend fun getFeedList(): List<Feed>
 
-suspend fun updateLike(feed: Feed)
+suspend fun updateLikeForFeed(feed: Feed)
 
 suspend fun addFeed(feed: Feed, user: User)
 
