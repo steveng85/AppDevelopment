@@ -18,9 +18,9 @@ suspend fun updateLikeForFeed(feed: Feed)
 
 suspend fun addFeed(feed: Feed, user: User)
 
-suspend fun updateStatsInUser(user: User, feed: Feed)
+suspend fun updateStatsInUser(userID: String, feed: Feed)
 
-suspend fun getFeed(user: User): Resource<Feed>
+suspend fun getFeed(userID: String): Feed
 
 suspend fun clearFeedCollection()
 
