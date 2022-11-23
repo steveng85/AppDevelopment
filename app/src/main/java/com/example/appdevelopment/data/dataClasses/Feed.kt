@@ -4,10 +4,10 @@ import java.util.Date
 
 
 data class Feed(
-    val image: Int,
-    val username: String,
-    val description: String,
-    val timestamp: String?,
-    val likes: Int,
-    val userID: String
+    var image: Int,
+    var username: String,
+    var description: String,
+    var timestamp: String?,
+    var like: Int,
+    var userID: String
 )

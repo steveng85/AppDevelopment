@@ -9,5 +9,5 @@ data class User (
     var totalLikes: Int,
     var description: String,
     var gender: String,
-    val photos: Int
+    var photos: Int
     )

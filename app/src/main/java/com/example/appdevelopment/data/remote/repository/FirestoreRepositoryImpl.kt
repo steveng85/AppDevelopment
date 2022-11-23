@@ -55,7 +55,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
         withContext(Dispatchers.IO) {
             return@withContext try {
-                firebaseFirestore.collection("feed").orderBy("timestamp").get().await().map { doc ->
+                firebaseFirestore.collection("feed").orderBy("timestamp",Query.Direction.DESCENDING).get().await().map { doc ->
                     Feed(
                         doc.data["image"].toString().toInt(),
                         doc.data["username"].toString(),
@@ -75,7 +75,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
 
             try {
-                firebaseFirestore.collection("feed").document(feed.userID).update("like", feed.likes)
+                firebaseFirestore.collection("feed").document(feed.userID).update("like", feed.like)
             } catch (e: Exception) {
                 e.printStackTrace()
 
@@ -96,37 +96,35 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun updateStatsInUser(user: User, feed: Feed) {
+    override suspend fun updateStatsInUser(userID: String, feed: Feed) {
         withContext(Dispatchers.IO) {
-
             try {
-                firebaseFirestore.collection("users").document(user.token).update(
-                    "totalLikes", user.totalLikes,
-                    "photos", user.photos )
+                val user = getUserInfo(userID)
+                val newRef = firebaseFirestore.collection("users").document(userID)
+
+                newRef.update(
+                    "totalLikes", user.totalLikes + feed.like,
+                    "photos", user.photos + 1 ).await()
             } catch (e: Exception) {
                 e.printStackTrace()
-
             }
         }
     }
 
-    override suspend fun getFeed(user: User): Resource<Feed> {
-
+    override suspend fun getFeed(userID: String): Feed {
             return try {
-                val result = firebaseFirestore.collection("feed").document(user.token).get().await()
-                Resource.Success(
+                val result = firebaseFirestore.collection("feed").document(userID).get().await()
                     Feed(
                         result.data?.get("image").toString().toInt(),
                         result.data?.get("username").toString(),
                         result.data?.get("description").toString(),
-                        result.data?.get("timestamp").let { getReadableDateTime(null) },
-                        result.data?.get("likes").toString().toInt(),
+                        result.getDate("timestamp")?.let { getReadableDateTime(it) },
+                        result.data?.get("like").toString().toInt(),
                         result.data?.get("userID").toString()
                     )
-                )
             } catch (e: Exception) {
                 e.printStackTrace()
-                Resource.Failure(e)
+                Feed(0,"","","",0,"")
             }
     }
 
@@ -135,7 +133,11 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 firebaseFirestore.collection("feed").get().await().map { doc ->
-                   firebaseFirestore.collection("feed").document(doc.id).delete()
+                    println(doc.id)
+                    val newRef = firebaseFirestore.collection("feed").document(doc.id)
+                    val feed = getFeed(doc.id)
+                    updateStatsInUser(doc.id,feed)
+                    //newRef.delete()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
