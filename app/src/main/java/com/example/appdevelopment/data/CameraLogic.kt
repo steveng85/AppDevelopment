@@ -44,7 +44,7 @@ class CameraLogic @Inject constructor(
             )
             .build()
 
-        cameraImageCapture.takePicture(
+        val photoUri = cameraImageCapture.takePicture(
             outputFileOptions,
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback{
@@ -65,7 +65,7 @@ class CameraLogic @Inject constructor(
                 }
             }
         )
-
+        return photoUri
     }
 
     override suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
@@ -81,4 +81,6 @@ class CameraLogic @Inject constructor(
             cameraImageAnalysis
         )
     }
+
+
 }

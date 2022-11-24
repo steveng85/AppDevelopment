@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // Firebase Auth Logic //
+    // Firebase Auth. logic //
 
     @Provides
     @Singleton
@@ -28,11 +28,15 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
+    // Firebase storage logic //
+
+
+
     // Camera Logic //
 
     @Provides
     @Singleton
-    fun provideCustomCameraRepo(
+    fun provideCameraRepository(
         cameraProvider: ProcessCameraProvider,
         cameraSelector: CameraSelector,
         cameraPreview: Preview,

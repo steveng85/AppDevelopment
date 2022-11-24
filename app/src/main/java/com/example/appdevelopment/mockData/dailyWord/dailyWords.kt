@@ -12,7 +12,7 @@ val dailyWords = listOf(
 fun pickDailyWord(): String {
 
     Collections.shuffle(dailyWords)
-    var randomDailyWord= dailyWords[0].word
+    var randomDailyWord = dailyWords[0].word
 
     return randomDailyWord
 }
