@@ -1,59 +1,110 @@
 package com.example.appdevelopment.ui.screens.cameraView
 
-import androidx.compose.foundation.BorderStroke
+import android.Manifest
+import android.widget.Toast
+import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.appdevelopment.navigation.Screen
-import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
-
+import androidx.compose.material.icons.sharp.Lens
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import com.example.appdevelopment.R
-import com.example.appdevelopment.data.AuthLogic
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.appdevelopment.mockData.dailyWord.pickDailyWord
-import com.example.appdevelopment.mockData.posts.posts
-//import com.example.appdevelopment.ui.components.BottomHomeBar
-import com.example.appdevelopment.ui.components.TopHomeBar
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
-import com.example.appdevelopment.ui.screens.feedView.FeedScreen
-import com.example.appdevelopment.ui.screens.feedView.PostList
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.common.util.concurrent.ClosingFuture.Combiner4
 
 @ExperimentalMaterial3Api
 @Composable
-
 fun CameraScreen(navController: NavController) {
 
     Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { CameraX() }
-    
-   /*Button(
-       onClick = {
-           authLogic?.logout()
-           navController.navigate(Screen.Login.route) {
-               popUpTo(Screen.Login.route) { inclusive = true }
-            }
-            println("logged out")
-       },
-       modifier = Modifier.border(border = BorderStroke(20.dp, Color.Black))
-   ) {
-       Text(text = "logout")
-   }*/
+
 }
 
+
+/**
+ * Implementation of the CameraX use cases:
+ *
+ * Image capture (Save images),
+ * Image preview (View an image on the display),
+ * Image Analysis (Access a buffer).
+ *
+ * https://developer.android.com/training/camerax#ease-of-use
+ *
+ * **/
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraX() {
-    Text(text = "Hej CameraX")
+fun CameraX(viewModel: CameraViewModel = hiltViewModel()) {
+
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var previewView: PreviewView
+
+    val cameraManifestAccess = listOf(Manifest.permission.CAMERA)
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = cameraManifestAccess)
+
+    // Access not granted, we ask again... and again
+    if (permissionState.allPermissionsGranted == false) {
+        SideEffect {
+            permissionState.launchMultiplePermissionRequest()
+        }
+    }
+
+    // Access is granted, we'll display the previewView and IconButton
+    if (permissionState.allPermissionsGranted){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Black)
+                .clip(shape = RoundedCornerShape(15.dp)),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            AndroidView(
+                factory = {
+                    previewView = PreviewView(it)
+                    viewModel.onImagePreview(previewView, lifecycleOwner)
+                    previewView
+                          },
+                modifier = Modifier.fillMaxSize()
+            )
+            Box(contentAlignment = Alignment.BottomCenter) {
+                IconButton(
+                    onClick = { viewModel.onImageCaptureAndUpload(context) },
+                    content = {
+                        Icon(
+                            imageVector = Icons.Sharp.Lens,
+                            contentDescription = "Take picture",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(125.dp)
+                                .padding(30.dp)
+                                .border(1.dp, Color.White, CircleShape)
+                        )
+                    }
+                )
+            }
+        }
+    }
 }
