@@ -26,10 +26,11 @@ fun DefaultFieldBox(
     focusedColor: Color,
     unfocusedColor: Color,
     label: String,
-    type: String
+    type: String,
+    password: Boolean
 ){
 
-    var passwordVisible by remember { mutableStateOf(true) }
+    var passwordVisible by remember { mutableStateOf(password) }
 
     OutlinedTextField(
         value = currentValue,

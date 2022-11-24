@@ -120,7 +120,7 @@ class FirestoreRepositoryImpl @Inject constructor(
                         result.data?.get("description").toString(),
                         result.getDate("timestamp")?.let { getReadableDateTime(it) },
                         result.data?.get("like").toString().toInt(),
-                        result.data?.get("userID").toString()
+                        userID
                     )
             } catch (e: Exception) {
                 e.printStackTrace()

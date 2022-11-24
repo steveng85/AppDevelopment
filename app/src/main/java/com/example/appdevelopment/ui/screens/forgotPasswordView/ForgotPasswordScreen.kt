@@ -91,8 +91,7 @@ fun ForgotPasswordScreen(
                 when (it) {
                     is Resource.Failure -> {
                         val context = LocalContext.current
-                        Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
-                        println("faulire")
+                        Toast.makeText(context, "could not reset password", Toast.LENGTH_LONG).show()
                     }
                     Resource.Loading -> {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp))
@@ -101,7 +100,8 @@ fun ForgotPasswordScreen(
                         LaunchedEffect(Unit) {
                             navController.navigate(Screen.PwdReset.route)
                         }
-                        println("send email")
+                        val context = LocalContext.current
+                        Toast.makeText(context, "Send email", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -125,7 +125,8 @@ fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
-        type = "password"
+        type = "email",
+        password = false
     )
 }
 

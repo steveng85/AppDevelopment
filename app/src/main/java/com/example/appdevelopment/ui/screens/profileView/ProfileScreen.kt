@@ -280,7 +280,7 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
             onClick = {
                 authLogic?.logout()
                 navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Profile.route){ inclusive = true }
+                    popUpTo(Screen.Login.route){ inclusive = true }
                 }
                 println("logged out")
                       },
