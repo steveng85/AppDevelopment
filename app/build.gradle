@@ -85,7 +85,7 @@ dependencies {
     // Declare the dependency for the Firestore library
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
-    //CameraX
+    // CameraX library
     def camerax_version = "1.0.1"
     implementation "androidx.camera:camera-core:$camerax_version"
     implementation "androidx.camera:camera-camera2:$camerax_version"
@@ -93,6 +93,8 @@ dependencies {
     implementation "androidx.camera:camera-view:1.2.0-alpha02"
     implementation "androidx.camera:camera-extensions:1.2.0-alpha02"
 
+    // Jetpack Compose Permissions (accompanist)
+    implementation "com.google.accompanist:accompanist-permissions:0.24.9-beta"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
