@@ -39,7 +39,8 @@ fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenView
         feedScreenViewModel.onGetFeedList()
         Scaffoldlayout(
             navController = navController,
-            "Feed"
+            "Feed",
+            Color.White
         ) {
             feedScreenViewModel.feedList.collectAsState().value?.let { PostList(it, feedScreenViewModel)}
         }
