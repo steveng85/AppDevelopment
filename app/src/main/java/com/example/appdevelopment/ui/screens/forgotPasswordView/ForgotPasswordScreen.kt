@@ -125,7 +125,7 @@ fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
-        password = false
+        type = "password"
     )
 }
 
