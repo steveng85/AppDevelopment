@@ -124,7 +124,7 @@ fun UserName(usernameValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Username",
-        password = false)
+        type = "username")
 }
 
 @Composable
@@ -135,7 +135,7 @@ fun CEmailBox(emailValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "E-mail",
-        password = false)
+        type = "email")
 }
 
 @Composable
@@ -146,7 +146,7 @@ fun CPasswordBox(passwordValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Password",
-        password = true
+        type = "password"
     )
 }
 
@@ -158,6 +158,6 @@ fun ConfirmPasswordBox(confirmPasswordValue: String, onEvent: (CreateAccountEven
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
-        password = true
+        type = "password"
     )
 }
