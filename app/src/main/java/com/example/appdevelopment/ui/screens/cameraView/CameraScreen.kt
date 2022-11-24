@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.R
 import com.example.appdevelopment.data.AuthLogic
+import com.example.appdevelopment.mockData.dailyWord.pickDailyWord
 import com.example.appdevelopment.mockData.posts.posts
 //import com.example.appdevelopment.ui.components.BottomHomeBar
 import com.example.appdevelopment.ui.components.TopHomeBar
@@ -36,8 +37,7 @@ import com.example.appdevelopment.ui.screens.feedView.PostList
 
 fun CameraScreen(navController: NavController) {
 
-
-    Scaffoldlayout(navController = navController, "Sailboat") { CameraX() }
+    Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { CameraX() }
     
    /*Button(
        onClick = {

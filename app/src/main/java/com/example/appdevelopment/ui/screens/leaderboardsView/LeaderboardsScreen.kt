@@ -41,7 +41,7 @@ fun LeaderboardScreen(
     leaderboardViewModel: LeaderboardViewModel?
 ){
 
-    Scaffoldlayout(navController = navController, "Leaderboard") { Leaderboard(leaderboardViewModel) }
+    Scaffoldlayout(navController = navController, "Leaderboard", Color.White) { Leaderboard(leaderboardViewModel) }
 
 }
 

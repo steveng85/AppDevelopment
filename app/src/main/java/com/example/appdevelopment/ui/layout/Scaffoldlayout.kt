@@ -15,17 +15,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import com.example.appdevelopment.R
+import com.example.appdevelopment.mockData.dailyWord.DailyWord
+import com.example.appdevelopment.mockData.dailyWord.dailyWords
 import com.example.appdevelopment.navigation.Screen
+import java.util.*
 
 @ExperimentalMaterial3Api
 @Composable
-fun Scaffoldlayout(navController: NavController, text: String, screenContent: @Composable () -> Unit) {
+fun Scaffoldlayout(navController: NavController, text: String, color: Color, screenContent: @Composable () -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 modifier = Modifier
-                    .wrapContentHeight()
-                    .background(Color.Magenta),
+                    .wrapContentHeight(),
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(color),
                 title = {
                     androidx.compose.material3.Text(
                         text = text,
