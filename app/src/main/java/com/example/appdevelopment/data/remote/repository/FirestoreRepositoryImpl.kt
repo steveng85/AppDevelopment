@@ -1,12 +1,11 @@
 package com.example.appdevelopment.data.remote.repository
 
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.dataClasses.Board
-import com.example.appdevelopment.data.dataClasses.Feed
+import com.example.appdevelopment.data.dto.Board
+import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
-import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.dto.User
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

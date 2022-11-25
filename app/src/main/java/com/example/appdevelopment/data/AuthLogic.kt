@@ -1,6 +1,6 @@
 package com.example.appdevelopment.data
 
-import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.dto.User
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.google.firebase.auth.FirebaseUser

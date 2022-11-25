@@ -1,10 +1,8 @@
 package com.example.appdevelopment.data.domain.repository
 
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.dataClasses.Board
-import com.example.appdevelopment.data.dataClasses.Feed
-import com.example.appdevelopment.data.dataClasses.User
-import com.google.firebase.auth.FirebaseUser
+import com.example.appdevelopment.data.dto.Board
+import com.example.appdevelopment.data.dto.Feed
+import com.example.appdevelopment.data.dto.User
 
 interface FireStoreRepository {
 

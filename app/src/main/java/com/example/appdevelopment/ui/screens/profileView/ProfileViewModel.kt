@@ -1,16 +1,10 @@
 package com.example.appdevelopment.ui.screens.profileView
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.AuthLogic
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.dataClasses.Board
-import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.dto.User
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
-import com.example.appdevelopment.ui.screens.loginView.LoginUIState
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

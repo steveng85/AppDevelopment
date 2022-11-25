@@ -2,7 +2,7 @@ package com.example.appdevelopment.ui.screens.feedView
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appdevelopment.data.dataClasses.Feed
+import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

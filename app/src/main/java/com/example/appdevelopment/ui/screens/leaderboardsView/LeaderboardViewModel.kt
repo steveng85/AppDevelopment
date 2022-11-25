@@ -2,15 +2,12 @@ package com.example.appdevelopment.ui.screens.leaderboardsView
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.dataClasses.Board
+import com.example.appdevelopment.data.dto.Board
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
-import com.example.appdevelopment.data.dataClasses.User
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import kotlinx.coroutines.launch
 
 @HiltViewModel

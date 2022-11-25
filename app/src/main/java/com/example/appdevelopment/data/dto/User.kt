@@ -1,4 +1,4 @@
-package com.example.appdevelopment.data.dataClasses
+package com.example.appdevelopment.data.dto
 
 data class User (
     var token: String,
