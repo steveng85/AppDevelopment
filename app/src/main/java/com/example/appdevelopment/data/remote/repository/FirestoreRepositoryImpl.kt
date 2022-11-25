@@ -114,6 +114,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun getFeed(userID: String): Feed {
             return try {
                 val result = firebaseFirestore.collection("feed").document(userID).get().await()
+
                     Feed(
                         result.data?.get("image").toString().toInt(),
                         result.data?.get("username").toString(),
