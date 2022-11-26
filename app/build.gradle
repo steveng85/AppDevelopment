@@ -84,6 +84,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     // Declare the dependency for the Firestore library
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    // Firebase storage
+    implementation "com.google.firebase:firebase-storage-ktx"
 
     // CameraX library
     def camerax_version = "1.0.1"
@@ -96,7 +98,7 @@ dependencies {
     // Jetpack Compose Permissions (accompanist)
     implementation "com.google.accompanist:accompanist-permissions:0.24.9-beta"
 
-    // Coil library to load photoUri from Firestore
+    // Coil library
     implementation "io.coil-kt:coil-compose:2.2.2"
 
     testImplementation 'junit:junit:4.13.2'
