@@ -1,8 +1,10 @@
 package com.example.appdevelopment.ui.screens.cameraView
 
 import android.Manifest
+import android.net.Uri
 import android.widget.Toast
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,11 +12,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Clear
+import androidx.compose.material.icons.sharp.Done
 import androidx.compose.material.icons.sharp.Lens
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,20 +35,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.appdevelopment.mockData.dailyWord.pickDailyWord
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.common.util.concurrent.ClosingFuture.Combiner4
 
+var displayCameraX: MutableState<Boolean> = mutableStateOf(true)
+var displayImageTaken: MutableState<Boolean> = mutableStateOf(false)
+
+lateinit var imageUri: Uri
+
 @ExperimentalMaterial3Api
 @Composable
 fun CameraScreen(navController: NavController) {
-
-    Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { CameraX() }
-
+    Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { chooseDisplay() }
 }
 
+@Composable
+fun chooseDisplay() {
+    if (displayCameraX.value) {
+        CameraX()
+    } else if (displayImageTaken.value) {
+        TakenImage()
+    }
+}
 
 /**
  * Implementation of the CameraX use cases:
@@ -91,7 +111,7 @@ fun CameraX(viewModel: CameraViewModel = hiltViewModel()) {
             )
             Box(contentAlignment = Alignment.BottomCenter) {
                 IconButton(
-                    onClick = { viewModel.onImageCaptureAndUpload(context) },
+                    onClick = { viewModel.onImageCapture(context, viewModel) },
                     content = {
                         Icon(
                             imageVector = Icons.Sharp.Lens,
@@ -104,6 +124,60 @@ fun CameraX(viewModel: CameraViewModel = hiltViewModel()) {
                         )
                     }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun TakenImage(viewModel: CameraViewModel = hiltViewModel()) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 65.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(painter = rememberImagePainter(imageUri), contentDescription = null)
+        }
+        Box(modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter) {
+            Box(modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(bottom = 30.dp)
+            ) {
+                Row(modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { viewModel.onChangeDisplayToCameraX() },
+                        content = {
+                            Icon(
+                                imageVector = Icons.Sharp.Clear,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .size(40.dp)
+                            )
+                        }
+                    )
+                    IconButton(
+                        onClick = { viewModel.onImageUpload(imageUri) },
+                        content = {
+                            Icon(
+                                imageVector = Icons.Sharp.Done,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .size(40.dp)
+                            )
+                        }
+                    )
+                }
             }
         }
     }
