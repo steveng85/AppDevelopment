@@ -3,7 +3,7 @@ package com.example.appdevelopment.data.di
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.domain.repository.StorageRepository
 import com.example.appdevelopment.data.remote.repository.FirestoreRepositoryImpl
-import com.example.appdevelopment.data.remote.repository.StorageRepositoryImpl
+//import com.example.appdevelopment.data.remote.repository.StorageRepositoryImpl
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -32,9 +32,9 @@ object FireStoreModule {
     @Singleton
     fun provideStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 
-    @Provides
-    @Singleton
-    fun provideStorageRepository(impl: StorageRepositoryImpl): StorageRepository  = impl
+//    @Provides
+//    @Singleton
+//    fun provideStorageRepository(impl: StorageRepositoryImpl): StorageRepository  = impl
 
     //get document reference user
     @Provides
