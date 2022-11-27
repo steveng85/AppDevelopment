@@ -91,7 +91,7 @@ fun CreateAccountScreen(
         when (it) {
             is Resource.Failure -> {
                 val context = LocalContext.current
-                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Could not create user", Toast.LENGTH_LONG).show()
                 println("Chould not create user")
             }
             Resource.Loading -> {
@@ -103,7 +103,8 @@ fun CreateAccountScreen(
                         popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
-                println("Created user")
+                val context = LocalContext.current
+                Toast.makeText(context, "Created user", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -124,6 +125,7 @@ fun UserName(usernameValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Username",
+        type = "username",
         password = false)
 }
 
@@ -135,6 +137,7 @@ fun CEmailBox(emailValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "E-mail",
+        type = "email",
         password = false)
 }
 
@@ -146,6 +149,7 @@ fun CPasswordBox(passwordValue: String, onEvent: (CreateAccountEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Password",
+        type = "password",
         password = true
     )
 }
@@ -158,6 +162,7 @@ fun ConfirmPasswordBox(confirmPasswordValue: String, onEvent: (CreateAccountEven
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Confirm Password",
+        type = "password",
         password = true
     )
 }

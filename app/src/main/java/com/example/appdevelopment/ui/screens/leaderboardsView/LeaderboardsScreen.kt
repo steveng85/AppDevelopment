@@ -24,10 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.appdevelopment.data.dataClasses.Board
-import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.data.dto.Board
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
-import com.example.appdevelopment.ui.screens.cameraView.CameraX
 import com.example.appdevelopment.ui.theme.Bronze
 import com.example.appdevelopment.ui.theme.Gold
 import com.example.appdevelopment.ui.theme.Silver

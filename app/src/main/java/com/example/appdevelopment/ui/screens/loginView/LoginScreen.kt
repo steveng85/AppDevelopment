@@ -133,6 +133,7 @@ fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
+        type = "email",
         password = false
     )
 }
@@ -146,6 +147,7 @@ fun PasswordBox(passwordValue: String, onEvent: (LoginEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary ,
         unfocusedColor = Color.LightGray,
         label = "Password",
+        type = "password",
         password = true
     )
 }

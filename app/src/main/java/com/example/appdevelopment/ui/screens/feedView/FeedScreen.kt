@@ -28,7 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appdevelopment.R
-import com.example.appdevelopment.data.dataClasses.Feed
+import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
 
 @ExperimentalMaterial3Api

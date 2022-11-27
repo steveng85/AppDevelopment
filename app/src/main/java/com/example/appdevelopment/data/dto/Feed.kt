@@ -1,6 +1,4 @@
-package com.example.appdevelopment.data.dataClasses
-
-import java.util.Date
+package com.example.appdevelopment.data.dto
 
 
 data class Feed(

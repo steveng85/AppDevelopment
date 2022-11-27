@@ -1,12 +1,11 @@
 package com.example.appdevelopment.data.remote.repository
 
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.dataClasses.Board
-import com.example.appdevelopment.data.dataClasses.Feed
+import com.example.appdevelopment.data.dto.Board
+import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.firestore.FirebaseFirestore
-import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.dto.User
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -114,13 +113,14 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun getFeed(userID: String): Feed {
             return try {
                 val result = firebaseFirestore.collection("feed").document(userID).get().await()
+
                     Feed(
                         result.data?.get("image").toString().toInt(),
                         result.data?.get("username").toString(),
                         result.data?.get("description").toString(),
                         result.getDate("timestamp")?.let { getReadableDateTime(it) },
                         result.data?.get("like").toString().toInt(),
-                        result.data?.get("userID").toString()
+                        userID
                     )
             } catch (e: Exception) {
                 e.printStackTrace()
