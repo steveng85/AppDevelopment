@@ -27,15 +27,6 @@ object FireStoreModule {
     @Singleton
     fun provideFirestoreRepository(impl: FirestoreRepositoryImpl): FireStoreRepository = impl
 
-    //getting instance of firestorage
-    @Provides
-    @Singleton
-    fun provideStorage(): FirebaseStorage = FirebaseStorage.getInstance()
-
-//    @Provides
-//    @Singleton
-//    fun provideStorageRepository(impl: StorageRepositoryImpl): StorageRepository  = impl
-
     //get document reference user
     @Provides
     @Singleton
