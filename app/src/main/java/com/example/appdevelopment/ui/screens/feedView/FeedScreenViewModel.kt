@@ -41,9 +41,33 @@ class FeedScreenViewModel @Inject constructor(
     }
 
     fun onPressLike(feed: Feed) = viewModelScope.launch{
-        feed.like = feed.like + 1
-        fireStoreRepository.updateLikeForFeed(feed)
-        onNeedOpdate(true)
+        if(_uiState.value.like == false) {
+            _uiState.value = _uiState.value.copy(like = true)
+            _uiState.value = _uiState.value.copy(dislike = false)
+            feed.like = feed.like + 1
+            fireStoreRepository.updateLikeForFeed(feed)
+            onNeedOpdate(true)
+        } else {
+            _uiState.value = _uiState.value.copy(like = false)
+            feed.like = feed.like - 1
+            fireStoreRepository.updateLikeForFeed(feed)
+            onNeedOpdate(true)
+        }
+    }
+
+    fun onPressDislike(feed: Feed) = viewModelScope.launch{
+        if(_uiState.value.dislike == false) {
+            _uiState.value = _uiState.value.copy(dislike = true)
+            _uiState.value = _uiState.value.copy(like = false)
+            feed.like = feed.like - 1
+            fireStoreRepository.updateLikeForFeed(feed)
+            onNeedOpdate(true)
+        } else {
+            _uiState.value = _uiState.value.copy(dislike = false)
+            feed.like = feed.like + 1
+            fireStoreRepository.updateLikeForFeed(feed)
+            onNeedOpdate(true)
+        }
     }
 
     fun onNeedOpdate(needUpdate: Boolean) {

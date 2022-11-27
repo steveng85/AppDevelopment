@@ -24,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appdevelopment.R
@@ -34,6 +35,9 @@ import com.example.appdevelopment.ui.layout.Scaffoldlayout
 @Composable
 fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenViewModel?) {
         val opdate = feedScreenViewModel?.uiState?.collectAsState()?.value
+
+    val like = mutableStateOf<Boolean>(value = false)
+    val dislike = mutableStateOf<Boolean>(value = false)
 
     if(!opdate!!.needOpdate) {
         feedScreenViewModel.onGetFeedList()
@@ -186,7 +190,7 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
                             )
                         }
                         Text(text = "${post.like}")
-                        androidx.compose.material.IconButton(onClick = { /*TODO*/ }) {
+                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressDislike(post) }) {
                             Icon(painter = painterResource(
                                 id = R.drawable.ic_baseline_thumb_down_off_alt_24),
                                 contentDescription = null,

@@ -45,7 +45,7 @@ fun CameraScreen(navController: NavController) {
 /**
  * Implementation of the CameraX use cases:
  *
- * Image capture (Save images),
+ * Image capture (Save images, including upload to Firebase Storage),
  * Image preview (View an image on the display),
  * Image Analysis (Access a buffer).
  *
