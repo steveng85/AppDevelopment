@@ -1,6 +1,7 @@
 package com.example.appdevelopment.ui.screens.cameraView
 
 import android.content.Context
+import android.net.Uri
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -21,9 +22,31 @@ class CameraViewModel @Inject constructor(
         }
     }
 
-    fun onImageCaptureAndUpload(context: Context) {
+    fun onImageCapture(context: Context, viewModel: CameraViewModel) {
         viewModelScope.launch {
-            repository.onImageCaptureAndUpload(context)
+            repository.onImageCapture(context, viewModel)
+        }
+    }
+
+    fun onImageUpload(uri: Uri?) {
+        viewModelScope.launch {
+            repository.onImageUpload(uri)
+
+            onChangeDisplayToCameraX()
+        }
+    }
+
+    fun onChangeDisplayToImage() {
+        viewModelScope.launch {
+            displayCameraX.value = false
+            displayImageTaken.value = true
+        }
+    }
+
+    fun onChangeDisplayToCameraX() {
+        viewModelScope.launch {
+            displayImageTaken.value = false
+            displayCameraX.value = true
         }
     }
 }

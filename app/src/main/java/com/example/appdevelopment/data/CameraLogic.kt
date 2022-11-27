@@ -3,33 +3,21 @@ package com.example.appdevelopment.data
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appdevelopment.data.domain.repository.CameraRepository
-import com.example.appdevelopment.data.domain.repository.StorageRepository
-import com.example.appdevelopment.data.utils.await
-import com.google.firebase.ktx.Firebase
+import com.example.appdevelopment.ui.screens.cameraView.CameraViewModel
+import com.example.appdevelopment.ui.screens.cameraView.displayCameraX
+import com.example.appdevelopment.ui.screens.cameraView.displayImageTaken
+import com.example.appdevelopment.ui.screens.cameraView.imageUri
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.ktx.storageMetadata
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.selects.select
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -39,11 +27,10 @@ class CameraLogic @Inject constructor(
     private val cameraSelector: CameraSelector,
     private val cameraPreview: Preview,
     private val cameraImageAnalysis: ImageAnalysis,
-    private val cameraImageCapture: ImageCapture,
-    private val storageRepository: StorageRepository
+    private val cameraImageCapture: ImageCapture
 ): CameraRepository {
 
-    override suspend fun onImageCaptureAndUpload(context: Context) {
+    override suspend fun onImageCapture(context: Context, viewModel: CameraViewModel) {
 
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
             .format(System.currentTimeMillis()) + ".jpeg"
@@ -60,13 +47,24 @@ class CameraLogic @Inject constructor(
             contentValues
         ).build()
 
+        fun displayImage(uri: Uri?) {
+            //displayCameraX.value = false
+
+            viewModel.onChangeDisplayToImage()
+
+            if (uri != null) {
+                imageUri = uri
+            }
+            //displayImageTaken.value = true
+        }
+
         cameraImageCapture.takePicture(
             outputFileOptions,
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback{
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-
-                    storageRepository.uploadImageTask(outputFileResults.savedUri)
+                    val imageUri = outputFileResults.savedUri
+                    displayImage(imageUri)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -75,6 +73,31 @@ class CameraLogic @Inject constructor(
             }
         )
     }
+
+    override suspend fun onImageUpload(uri: Uri?) {
+
+        /**
+         * Code snippets from Firebase docs:
+         * https://firebase.google.com/docs/storage/android/upload-files
+         **/
+
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/image")
+
+        var file = uri
+        var uploadTask = file?.let { storageRef.putFile(it) }
+
+        if (uploadTask != null) {
+            uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                storageRef.downloadUrl
+            }
+        }
+    }
+
 
     override suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
 
