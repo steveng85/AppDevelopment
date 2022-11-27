@@ -75,7 +75,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
 
             try {
-                firebaseFirestore.collection("feed").document(feed.userID).update("like", feed.like)
+                firebaseFirestore.collection("feed").document(feed.userID).update("like", feed.like).await()
             } catch (e: Exception) {
                 e.printStackTrace()
 

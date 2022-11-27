@@ -186,7 +186,7 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
                             )
                         }
                         Text(text = "${post.like}")
-                        androidx.compose.material.IconButton(onClick = { /*TODO*/ }) {
+                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressDislike(post) }) {
                             Icon(painter = painterResource(
                                 id = R.drawable.ic_baseline_thumb_down_off_alt_24),
                                 contentDescription = null,
