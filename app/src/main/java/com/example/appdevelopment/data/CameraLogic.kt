@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.camera.core.*
@@ -22,6 +23,7 @@ import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
 import kotlinx.coroutines.selects.select
 import java.io.File
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -36,12 +38,29 @@ class CameraLogic @Inject constructor(
 
     override suspend fun onImageCaptureAndUpload(context: Context) {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
-            .format(System.currentTimeMillis()) + ".png"
+            .format(System.currentTimeMillis()) + ".jpeg"
 
-        val imageFile = File(simpleDateFormat)
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, simpleDateFormat)
+            put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
+            //if (Build.VERSION.SDK_INT > 28){
+                put(MediaStore.Images.Media.RELATIVE_PATH,Environment.DIRECTORY_DCIM)
+            //}
+        }
+
+        println("filename: " + simpleDateFormat)
+
+        //val imageFile = File("hello", simpleDateFormat)
+
+        //println("filepath: " + imageFile.toString())
 
         val outputFileOptions = ImageCapture.OutputFileOptions
-            .Builder(imageFile)
+            .Builder(
+                context.contentResolver,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
             .build()
 
 //        fun getOutputDir(): File {
@@ -73,14 +92,16 @@ class CameraLogic @Inject constructor(
             outputFileOptions,
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback{
-
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val imageSavedUri = Uri.fromFile(imageFile)
+                    println("test")
 
-                    uploadImageTask(imageSavedUri)
+
+                    println("onCaptureSuccess: Uri  ${outputFileResults.savedUri}")
+                    uploadImageTask(outputFileResults.savedUri)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
+                    println("Error " + exception)
                     Toast.makeText(
                         context,
                         "There occurred an error when taking the picture. Try again.",
@@ -91,27 +112,28 @@ class CameraLogic @Inject constructor(
         )
     }
 
-    private fun uploadImageTask(uri: Uri) {
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
+    private fun uploadImageTask(uri: Uri?) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$uri")
 
         var file = uri
-        val imageRef = storageRef.child("images/${file.lastPathSegment}")
-        var uploadTask = imageRef.putFile(file)
+        //${file.lastPathSegment}
+        var uploadTask = file?.let { storageRef.putFile(it) }
 
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
+        if (uploadTask != null) {
+            uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
                 }
-            }
-            imageRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-            } else {
-                // Handle failures
-                // ...
+                storageRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result
+                } else {
+                    // Handle failures
+                    // ...
+                }
             }
         }
 
