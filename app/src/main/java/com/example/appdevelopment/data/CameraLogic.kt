@@ -9,11 +9,18 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.appdevelopment.data.domain.repository.CameraRepository
+import com.example.appdevelopment.data.utils.await
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
+import kotlinx.coroutines.selects.select
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,38 +35,39 @@ class CameraLogic @Inject constructor(
 ): CameraRepository {
 
     override suspend fun onImageCaptureAndUpload(context: Context) {
-
-        // The image we just took, is saved locally
-        //val savedUri = Uri.fromFile(imageFile)
-        // The firebase storage
-        val storage = Firebase.storage
-        // Ref to the storage
-        val storageRef = storage.reference
-
-        fun getOutputDir(): File {
-            return File("gs://appdevelopment-3f7db.appspot.com")
-        }
-
-        val outputDir = getOutputDir()
-
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
-            .format(System.currentTimeMillis())
+            .format(System.currentTimeMillis()) + ".png"
 
-        val imageFile = File(outputDir, simpleDateFormat)
-
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, simpleDateFormat)
-            put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
-            if (Build.VERSION.SDK_INT > 28){
-                put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/My-Camera-App-Images")
-            }
-        }
-
-        val savedUri = Uri.fromFile(imageFile)
+        val imageFile = File(simpleDateFormat)
 
         val outputFileOptions = ImageCapture.OutputFileOptions
-            .Builder(context.contentResolver, savedUri, contentValues)
+            .Builder(imageFile)
             .build()
+
+//        fun getOutputDir(): File {
+//            return File("gs://appdevelopment-3f7db.appspot.com")
+//        }
+//
+//        val outputDir = getOutputDir()
+//
+//        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
+//            .format(System.currentTimeMillis())
+//
+//        val imageFile = File(outputDir, simpleDateFormat)
+//
+//        val contentValues = ContentValues().apply {
+//            put(MediaStore.MediaColumns.DISPLAY_NAME, simpleDateFormat)
+//            put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
+//            if (Build.VERSION.SDK_INT > 28){
+//                put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/My-Camera-App-Images")
+//            }
+//        }
+//
+//        val savedUri = Uri.fromFile(imageFile)
+//
+//        val outputFileOptions = ImageCapture.OutputFileOptions
+//            .Builder(context.contentResolver, savedUri, contentValues)
+//            .build()
 
         cameraImageCapture.takePicture(
             outputFileOptions,
@@ -67,26 +75,9 @@ class CameraLogic @Inject constructor(
             object : ImageCapture.OnImageSavedCallback{
 
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val imageSavedUri = Uri.fromFile(imageFile)
 
-
-                    // upload the image to firestore
-                    val uploadImageTask = storageRef.putFile(savedUri)
-
-                    // Register observers to listen for when the download is done or if it fails
-                    uploadImageTask.addOnFailureListener {
-                        Toast.makeText(
-                            context,
-                            "There occurred an error when uploading to firestore.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }.addOnSuccessListener {
-                        uploadImageTask.isComplete
-                        Toast.makeText(
-                            context,
-                            "Picture is posted!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    uploadImageTask(imageSavedUri)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -99,6 +90,36 @@ class CameraLogic @Inject constructor(
             }
         )
     }
+
+    private fun uploadImageTask(uri: Uri) {
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference
+
+        var file = uri
+        val imageRef = storageRef.child("images/${file.lastPathSegment}")
+        var uploadTask = imageRef.putFile(file)
+
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            imageRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+            } else {
+                // Handle failures
+                // ...
+            }
+        }
+
+
+//            .child("images/").putFile(uri)
+//                    .await().storage.downloadUrl.await()
+
+}
 
     override suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
 

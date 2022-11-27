@@ -99,7 +99,7 @@ fun LoginScreen(
         when (it) {
             is Resource.Failure -> {
                 val context = LocalContext.current
-                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, it.exception.message, Toast.LENGTH_SHORT).show()
                 println("faulire")
             }
             Resource.Loading -> {
