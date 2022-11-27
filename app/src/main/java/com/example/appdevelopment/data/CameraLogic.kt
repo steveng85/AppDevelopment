@@ -37,111 +37,62 @@ class CameraLogic @Inject constructor(
 ): CameraRepository {
 
     override suspend fun onImageCaptureAndUpload(context: Context) {
+
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
             .format(System.currentTimeMillis()) + ".jpeg"
 
-
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, simpleDateFormat)
-            put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
-            //if (Build.VERSION.SDK_INT > 28){
-                put(MediaStore.Images.Media.RELATIVE_PATH,Environment.DIRECTORY_DCIM)
-            //}
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
         }
 
-        println("filename: " + simpleDateFormat)
+        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(
+            context.contentResolver,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        ).build()
 
-        //val imageFile = File("hello", simpleDateFormat)
+        fun uploadImageTask(uri: Uri?) {
 
-        //println("filepath: " + imageFile.toString())
+            /**
+             * Code snippets from Firebase docs:
+             * https://firebase.google.com/docs/storage/android/upload-files
+             **/
 
-        val outputFileOptions = ImageCapture.OutputFileOptions
-            .Builder(
-                context.contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues
-            )
-            .build()
+            val storageRef = FirebaseStorage.getInstance().reference.child("images/image")
 
-//        fun getOutputDir(): File {
-//            return File("gs://appdevelopment-3f7db.appspot.com")
-//        }
-//
-//        val outputDir = getOutputDir()
-//
-//        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
-//            .format(System.currentTimeMillis())
-//
-//        val imageFile = File(outputDir, simpleDateFormat)
-//
-//        val contentValues = ContentValues().apply {
-//            put(MediaStore.MediaColumns.DISPLAY_NAME, simpleDateFormat)
-//            put(MediaStore.MediaColumns.MIME_TYPE,"image/jpeg")
-//            if (Build.VERSION.SDK_INT > 28){
-//                put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/My-Camera-App-Images")
-//            }
-//        }
-//
-//        val savedUri = Uri.fromFile(imageFile)
-//
-//        val outputFileOptions = ImageCapture.OutputFileOptions
-//            .Builder(context.contentResolver, savedUri, contentValues)
-//            .build()
+
+
+            var file = uri
+            var uploadTask = file?.let { storageRef.putFile(it) }
+
+            if (uploadTask != null) {
+                uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
+                        }
+                    }
+                    storageRef.downloadUrl
+                }
+            }
+        }
 
         cameraImageCapture.takePicture(
             outputFileOptions,
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback{
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    println("test")
-
-
-                    println("onCaptureSuccess: Uri  ${outputFileResults.savedUri}")
                     uploadImageTask(outputFileResults.savedUri)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    println("Error " + exception)
-                    Toast.makeText(
-                        context,
-                        "There occurred an error when taking the picture. Try again.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    println("Error: $exception")
                 }
             }
         )
     }
-
-    private fun uploadImageTask(uri: Uri?) {
-        val storageRef = FirebaseStorage.getInstance().reference.child("images/$uri")
-
-        var file = uri
-        //${file.lastPathSegment}
-        var uploadTask = file?.let { storageRef.putFile(it) }
-
-        if (uploadTask != null) {
-            uploadTask.continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
-                }
-                storageRef.downloadUrl
-            }.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val downloadUri = task.result
-                } else {
-                    // Handle failures
-                    // ...
-                }
-            }
-        }
-
-
-//            .child("images/").putFile(uri)
-//                    .await().storage.downloadUrl.await()
-
-}
 
     override suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
 
