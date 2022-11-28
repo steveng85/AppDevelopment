@@ -56,7 +56,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             return@withContext try {
                 firebaseFirestore.collection("feed").orderBy("timestamp",Query.Direction.DESCENDING).get().await().map { doc ->
                     Feed(
-                        doc.data["image"].toString().toInt(),
+                        doc.data["image"].toString(),
                         doc.data["username"].toString(),
                         doc.data["description"].toString(),
                         doc.getDate("timestamp")?.let { getReadableDateTime(it) },
@@ -115,7 +115,7 @@ class FirestoreRepositoryImpl @Inject constructor(
                 val result = firebaseFirestore.collection("feed").document(userID).get().await()
 
                     Feed(
-                        result.data?.get("image").toString().toInt(),
+                        result.data?.get("image").toString(),
                         result.data?.get("username").toString(),
                         result.data?.get("description").toString(),
                         result.getDate("timestamp")?.let { getReadableDateTime(it) },
@@ -124,7 +124,7 @@ class FirestoreRepositoryImpl @Inject constructor(
                     )
             } catch (e: Exception) {
                 e.printStackTrace()
-                Feed(0,"","","",0,"")
+                Feed("","","","",0,"")
             }
     }
 

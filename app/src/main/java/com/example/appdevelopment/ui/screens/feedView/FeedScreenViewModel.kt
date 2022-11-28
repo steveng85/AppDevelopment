@@ -56,7 +56,7 @@ class FeedScreenViewModel @Inject constructor(
     }
 
     fun onPressDislike(feed: Feed) = viewModelScope.launch{
-        if(_uiState.value.dislike == false) {
+        if(_uiState.value.dislike == false && feed.like > 0) {
             _uiState.value = _uiState.value.copy(dislike = true)
             _uiState.value = _uiState.value.copy(like = false)
             feed.like = feed.like - 1

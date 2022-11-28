@@ -11,9 +11,6 @@ interface CameraRepository {
     // Using the CameraX ImageCapture usecase
     suspend fun onImageCapture(context: Context, viewModel: CameraViewModel)
 
-    //Upload the picture to Firebase storage
-    suspend fun onImageUpload(uri: Uri?)
-
     // Using the CameraX ImagePreview usecase.
     suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner)
 }

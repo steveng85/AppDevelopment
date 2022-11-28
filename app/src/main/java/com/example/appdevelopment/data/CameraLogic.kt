@@ -51,7 +51,7 @@ class CameraLogic @Inject constructor(
             //displayCameraX.value = false
 
             viewModel.onChangeDisplayToImage()
-
+            println("display image: " + uri)
             if (uri != null) {
                 imageUri = uri
             }
@@ -72,30 +72,6 @@ class CameraLogic @Inject constructor(
                 }
             }
         )
-    }
-
-    override suspend fun onImageUpload(uri: Uri?) {
-
-        /**
-         * Code snippets from Firebase docs:
-         * https://firebase.google.com/docs/storage/android/upload-files
-         **/
-
-        val storageRef = FirebaseStorage.getInstance().reference.child("images/image")
-
-        var file = uri
-        var uploadTask = file?.let { storageRef.putFile(it) }
-
-        if (uploadTask != null) {
-            uploadTask.continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
-                }
-                storageRef.downloadUrl
-            }
-        }
     }
 
 

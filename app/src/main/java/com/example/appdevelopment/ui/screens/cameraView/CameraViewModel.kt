@@ -6,16 +6,20 @@ import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.domain.repository.CameraRepository
+import com.example.appdevelopment.data.domain.repository.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
-    private val repository: CameraRepository
+    private val repository: CameraRepository,
+    private val storageRepository: StorageRepository,
+    private val authLogic: AuthLogic
 ): ViewModel() {
-
+    val userID = authLogic.getCurrentUserId()
     fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner) {
         viewModelScope.launch {
             repository.onImagePreview(previewView, lifecycleOwner)
@@ -30,9 +34,12 @@ class CameraViewModel @Inject constructor(
 
     fun onImageUpload(uri: Uri?) {
         viewModelScope.launch {
-            repository.onImageUpload(uri)
+            storageRepository.onImageUpload(uri)
 
             onChangeDisplayToCameraX()
+            if (userID != null) {
+                storageRepository.onGetUrl(userID)
+            }
         }
     }
 

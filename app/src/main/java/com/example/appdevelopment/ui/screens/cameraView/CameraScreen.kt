@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.appdevelopment.mockData.dailyWord.pickDailyWord
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
@@ -138,7 +139,7 @@ fun TakenImage(viewModel: CameraViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = rememberImagePainter(imageUri), contentDescription = null)
+            Image(painter = rememberAsyncImagePainter(imageUri), contentDescription = null)
         }
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter) {
