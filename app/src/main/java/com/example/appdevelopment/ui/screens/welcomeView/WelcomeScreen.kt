@@ -1,6 +1,7 @@
 package com.example.appdevelopment
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +28,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 
 @ExperimentalMaterial3Api
@@ -54,12 +58,20 @@ fun WelcomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             WelcomeTitle()
+            Image(
+                modifier = Modifier
+                    .size(20.dp)
+                    .padding(top = 20.dp),
+                painter = painterResource(
+                    id = R.drawable.hunt_logo_white
+                ),
+                contentDescription = null
+            )
         }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
-//                .padding(top = 50.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

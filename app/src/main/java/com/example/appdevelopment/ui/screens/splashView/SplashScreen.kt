@@ -3,11 +3,12 @@ package com.example.appdevelopment
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,14 +41,14 @@ fun SplashScreen(navController: NavController, authLogic: AuthLogic?) {
             targetValue = 1f,
             animationSpec = tween(
                 durationMillis = 500,
-                easing = { OvershootInterpolator(100f).getInterpolation(it) }
+                easing = { OvershootInterpolator(5f).getInterpolation(it) }
             ),
             initialVelocity = 5f
         )
         delay(1000)
-        if(authLogic?.loginFlow?.value is Resource.Success){
+        if(authLogic?.loginFlow?.value is Resource.Success) {
             navController.navigate(Screen.Camera.route)
-        }else {
+        } else {
             navController.navigate(Screen.Welcome.route)
         }
     }
@@ -56,12 +60,13 @@ fun SplashScreen(navController: NavController, authLogic: AuthLogic?) {
             .padding(top = 150.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        Text(
-            modifier = Modifier.scale(animateLogo.value),
-            text = "Hunt",
-            color = MaterialTheme.colorScheme.tertiary,
-            fontSize = MaterialTheme.typography.displayLarge.fontSize,
-            fontWeight = FontWeight.Bold
+        Image(
+            modifier = Modifier
+                .scale(animateLogo.value)
+                .size(100.dp)
+                .padding(top = 20.dp),
+            painter = painterResource(id = R.drawable.hunt_logo_white),
+            contentDescription = null
         )
     }
 }
