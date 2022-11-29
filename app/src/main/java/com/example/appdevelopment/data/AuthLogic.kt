@@ -1,6 +1,6 @@
 package com.example.appdevelopment.data
 
-import com.example.appdevelopment.data.dataClasses.User
+import com.example.appdevelopment.data.dto.User
 import com.example.appdevelopment.data.domain.repository.AuthRepository
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
 import com.google.firebase.auth.FirebaseUser
@@ -19,6 +19,13 @@ class AuthLogic @Inject constructor(
 
     private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val signupFlow: StateFlow<Resource<FirebaseUser>?> = _signupFlow
+
+    private val _resetPasswordFlow = MutableStateFlow<Resource<Void>?>(null)
+    val resetPasswordFlow: StateFlow<Resource<Void>?> = _resetPasswordFlow
+
+    fun getCurrentUserId(): String?{
+        return repository.currentUser?.uid
+    }
 
 
     suspend fun login(email: String, password: String) {
@@ -40,7 +47,13 @@ class AuthLogic @Inject constructor(
     }
 
     suspend fun saveUser(username: String, token: String, email: String) {
-        firebaseRepository.saveUser(User(token, username, email))
+        firebaseRepository.addUser(User(token, username, email, 0, 0, 0, "","", 0))
+    }
+
+    suspend fun resetPassword(email: String){
+        _resetPasswordFlow.value = Resource.Loading
+        val result = repository.forgotPassword(email)
+        _resetPasswordFlow.value = result
     }
 
     init {

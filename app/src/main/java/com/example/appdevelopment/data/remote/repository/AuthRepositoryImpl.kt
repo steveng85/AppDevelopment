@@ -7,9 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class AuthRepositoryImpl @Inject constructor(
     //need firebase auth instance for all the functions so it gets passed in
     private val firebaseAuth: FirebaseAuth
@@ -36,6 +34,16 @@ class AuthRepositoryImpl @Inject constructor(
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())?.await()
             Resource.Success(result.user!!)
+        } catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
+    override suspend fun forgotPassword(email: String): Resource<Void> {
+        return try {
+            val result = firebaseAuth.sendPasswordResetEmail(email).await()
+            Resource.Success(result)
         } catch (e: Exception){
             e.printStackTrace()
             Resource.Failure(e)

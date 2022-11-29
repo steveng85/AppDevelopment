@@ -15,13 +15,16 @@ import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
 import com.example.appdevelopment.ui.screens.LoginScreen
 import com.example.appdevelopment.ui.screens.PasswordResetScreen
 import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
+import com.example.appdevelopment.ui.screens.cameraView.CameraViewModel
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
+import com.example.appdevelopment.ui.screens.feedView.FeedScreenViewModel
 import com.example.appdevelopment.ui.screens.forgotPasswordView.ForgotPasswordViewModel
 import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardScreen
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
+import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewModel
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
+import com.example.appdevelopment.ui.screens.profileView.ProfileViewModel
 
 @ExperimentalMaterial3Api
 @Composable
@@ -29,6 +32,11 @@ fun NavGraph(
     navController: NavHostController,
     viewModel: LoginViewModel,
     createAccViewModel: CreateAccountViewModel,
+    forgotPasswordViewModel: ForgotPasswordViewModel,
+    leaderboardViewModel: LeaderboardViewModel,
+    profileViewModel: ProfileViewModel,
+    feedScreenViewModel: FeedScreenViewModel,
+    cameraViewModel: CameraViewModel,
     authLogic: AuthLogic
 ) {
 
@@ -65,34 +73,49 @@ fun NavGraph(
                 }
             }
             composable(route = Screen.ForgotPwd.route) {
-                val forgotPasswordVM by remember {
-                    mutableStateOf(ForgotPasswordViewModel())
-                }
+
                 ForgotPasswordScreen(
                     navController = navController,
-                    forgotPasswordVM.uiState.collectAsState().value
+                    forgotPasswordViewModel.uiState.collectAsState().value,
+                    authLogic
                 ) {
-                    forgotPasswordVM.onEvent(it)
+                    forgotPasswordViewModel.onEvent(it)
                 }
             }
             composable(route = Screen.PwdReset.route) {
                 PasswordResetScreen(navController = navController)
             }
+
             composable(route = Screen.Camera.route) {
 
-                CameraScreen(navController = navController, authLogic)
-
+                CameraScreen(
+                    navController = navController,
+                    cameraViewModel.uiState.collectAsState().value
+                ){
+                    cameraViewModel.onEvent(it)
+                }
+            }
             
             composable(route = Screen.Profile.route) {
-                ProfileScreen(navController = navController, viewModel)
+                ProfileScreen(
+                    navController = navController,
+                    authLogic,
+                    profileViewModel,
+                    profileViewModel.uiState.collectAsState().value,
+                ){
+                    profileViewModel.onEvent(it)
+                }
             }
             
             composable(route = Screen.Leaderboards.route){
-                LeaderboardScreen(navController = navController)
+                LeaderboardScreen(navController = navController, leaderboardViewModel)
             }
             
             composable(route = Screen.Feed.route){
-                FeedScreen(navController = navController)
+                FeedScreen(
+                    navController = navController,
+                    feedScreenViewModel
+                )
             }
         }
     }

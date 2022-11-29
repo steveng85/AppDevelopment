@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
@@ -59,6 +60,7 @@ dependencies {
     implementation 'androidx.compose.material:material:1.2.1'
     implementation 'androidx.compose.material3:material3:1.0.0-alpha02'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.navigation:navigation-compose:$rootProject.composeNavigationVersion"
 
     //view models
@@ -80,8 +82,26 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.3.0')
     // Declare the dependency for the Firebase Authentication library
     implementation 'com.google.firebase:firebase-auth-ktx'
+    // Declare the dependency for the Firestore storage library
+    implementation 'com.google.firebase:firebase-storage-ktx'
     // Declare the dependency for the Firestore library
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    // Firebase storage
+    implementation "com.google.firebase:firebase-storage-ktx"
+
+    // CameraX library
+    def camerax_version = "1.0.1"
+    implementation "androidx.camera:camera-core:$camerax_version"
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:1.2.0-alpha02"
+    implementation "androidx.camera:camera-extensions:1.2.0-alpha02"
+
+    // Jetpack Compose Permissions (accompanist)
+    implementation "com.google.accompanist:accompanist-permissions:0.24.9-beta"
+
+    // Coil library
+    implementation "io.coil-kt:coil-compose:2.2.2"
 
 
     testImplementation 'junit:junit:4.13.2'

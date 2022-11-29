@@ -1,6 +1,6 @@
 package com.example.appdevelopment.ui.screens.feedView
 
-import androidx.compose.foundation.background
+import android.media.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,134 +16,101 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.appdevelopment.R
-import com.example.appdevelopment.mockData.posts.Post
-import com.example.appdevelopment.mockData.posts.posts
-import com.example.appdevelopment.navigation.Screen
+import com.example.appdevelopment.data.dto.Feed
+import com.example.appdevelopment.ui.layout.Scaffoldlayout
+import com.example.appdevelopment.ui.screens.cameraView.imageUri
 
 @ExperimentalMaterial3Api
 @Composable
-fun FeedScreen(navController: NavController) {
-        Scaffoldlayout(navController = navController, "Feed") { PostList(posts) }
+fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenViewModel?) {
+    val opdate = feedScreenViewModel?.uiState?.collectAsState()?.value
+
+    if(!opdate!!.needOpdate) {
+        feedScreenViewModel.onGetFeedList()
+        Scaffoldlayout(
+            navController = navController,
+            "Feed",
+            Color.White
+        ) {
+            feedScreenViewModel.feedList.collectAsState().value?.let { PostList(it, feedScreenViewModel)}
+        }
+    } else {
+        feedScreenViewModel.onGetFeedList()
+        feedScreenViewModel.onNeedOpdate(false)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun scaffoldprev() {
-    Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
+    //Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
 }
 
-@ExperimentalMaterial3Api
 @Composable
-fun Scaffoldlayout(navController: NavController, text: String, screenContent: @Composable () -> Unit) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .background(Color.Magenta),
-                title = {
-                    androidx.compose.material3.Text(
-                        text = text,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = "Localized description",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            )
-        },
-        bottomBar = {
-            BottomAppBar(
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                backgroundColor = Color.Black,
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth(1f)
-                ) {
-                    IconButton(onClick = { navController.navigate(Screen.Feed.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_menu_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    IconButton(onClick = { navController.navigate(Screen.Camera.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_photo_camera_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    IconButton(onClick = { navController.navigate(Screen.Leaderboards.route) }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_baseline_leaderboard_24
-                            ),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
+fun ClearButton(feedScreenViewModel: FeedScreenViewModel?) {
+    Button(
+        onClick = {feedScreenViewModel?.onEvent(FeedScreenEvent.OnClearFeed)},
+        shape = RoundedCornerShape(40.dp),
+        modifier = Modifier
+            .padding(start = 10.dp)
+            .wrapContentHeight()
+            .width(100.dp),
+        elevation = ButtonDefaults.elevatedButtonElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 8.dp,
+            disabledElevation = 4.dp,
+            hoveredElevation = 4.dp,
+            focusedElevation = 0.dp
+        ),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    ) {
+        Text(text = "Clear")
+    }
+}
+
+@Preview
+@Composable
+fun buttonPreview(){
+    ClearButton(feedScreenViewModel = null)
+}
+
+@Composable
+fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
+    ClearButton(feedScreenViewModel)
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = rememberLazyListState()
+        ) {
+            items(posts) { post ->
+                PostItem(post, feedScreenViewModel)
             }
         }
-    ){
-        Column(
-            modifier = Modifier.padding(it)
-        ) {
-            screenContent()
-        }
-
-    }
 }
 
 @Composable
-fun PostList(posts: List<Post>) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        state = rememberLazyListState()
-    ) {
-        items(posts) { post ->
-            PostItem(post)
-        }
-    }
-}
-
-@Composable
-fun PostItem(post: Post) {
+fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
     Column(modifier = Modifier
         .wrapContentHeight()
         .wrapContentWidth(),
@@ -151,7 +118,7 @@ fun PostItem(post: Post) {
         verticalArrangement = Arrangement.Center
     ) {
         Card(modifier = Modifier
-            .width(250.dp)
+            .width(300.dp)
             .wrapContentHeight(),
             shape = RoundedCornerShape(25.dp),
             backgroundColor = Color.White,
@@ -159,11 +126,13 @@ fun PostItem(post: Post) {
             elevation = 5.dp
         ) {
             Column {
+                //AsyncImage(model = post.image, contentDescription = null)
+                //Image(painter = AsyncImage(model = post.image, contentDescription = null))
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp),
-                    painter = painterResource(id = post.image),
+                        .height(250.dp),
+                    painter = rememberAsyncImagePainter(post.image),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
@@ -180,7 +149,7 @@ fun PostItem(post: Post) {
                     ) {
                         Text(
                             modifier = Modifier.padding(top = 5.dp, end = 5.dp),
-                            text = post.username,
+                            text = post.username + ":",
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
@@ -199,7 +168,7 @@ fun PostItem(post: Post) {
                             top = 5.dp,
                             end = 10.dp,
                             bottom = 5.dp),
-                        text = post.timestamp,
+                        text = post.timestamp.toString(),
                         fontSize = 12.5.sp,
                         fontWeight = FontWeight.Light,
                         color = Color.Gray
@@ -216,15 +185,15 @@ fun PostItem(post: Post) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        androidx.compose.material.IconButton(onClick = { /*TODO*/ }) {
+                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressLike(post) }) {
                             Icon(painter = painterResource(
                                 id = R.drawable.ic_baseline_thumb_up_off_alt_24),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                        Text(text = "${post.likes}")
-                        androidx.compose.material.IconButton(onClick = { /*TODO*/ }) {
+                        Text(text = "${post.like}")
+                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressDislike(post) }) {
                             Icon(painter = painterResource(
                                 id = R.drawable.ic_baseline_thumb_down_off_alt_24),
                                 contentDescription = null,

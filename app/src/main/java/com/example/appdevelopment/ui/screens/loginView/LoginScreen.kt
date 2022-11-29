@@ -90,7 +90,7 @@ fun LoginScreen(
                 EmailBox(uiState.emailText, onEvent = {onEvent(it)})
                 PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
                 LoginButton { onEvent(LoginEvent.OnLogin)}
-                ForgotPassword { navController.navigate(Screen.Leaderboards.route) }
+                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
 
             }
         }
@@ -99,7 +99,7 @@ fun LoginScreen(
         when (it) {
             is Resource.Failure -> {
                 val context = LocalContext.current
-                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, it.exception.message, Toast.LENGTH_SHORT).show()
                 println("faulire")
             }
             Resource.Loading -> {
@@ -133,6 +133,7 @@ fun EmailBox(emailValue: String, onEvent: (LoginEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
         label = "Email",
+        type = "email",
         password = false
     )
 }
@@ -146,6 +147,7 @@ fun PasswordBox(passwordValue: String, onEvent: (LoginEvent) -> Unit){
         focusedColor = MaterialTheme.colorScheme.primary ,
         unfocusedColor = Color.LightGray,
         label = "Password",
+        type = "password",
         password = true
     )
 }
