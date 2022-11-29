@@ -76,7 +76,6 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //profile.username
             user?.username?.let {
                 Text(
                     text = it,
@@ -261,8 +260,6 @@ fun TextTest(text: String, label: String, onEvent: (String) -> Unit){
             unfocusedLabelColor = Color.LightGray
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        //shape = RoundedCornerShape(ZeroCornerSize)
-
         )
 }
 

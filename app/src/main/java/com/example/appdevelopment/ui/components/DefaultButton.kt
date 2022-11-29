@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.appdevelopment.navigation.Screen
 
 @Composable
 fun DefaultButton(onClick: () -> Unit, text: String, contentColor: Color, containerColor: Color){
@@ -19,7 +17,6 @@ fun DefaultButton(onClick: () -> Unit, text: String, contentColor: Color, contai
         shape = RoundedCornerShape(40.dp),
         modifier = Modifier
             .fillMaxWidth(),
-        //.shadow(1.dp, RoundedCornerShape(10.dp), true),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = 2.dp,
             pressedElevation = 8.dp,

@@ -30,7 +30,6 @@ import com.example.appdevelopment.ui.theme.Bronze
 import com.example.appdevelopment.ui.theme.Gold
 import com.example.appdevelopment.ui.theme.Silver
 
-//import com.example.appdevelopment.ui.components.BottomHomeBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +69,6 @@ fun LeaderboardsList(boardList: List<Board>){
         verticalArrangement = Arrangement.spacedBy(14.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         state = rememberLazyListState()
-
-    //(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp)
     ){
         items(boardList){ board ->
             BoardCard(rank = board.rank, name = board.name, points = board.points)

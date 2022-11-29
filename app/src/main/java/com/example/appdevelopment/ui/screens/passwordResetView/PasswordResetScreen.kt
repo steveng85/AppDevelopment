@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.appdevelopment.navigation.Screen
 
 @Composable
 fun PasswordResetScreen(
