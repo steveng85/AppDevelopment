@@ -61,6 +61,7 @@ fun hej() {
 
 @Composable
 fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: ProfileViewModel,uiState: ProfileUIState, onEvent: (ProfileEvent) -> Unit) {
+    val user = viewModel.user.collectAsState().value
     Card(modifier = Modifier
         .fillMaxWidth()
         .height(650.dp),
@@ -76,13 +77,15 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //profile.username
-            Text(
-                text = "Pelle",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+            user?.username?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
@@ -91,7 +94,6 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
                 LaunchedEffect(uiState.editState){
                     viewModel.onGet()
                 }
-                val user = viewModel.user.collectAsState().value
                 ProfileStats(user)
                 ProfileBio(user, onEvent)
                 ProfileInfo(user, uiState, onEvent)

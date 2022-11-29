@@ -27,8 +27,6 @@ class CameraViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CameraUIState())
     val uiState = _uiState.asStateFlow()
 
-    private val time = mutableStateOf<String>("")
-
     fun onEvent(event: CameraEvent){
         when(event){
             is CameraEvent.OnDescriptionChanged -> onDescriptionChanged(event.description)
@@ -50,8 +48,7 @@ class CameraViewModel @Inject constructor(
 
     fun onImageCapture(context: Context, viewModel: CameraViewModel) {
         viewModelScope.launch {
-            time.value = repository.onImageCapture(context, viewModel)
-
+            repository.onImageCapture(context, viewModel)
         }
     }
 
@@ -61,7 +58,7 @@ class CameraViewModel @Inject constructor(
 
             onChangeDisplayToCameraX()
             if (userID != null) {
-                storageRepository.onGetUrl(userID, description, time.value)
+                storageRepository.onGetUrl(userID, description)
             }
         }
     }

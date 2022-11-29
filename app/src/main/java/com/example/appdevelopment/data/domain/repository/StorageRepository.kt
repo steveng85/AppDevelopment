@@ -7,5 +7,5 @@ interface StorageRepository {
     //Upload the picture to Firebase storage
     suspend fun onImageUpload(uri: Uri?)
 
-    suspend fun onGetUrl(userID: String, description: String, time: String)
+    suspend fun onGetUrl(userID: String, description: String)
 }

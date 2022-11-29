@@ -149,7 +149,7 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
                     ) {
                         Text(
                             modifier = Modifier.padding(top = 5.dp, end = 5.dp),
-                            text = post.username,
+                            text = post.username + ":",
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )

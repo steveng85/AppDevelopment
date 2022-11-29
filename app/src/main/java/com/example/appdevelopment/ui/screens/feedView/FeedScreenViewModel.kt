@@ -62,11 +62,12 @@ class FeedScreenViewModel @Inject constructor(
             feed.like = feed.like - 1
             fireStoreRepository.updateLikeForFeed(feed)
             onNeedOpdate(true)
-        } else {
+        } else if(feed.like != 0) {
             _uiState.value = _uiState.value.copy(dislike = false)
             feed.like = feed.like + 1
             fireStoreRepository.updateLikeForFeed(feed)
             onNeedOpdate(true)
+
         }
     }
 

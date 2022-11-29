@@ -9,6 +9,8 @@ import com.example.appdevelopment.data.domain.repository.StorageRepository
 import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.data.utils.await
 import com.google.firebase.storage.FirebaseStorage
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class StorageRepositoryImpl @Inject constructor(
@@ -16,6 +18,8 @@ class StorageRepositoryImpl @Inject constructor(
     private val authLogic: AuthLogic,
     private val fireStoreRepository: FireStoreRepository
 ): StorageRepository {
+    val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+        .format(System.currentTimeMillis())
 
     override suspend fun onImageUpload(uri: Uri?) {
         val userID = authLogic.getCurrentUserId()
@@ -25,7 +29,6 @@ class StorageRepositoryImpl @Inject constructor(
          **/
 
         val storageRef = firebaseStorage.reference.child("images/$userID.jpeg")
-        //withContext(Dispatchers.IO){
 
         var file = uri
         var uploadTask = file?.let { storageRef.putFile(it) }
@@ -37,13 +40,11 @@ class StorageRepositoryImpl @Inject constructor(
                     }
                 }
                 storageRef.downloadUrl
-            }
+            }.await()
         }
-        //}
-
     }
 
-    override suspend fun onGetUrl(userID: String, description: String, time: String) {
+    override suspend fun onGetUrl(userID: String, description: String) {
         val storageRef = firebaseStorage.getReference("images/$userID.jpeg")
         val user = fireStoreRepository.getUserInfo(userID)
         var url = mutableStateOf<String>("")
@@ -54,6 +55,7 @@ class StorageRepositoryImpl @Inject constructor(
         }.addOnFailureListener {
             it.printStackTrace()
         }.await()
+
         if(url.value != "") {
             try {
                 fireStoreRepository.addFeed(
@@ -61,7 +63,7 @@ class StorageRepositoryImpl @Inject constructor(
                         url.value,
                         user.username,
                         description,
-                        "",
+                        simpleDateFormat,
                         0,
                         userID
                     ), user
