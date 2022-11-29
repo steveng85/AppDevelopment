@@ -94,7 +94,7 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
                     viewModel.onGet()
                 }
                 ProfileStats(user)
-                ProfileBio(user, onEvent)
+                ProfileBio(user)
                 ProfileInfo(user, uiState, onEvent)
                 LogoutButton(navController, authLogic)
             }
@@ -158,7 +158,7 @@ fun ProfileStat(
 }
 
 @Composable
-fun ProfileBio(user: User?, onEvent: (ProfileEvent) -> Unit) {
+fun ProfileBio(user: User?) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight(),
@@ -275,15 +275,13 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
         Button(
             onClick = {
                 authLogic?.logout()
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Login.route){ inclusive = true }
+                navController.navigate(Screen.Welcome.route) {
+                    popUpTo(Screen.Welcome.route){ inclusive = true }
                 }
-                println("logged out")
                       },
             modifier = Modifier
                 .height(45.dp)
                 .width(120.dp),
-            //.padding(top = 30.dp),
             shape = RoundedCornerShape(40.dp),
             border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
             colors = androidx.compose.material.ButtonDefaults.buttonColors(

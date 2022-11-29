@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.screens.CreateAccountScreen
@@ -29,7 +30,7 @@ import com.example.appdevelopment.ui.screens.profileView.ProfileViewModel
 @ExperimentalMaterial3Api
 @Composable
 fun NavGraph(
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
     viewModel: LoginViewModel,
     createAccViewModel: CreateAccountViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel,
