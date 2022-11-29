@@ -26,6 +26,7 @@ import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewMod
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 import com.example.appdevelopment.ui.screens.profileView.ProfileViewModel
+import javax.inject.Singleton
 
 @ExperimentalMaterial3Api
 @Composable
