@@ -49,6 +49,8 @@ fun DefaultFieldBox(
                 )
 
 
+            }else if(type == "description"){
+                Image(painter = painterResource(id = R.drawable.ic_baseline_description_24), contentDescription = null)
             }else {
             if(passwordVisible) {
            IconButton(onClick = { passwordVisible = false }) {

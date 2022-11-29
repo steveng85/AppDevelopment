@@ -2,7 +2,6 @@ package com.example.appdevelopment.ui.screens.cameraView
 
 import android.Manifest
 import android.net.Uri
-import android.widget.Toast
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,53 +11,52 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Clear
 import androidx.compose.material.icons.sharp.Done
 import androidx.compose.material.icons.sharp.Lens
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.appdevelopment.mockData.dailyWord.pickDailyWord
+import com.example.appdevelopment.ui.components.DefaultFieldBox
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.common.util.concurrent.ClosingFuture.Combiner4
 
 var displayCameraX: MutableState<Boolean> = mutableStateOf(true)
 var displayImageTaken: MutableState<Boolean> = mutableStateOf(false)
 
 lateinit var imageUri: Uri
 
+
 @ExperimentalMaterial3Api
 @Composable
-fun CameraScreen(navController: NavController) {
-    Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { chooseDisplay() }
+fun CameraScreen(navController: NavController, uiState: CameraUIState, onEvent: (CameraEvent) -> Unit) {
+    Scaffoldlayout(navController = navController, pickDailyWord(), Color.Black) { chooseDisplay( uiState, onEvent) }
 }
 
 @Composable
-fun chooseDisplay() {
+fun chooseDisplay(
+    uiState: CameraUIState,
+    onEvent: (CameraEvent) -> Unit
+) {
     if (displayCameraX.value) {
         CameraX()
     } else if (displayImageTaken.value) {
-        TakenImage()
+        TakenImage( uiState, onEvent)
     }
 }
 
@@ -129,56 +127,92 @@ fun CameraX(viewModel: CameraViewModel = hiltViewModel()) {
     }
 }
 
+@Preview
 @Composable
-fun TakenImage(viewModel: CameraViewModel = hiltViewModel()) {
+fun PreviewTakenImage(){
+    TakenImage( CameraUIState(),{})
+}
+
+@Composable
+fun TextField(text: String, label: String, onEvent: (CameraEvent) -> Unit){
+    DefaultFieldBox(
+        currentValue = text,
+        onEvent = {onEvent(CameraEvent.OnDescriptionChanged(it))},
+        focusedColor = MaterialTheme.colorScheme.primary,
+        unfocusedColor = Color.LightGray,
+        label = label,
+        type = "description",
+        password = false
+    )
+}
+
+@Composable
+fun TakenImage(
+    uiState: CameraUIState,
+    onEvent: (CameraEvent) -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 65.dp),
+            .padding(bottom = 120.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = rememberImagePainter(imageUri), contentDescription = null)
+            Image(painter = rememberAsyncImagePainter(imageUri), contentDescription = null)
         }
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter) {
-            Box(modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
-                .padding(bottom = 30.dp)
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Row(modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(
-                        onClick = { viewModel.onChangeDisplayToCameraX() },
-                        content = {
-                            Icon(
-                                imageVector = Icons.Sharp.Clear,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .size(40.dp)
+                    TextField(
+                        text = uiState.description,
+                        label = "description",
+                        onEvent = { onEvent(it) })
+
+                    Box(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth()
+                            .padding(bottom = 5.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            IconButton(
+                                onClick = { onEvent(CameraEvent.OnChangeDisplayToCameraX) },
+                                content = {
+                                    Icon(
+                                        imageVector = Icons.Sharp.Clear,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                    )
+                                }
+                            )
+                            IconButton(
+                                onClick = { onEvent(CameraEvent.OnImageUpload) },
+                                content = {
+                                    Icon(
+                                        imageVector = Icons.Sharp.Done,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                    )
+                                }
                             )
                         }
-                    )
-                    IconButton(
-                        onClick = { viewModel.onImageUpload(imageUri) },
-                        content = {
-                            Icon(
-                                imageVector = Icons.Sharp.Done,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .size(40.dp)
-                            )
-                        }
-                    )
+                    }
                 }
             }
-        }
     }
 }

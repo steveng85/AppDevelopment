@@ -28,8 +28,6 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
-    // Firebase storage logic //
-
 
 
     // Camera Logic //

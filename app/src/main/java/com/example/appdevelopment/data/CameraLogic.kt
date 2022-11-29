@@ -30,7 +30,7 @@ class CameraLogic @Inject constructor(
     private val cameraImageCapture: ImageCapture
 ): CameraRepository {
 
-    override suspend fun onImageCapture(context: Context, viewModel: CameraViewModel) {
+    override suspend fun onImageCapture(context: Context, viewModel: CameraViewModel): String {
 
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
             .format(System.currentTimeMillis()) + ".jpeg"
@@ -51,7 +51,6 @@ class CameraLogic @Inject constructor(
             //displayCameraX.value = false
 
             viewModel.onChangeDisplayToImage()
-
             if (uri != null) {
                 imageUri = uri
             }
@@ -72,30 +71,7 @@ class CameraLogic @Inject constructor(
                 }
             }
         )
-    }
-
-    override suspend fun onImageUpload(uri: Uri?) {
-
-        /**
-         * Code snippets from Firebase docs:
-         * https://firebase.google.com/docs/storage/android/upload-files
-         **/
-
-        val storageRef = FirebaseStorage.getInstance().reference.child("images/image")
-
-        var file = uri
-        var uploadTask = file?.let { storageRef.putFile(it) }
-
-        if (uploadTask != null) {
-            uploadTask.continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
-                }
-                storageRef.downloadUrl
-            }
-        }
+        return simpleDateFormat
     }
 
 

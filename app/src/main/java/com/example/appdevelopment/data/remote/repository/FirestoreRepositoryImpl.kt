@@ -1,5 +1,6 @@
 package com.example.appdevelopment.data.remote.repository
 
+import android.annotation.SuppressLint
 import com.example.appdevelopment.data.dto.Board
 import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
@@ -17,9 +18,9 @@ class FirestoreRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
 ): FireStoreRepository{
 
-    private fun getReadableDateTime(date: Date?): String {
+    /*private fun getReadableDateTime(date: Date?): String {
         return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
-    }
+    }*/
 
     override suspend fun addUser(user: User) {
         withContext(Dispatchers.IO) {
@@ -56,10 +57,11 @@ class FirestoreRepositoryImpl @Inject constructor(
             return@withContext try {
                 firebaseFirestore.collection("feed").orderBy("timestamp",Query.Direction.DESCENDING).get().await().map { doc ->
                     Feed(
-                        doc.data["image"].toString().toInt(),
+                        doc.data["image"].toString(),
                         doc.data["username"].toString(),
                         doc.data["description"].toString(),
-                        doc.getDate("timestamp")?.let { getReadableDateTime(it) },
+                        //doc.getDate("timestamp")?.let { getReadableDateTime(it) },
+                        doc.data["timestamp"].toString(),
                         doc.data["like"].toString().toInt(),
                         doc.id
                     )
@@ -101,30 +103,35 @@ class FirestoreRepositoryImpl @Inject constructor(
                 val user = getUserInfo(userID)
                 val newRef = firebaseFirestore.collection("users").document(userID)
 
-                newRef.update(
-                    "totalLikes", user.totalLikes + feed.like,
-                    "photos", user.photos + 1 ).await()
+                if (user.token != "") {
+                    newRef.update(
+                        "totalLikes", user.totalLikes + feed.like,
+                        "photos", user.photos + 1
+                    ).await()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override suspend fun getFeed(userID: String): Feed {
             return try {
                 val result = firebaseFirestore.collection("feed").document(userID).get().await()
 
                     Feed(
-                        result.data?.get("image").toString().toInt(),
+                        result.data?.get("image").toString(),
                         result.data?.get("username").toString(),
                         result.data?.get("description").toString(),
-                        result.getDate("timestamp")?.let { getReadableDateTime(it) },
+                        //result.getDate("timestamp")?.let { getReadableDateTime(it) },
+                        result.data?.get("timestamp").toString(),
                         result.data?.get("like").toString().toInt(),
                         userID
                     )
             } catch (e: Exception) {
                 e.printStackTrace()
-                Feed(0,"","","",0,"")
+                Feed("","","","",0,"")
             }
     }
 
@@ -133,11 +140,12 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 firebaseFirestore.collection("feed").get().await().map { doc ->
-                    println(doc.id)
                     val newRef = firebaseFirestore.collection("feed").document(doc.id)
                     val feed = getFeed(doc.id)
-                    updateStatsInUser(doc.id,feed)
-                    //newRef.delete()
+                    if(feed.userID != "") {
+                        updateStatsInUser(doc.id, feed)
+                        //newRef.delete()
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -172,7 +180,18 @@ class FirestoreRepositoryImpl @Inject constructor(
                 firebaseFirestore.collection("users").document(user.token).update(
                     "description", user.description,
                     "username", user.username
-                )
+                ).await()
+                updateUsernameFeed(user.username, user.token)
+            } catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override suspend fun updateUsernameFeed(username: String, userID: String) {
+        withContext(Dispatchers.IO){
+            try {
+                firebaseFirestore.collection("feed").document(userID).update("username", username).await()
             } catch (e: Exception){
                 e.printStackTrace()
             }

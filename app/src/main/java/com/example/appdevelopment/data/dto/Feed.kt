@@ -2,7 +2,7 @@ package com.example.appdevelopment.data.dto
 
 
 data class Feed(
-    var image: Int,
+    var image: String,
     var username: String,
     var description: String,
     var timestamp: String?,

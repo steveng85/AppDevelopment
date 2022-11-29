@@ -28,9 +28,9 @@ class FeedScreenViewModel @Inject constructor(
             is FeedScreenEvent.OnNeedUpdate -> onNeedOpdate(event.needUpdate)
             is FeedScreenEvent.OnClearFeed -> onClearFeed()
         }
-    }/*
+    }
 
-    fun onUpdate(feed: Feed) = viewModelScope.launch{
+    /*fun onUpdate(feed: Feed) = viewModelScope.launch{
         fireStoreRepository.updateLike(feed)
     }*/
 
@@ -56,7 +56,7 @@ class FeedScreenViewModel @Inject constructor(
     }
 
     fun onPressDislike(feed: Feed) = viewModelScope.launch{
-        if(_uiState.value.dislike == false) {
+        if(_uiState.value.dislike == false && feed.like > 0) {
             _uiState.value = _uiState.value.copy(dislike = true)
             _uiState.value = _uiState.value.copy(like = false)
             feed.like = feed.like - 1
