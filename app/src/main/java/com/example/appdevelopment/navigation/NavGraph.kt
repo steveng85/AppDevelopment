@@ -72,6 +72,7 @@ fun NavGraph(
                     viewModel.onEvent(it)
                 }
             }
+
             composable(route = Screen.ForgotPwd.route) {
 
                 ForgotPasswordScreen(
