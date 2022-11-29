@@ -26,4 +26,6 @@ suspend fun getUserInfo(userID: String): User
 
 suspend fun updateUser(user: User)
 
+suspend fun updateUsernameFeed(username: String, userID: String)
+
 }

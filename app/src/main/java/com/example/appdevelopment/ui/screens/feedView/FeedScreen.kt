@@ -1,5 +1,6 @@
 package com.example.appdevelopment.ui.screens.feedView
 
+import android.media.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,17 +28,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.appdevelopment.R
 import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
+import com.example.appdevelopment.ui.screens.cameraView.imageUri
 
 @ExperimentalMaterial3Api
 @Composable
 fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenViewModel?) {
-        val opdate = feedScreenViewModel?.uiState?.collectAsState()?.value
-
-    val like = mutableStateOf<Boolean>(value = false)
-    val dislike = mutableStateOf<Boolean>(value = false)
+    val opdate = feedScreenViewModel?.uiState?.collectAsState()?.value
 
     if(!opdate!!.needOpdate) {
         feedScreenViewModel.onGetFeedList()
@@ -117,7 +118,7 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
         verticalArrangement = Arrangement.Center
     ) {
         Card(modifier = Modifier
-            .width(250.dp)
+            .width(300.dp)
             .wrapContentHeight(),
             shape = RoundedCornerShape(25.dp),
             backgroundColor = Color.White,
@@ -125,11 +126,13 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
             elevation = 5.dp
         ) {
             Column {
+                //AsyncImage(model = post.image, contentDescription = null)
+                //Image(painter = AsyncImage(model = post.image, contentDescription = null))
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp),
-                    painter = painterResource(id = R.drawable.ic_baseline_photo_camera_24),
+                        .height(250.dp),
+                    painter = rememberAsyncImagePainter(post.image),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )

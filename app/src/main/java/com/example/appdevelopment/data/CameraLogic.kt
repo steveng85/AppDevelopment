@@ -30,7 +30,7 @@ class CameraLogic @Inject constructor(
     private val cameraImageCapture: ImageCapture
 ): CameraRepository {
 
-    override suspend fun onImageCapture(context: Context, viewModel: CameraViewModel) {
+    override suspend fun onImageCapture(context: Context, viewModel: CameraViewModel): String {
 
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.ENGLISH)
             .format(System.currentTimeMillis()) + ".jpeg"
@@ -51,7 +51,6 @@ class CameraLogic @Inject constructor(
             //displayCameraX.value = false
 
             viewModel.onChangeDisplayToImage()
-            println("display image: " + uri)
             if (uri != null) {
                 imageUri = uri
             }
@@ -72,6 +71,7 @@ class CameraLogic @Inject constructor(
                 }
             }
         )
+        return simpleDateFormat
     }
 
 

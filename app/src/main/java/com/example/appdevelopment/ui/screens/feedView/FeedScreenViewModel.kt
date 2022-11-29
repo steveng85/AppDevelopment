@@ -28,9 +28,9 @@ class FeedScreenViewModel @Inject constructor(
             is FeedScreenEvent.OnNeedUpdate -> onNeedOpdate(event.needUpdate)
             is FeedScreenEvent.OnClearFeed -> onClearFeed()
         }
-    }/*
+    }
 
-    fun onUpdate(feed: Feed) = viewModelScope.launch{
+    /*fun onUpdate(feed: Feed) = viewModelScope.launch{
         fireStoreRepository.updateLike(feed)
     }*/
 

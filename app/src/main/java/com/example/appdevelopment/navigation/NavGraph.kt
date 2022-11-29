@@ -5,7 +5,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +15,7 @@ import com.example.appdevelopment.ui.screens.ForgotPasswordScreen
 import com.example.appdevelopment.ui.screens.LoginScreen
 import com.example.appdevelopment.ui.screens.PasswordResetScreen
 import com.example.appdevelopment.ui.screens.cameraView.CameraScreen
+import com.example.appdevelopment.ui.screens.cameraView.CameraViewModel
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 import com.example.appdevelopment.ui.screens.feedView.FeedScreen
 import com.example.appdevelopment.ui.screens.feedView.FeedScreenViewModel
@@ -36,6 +36,7 @@ fun NavGraph(
     leaderboardViewModel: LeaderboardViewModel,
     profileViewModel: ProfileViewModel,
     feedScreenViewModel: FeedScreenViewModel,
+    cameraViewModel: CameraViewModel,
     authLogic: AuthLogic
 ) {
 
@@ -87,7 +88,12 @@ fun NavGraph(
 
             composable(route = Screen.Camera.route) {
 
-                CameraScreen(navController = navController)
+                CameraScreen(
+                    navController = navController,
+                    cameraViewModel.uiState.collectAsState().value
+                ){
+                    cameraViewModel.onEvent(it)
+                }
             }
             
             composable(route = Screen.Profile.route) {

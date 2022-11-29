@@ -9,7 +9,7 @@ import com.example.appdevelopment.ui.screens.cameraView.CameraViewModel
 interface CameraRepository {
 
     // Using the CameraX ImageCapture usecase
-    suspend fun onImageCapture(context: Context, viewModel: CameraViewModel)
+    suspend fun onImageCapture(context: Context, viewModel: CameraViewModel): String
 
     // Using the CameraX ImagePreview usecase.
     suspend fun onImagePreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner)
