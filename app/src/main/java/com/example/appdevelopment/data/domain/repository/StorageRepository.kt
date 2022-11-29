@@ -8,5 +8,5 @@ interface StorageRepository {
     suspend fun onImageUpload(uri: Uri?)
 
     //Get Url from image in firebase storage
-    suspend fun onGetUrl(userID: String, description: String)
+    suspend fun onGetUrl(description: String)
 }

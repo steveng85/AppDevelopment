@@ -72,5 +72,6 @@ class FeedScreenViewModel @Inject constructor(
 
     fun onClearFeed() = viewModelScope.launch{
         fireStoreRepository.clearFeedCollection()
+        onNeedOpdate(true)
     }
 }

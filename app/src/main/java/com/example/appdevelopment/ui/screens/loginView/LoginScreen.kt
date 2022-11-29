@@ -94,7 +94,6 @@ fun LoginScreen(
             is Resource.Failure -> {
                 val context = LocalContext.current
                 Toast.makeText(context, it.exception.message, Toast.LENGTH_SHORT).show()
-                println("faulire")
             }
             Resource.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.size(20.dp))
@@ -105,7 +104,6 @@ fun LoginScreen(
                         popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
-                println("loggein")
             }
         }
     }

@@ -21,5 +21,6 @@ class LeaderboardViewModel @Inject constructor(
     fun onGet() = viewModelScope.launch {
         val result = fireStoreRepository.getLeaderboardList()
         _leaderboard.value = result
+        println(_leaderboard.value)
     }
 }

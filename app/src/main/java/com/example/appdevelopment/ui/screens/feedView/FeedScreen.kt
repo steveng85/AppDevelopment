@@ -93,104 +93,125 @@ fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
             state = rememberLazyListState()
         ) {
             items(posts) { post ->
-                PostItem(post, feedScreenViewModel)
+                    PostItem(post, feedScreenViewModel)
             }
         }
 }
 
 @Composable
 fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
-    Column(modifier = Modifier
-        .wrapContentHeight()
-        .wrapContentWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Card(modifier = Modifier
-            .width(300.dp)
-            .wrapContentHeight(),
-            shape = RoundedCornerShape(25.dp),
-            backgroundColor = Color.White,
-            border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
-            elevation = 5.dp
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp),
-                    painter = rememberAsyncImagePainter(post.image),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null
-                )
-                Divider(thickness = 1.dp, color = Color.LightGray)
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                ) {
-                    Row(modifier = Modifier.padding(
-                        start = 10.dp,
-                        top = 5.dp,
-                        end = 10.dp,
-                        bottom = 5.dp)
+            Card(
+                modifier = Modifier
+                    .width(300.dp)
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(25.dp),
+                backgroundColor = Color.White,
+                border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
+                elevation = 5.dp
+            ) {
+                Column {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        painter = rememberAsyncImagePainter(post.image),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null
+                    )
+                    Divider(thickness = 1.dp, color = Color.LightGray)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
                     ) {
+                        Row(
+                            modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 5.dp,
+                                end = 10.dp,
+                                bottom = 5.dp
+                            )
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(top = 5.dp, end = 5.dp),
+                                text = post.username + ":",
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 5.dp),
+                                text = post.description,
+                                color = MaterialTheme.colorScheme.primary,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                    }
+                    Column() {
                         Text(
-                            modifier = Modifier.padding(top = 5.dp, end = 5.dp),
-                            text = post.username + ":",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 5.dp),
-                            text = post.description,
-                            color = MaterialTheme.colorScheme.primary,
-                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 5.dp,
+                                end = 10.dp,
+                                bottom = 5.dp
+                            ),
+                            text = post.timestamp.toString(),
+                            fontSize = 12.5.sp,
+                            fontWeight = FontWeight.Light,
+                            color = Color.Gray
                         )
                     }
-                }
-                Column() {
-                    Text(
-                        modifier = Modifier.padding(
-                            start = 10.dp,
-                            top = 5.dp,
-                            end = 10.dp,
-                            bottom = 5.dp),
-                        text = post.timestamp.toString(),
-                        fontSize = 12.5.sp,
-                        fontWeight = FontWeight.Light,
-                        color = Color.Gray
-                    )
-                }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                ) {
-                    Divider(thickness = 1.dp, color = Color.LightGray)
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
                     ) {
-                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressLike(post) }) {
-                            Icon(painter = painterResource(
-                                id = R.drawable.ic_baseline_thumb_up_off_alt_24),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Text(text = "${post.like}")
-                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressDislike(post) }) {
-                            Icon(painter = painterResource(
-                                id = R.drawable.ic_baseline_thumb_down_off_alt_24),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
+                        Divider(thickness = 1.dp, color = Color.LightGray)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 10.dp, end = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            androidx.compose.material.IconButton(onClick = {
+                                feedScreenViewModel?.onPressLike(
+                                    post
+                                )
+                            }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_baseline_thumb_up_off_alt_24
+                                    ),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Text(text = "${post.like}")
+                            androidx.compose.material.IconButton(onClick = {
+                                feedScreenViewModel?.onPressDislike(
+                                    post
+                                )
+                            }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_baseline_thumb_down_off_alt_24
+                                    ),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
 
+                        }
                     }
                 }
             }
-        }
+
     }
 }

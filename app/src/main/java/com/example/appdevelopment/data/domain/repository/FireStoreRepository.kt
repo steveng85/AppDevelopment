@@ -13,7 +13,7 @@ suspend fun updateUser(user: User)
 
 suspend fun getUserInfo(userID: String): User
 
-suspend fun updateStatsInUser(userID: String, feed: Feed)
+suspend fun updateStatsInUser(userID: String, feed: Feed, winnerFeed: Feed)
 
 //Feed
 suspend fun updateUsernameFeed(username: String, userID: String)

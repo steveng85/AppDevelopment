@@ -111,7 +111,7 @@ fun ProfileStats(user: User?) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        ProfileStat("15", "Photos")
+        ProfileStat("${user?.photos}", "Photos")
         VerticalDivider()
         ProfileStat("#${user?.rank}", "Rank")
         VerticalDivider()

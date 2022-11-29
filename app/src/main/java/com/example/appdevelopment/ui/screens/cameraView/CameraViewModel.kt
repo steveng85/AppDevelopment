@@ -18,10 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val repository: CameraRepository,
-    private val storageRepository: StorageRepository,
-    private val authLogic: AuthLogic
+    private val storageRepository: StorageRepository
 ): ViewModel() {
-    private val userID = authLogic.getCurrentUserId()
 
     private val _uiState = MutableStateFlow(CameraUIState())
     val uiState = _uiState.asStateFlow()
@@ -56,9 +54,8 @@ class CameraViewModel @Inject constructor(
             storageRepository.onImageUpload(uri)
 
             onChangeDisplayToCameraX()
-            if (userID != null) {
-                storageRepository.onGetUrl(userID, description)
-            }
+            storageRepository.onGetUrl(description)
+
         }
     }
 
