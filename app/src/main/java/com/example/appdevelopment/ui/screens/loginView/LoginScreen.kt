@@ -1,7 +1,5 @@
 package com.example.appdevelopment.ui.screens
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -28,11 +26,7 @@ import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
-import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
-
-
-//@SuppressLint("StateFlowValueCalledInComposition")
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(

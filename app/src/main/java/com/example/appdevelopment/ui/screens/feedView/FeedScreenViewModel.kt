@@ -30,14 +30,9 @@ class FeedScreenViewModel @Inject constructor(
         }
     }
 
-    /*fun onUpdate(feed: Feed) = viewModelScope.launch{
-        fireStoreRepository.updateLike(feed)
-    }*/
-
     fun onGetFeedList() = viewModelScope.launch {
         val result = fireStoreRepository.getFeedList()
         _feedList.value = result
-        println(_feedList.value)
     }
 
     fun onPressLike(feed: Feed) = viewModelScope.launch{

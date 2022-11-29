@@ -3,13 +3,8 @@ package com.example.appdevelopment.ui.screens.loginView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.appdevelopment.data.AuthLogic
-import com.example.appdevelopment.data.Resource
-import com.example.appdevelopment.data.domain.repository.AuthRepository
-import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

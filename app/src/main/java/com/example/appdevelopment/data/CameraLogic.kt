@@ -9,15 +9,10 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appdevelopment.data.domain.repository.CameraRepository
 import com.example.appdevelopment.ui.screens.cameraView.CameraViewModel
-import com.example.appdevelopment.ui.screens.cameraView.displayCameraX
-import com.example.appdevelopment.ui.screens.cameraView.displayImageTaken
 import com.example.appdevelopment.ui.screens.cameraView.imageUri
-import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

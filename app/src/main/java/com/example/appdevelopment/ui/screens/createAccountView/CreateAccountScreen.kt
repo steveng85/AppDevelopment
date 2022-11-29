@@ -26,7 +26,6 @@ import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountEvent
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUIState
-import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 
 
 @ExperimentalMaterial3Api

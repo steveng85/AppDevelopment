@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens.profileView
 
-import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import java.util.*
 
 

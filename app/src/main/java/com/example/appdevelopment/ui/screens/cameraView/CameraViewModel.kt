@@ -3,7 +3,6 @@ package com.example.appdevelopment.ui.screens.cameraView
 import android.content.Context
 import android.net.Uri
 import androidx.camera.view.PreviewView
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -101,7 +101,6 @@ fun WelcomeScreen(navController: NavController) {
 }
 
 @ExperimentalMaterial3Api
-//@Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(navController = rememberNavController())

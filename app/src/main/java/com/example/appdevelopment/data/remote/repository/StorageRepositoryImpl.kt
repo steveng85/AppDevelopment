@@ -1,7 +1,6 @@
 package com.example.appdevelopment.data.remote.repository
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository

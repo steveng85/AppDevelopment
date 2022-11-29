@@ -10,8 +10,6 @@ import com.example.appdevelopment.data.dto.User
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class FirestoreRepositoryImpl @Inject constructor(
