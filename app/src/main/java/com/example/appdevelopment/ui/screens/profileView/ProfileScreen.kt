@@ -275,8 +275,10 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
         Button(
             onClick = {
                 authLogic?.logout()
+
                 navController.navigate(Screen.Welcome.route) {
-                    popUpTo(Screen.Welcome.route){ inclusive = true }
+                    println("hello")
+                    popUpTo(Screen.Camera.route){ inclusive = true}
                 }
                       },
             modifier = Modifier
