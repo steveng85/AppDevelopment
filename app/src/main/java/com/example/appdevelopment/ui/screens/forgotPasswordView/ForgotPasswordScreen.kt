@@ -110,7 +110,9 @@ fun ForgotPasswordContent(
                 }
                 is Resource.Success -> {
                     LaunchedEffect(Unit) {
-                        navController.navigate(Screen.PwdReset.route)
+                        navController.navigate(Screen.PwdReset.route){
+                            popUpTo(Screen.Welcome.route){inclusive = true}
+                        }
                     }
                     val context = LocalContext.current
                     Toast.makeText(context, "Send email", Toast.LENGTH_LONG).show()
