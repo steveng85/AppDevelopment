@@ -181,7 +181,8 @@ class FirestoreRepositoryImpl @Inject constructor(
             try {
                 firebaseFirestore.collection("users").document(user.token).update(
                     "description", user.description,
-                    "username", user.username
+                    "username", user.username,
+                    "gender", user.gender
                 ).await()
                 updateUsernameFeed(user.username, user.token)
             } catch (e: Exception){

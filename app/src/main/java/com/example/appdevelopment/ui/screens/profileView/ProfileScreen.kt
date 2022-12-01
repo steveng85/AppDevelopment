@@ -231,7 +231,7 @@ fun ProfileInfo(user: User?, uiState: ProfileUIState, onEvent: (ProfileEvent) ->
                     Text(text = "Username: ${user?.username}")
                     Text(text = "E-mail: ${user?.email}")
                     Text(text = "Birthday: 06-11-2000")
-                    Text(text = "Gender: Male")
+                    Text(text = "Gender: ${user?.gender}")
                     editButton(text = "editInfo") { onEvent(ProfileEvent.OnEditInfo(true))}
                 } else {
                     TextTest(text =  uiState.usernameText, label = "username", onEvent = {onEvent(ProfileEvent.OnUsernameChanged(it))})
