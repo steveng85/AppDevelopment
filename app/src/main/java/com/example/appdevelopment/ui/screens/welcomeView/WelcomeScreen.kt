@@ -41,7 +41,7 @@ fun WelcomeScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            .background(color = MaterialTheme.colorScheme.onPrimary)
             .padding(
                 PaddingValues(
                     start = 75.dp,
@@ -142,7 +142,10 @@ fun GetStartedButton(navController: NavController) {
             onClick = { navController.navigate(route = Screen.CreateAcc.route) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Get Started")
+            Text(
+                text = "Get Started",
+                color = MaterialTheme.colorScheme.primary
+            )
         }
 }
 
@@ -155,7 +158,7 @@ fun LoginButton(navController: NavController) {
              shape = RoundedCornerShape(16.dp),
              colors = ButtonDefaults.buttonColors(
                  contentColor = MaterialTheme.colorScheme.primary,
-                 containerColor = Color.White
+                 containerColor = MaterialTheme.colorScheme.onPrimary
              ),
              border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
