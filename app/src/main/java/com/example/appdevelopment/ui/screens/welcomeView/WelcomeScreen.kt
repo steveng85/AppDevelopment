@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 @ExperimentalMaterial3Api
@@ -121,13 +122,15 @@ fun WelcomeTitle() {
 fun WelcomeText() {
     Column(
         modifier = Modifier.padding(top = 300.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
         Text(
             text = "You have the world at your feet. Go out and experience it.",
             color = MaterialTheme.colorScheme.primary,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            textAlign = TextAlign.Center
         )
     }
 }
