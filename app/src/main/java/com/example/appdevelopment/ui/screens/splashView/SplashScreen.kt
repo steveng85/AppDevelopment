@@ -49,7 +49,7 @@ fun SplashScreen(navController: NavController, authLogic: AuthLogic?) {
 
     Box(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.onPrimary)
             .fillMaxSize()
             .padding(top = 150.dp),
         contentAlignment = Alignment.TopCenter

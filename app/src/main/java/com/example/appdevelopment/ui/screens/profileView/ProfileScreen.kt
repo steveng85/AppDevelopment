@@ -53,12 +53,6 @@ fun ProfileScreen(
     }
 }
 
-@Preview
-@Composable
-fun hej() {
-    ProfileCard(navController = rememberNavController(), null, viewModel(), ProfileUIState(),{})
-}
-
 @Composable
 fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: ProfileViewModel,uiState: ProfileUIState, onEvent: (ProfileEvent) -> Unit) {
     val user = viewModel.user.collectAsState().value
@@ -66,13 +60,13 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
         .fillMaxWidth()
         .height(650.dp),
         shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
-        backgroundColor = Color.White,
-        border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
+        backgroundColor = MaterialTheme.colorScheme.onPrimary,
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.primary),
         elevation = 5.dp
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 15.dp, top = 30.dp, bottom = 0.dp, end = 15.dp),
+            .padding(start = 15.dp, top = 30.dp, bottom = 10.dp, end = 15.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -189,7 +183,7 @@ fun ProfileBio(user: User?) {
 @Composable
 fun editButton(text: String, onEvent: () -> Unit){
     Button(
-        onClick =  onEvent ,
+        onClick =  onEvent,
         modifier = Modifier
             .height(45.dp)
             .fillMaxWidth()
@@ -198,7 +192,7 @@ fun editButton(text: String, onEvent: () -> Unit){
         border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
         colors = androidx.compose.material.ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color.White)
+            contentColor = MaterialTheme.colorScheme.onPrimary)
     ) {
         Text(text = text)
     }
@@ -288,7 +282,7 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
             border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
             colors = androidx.compose.material.ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White)
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text(text = "Log out")
         }

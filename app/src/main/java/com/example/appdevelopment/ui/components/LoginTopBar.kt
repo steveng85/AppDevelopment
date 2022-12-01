@@ -30,7 +30,8 @@ fun LoginTopBar(navController: NavController, text: String) {
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(MaterialTheme.colorScheme.onPrimary)
             )
         }
     ) { }

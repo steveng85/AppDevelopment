@@ -41,7 +41,7 @@ fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenView
         Scaffoldlayout(
             navController = navController,
             "Feed",
-            Color.White
+            MaterialTheme.colorScheme.onPrimary
         ) {
             feedScreenViewModel.feedList.collectAsState().value?.let { PostList(it, feedScreenViewModel)}
         }
@@ -68,7 +68,7 @@ fun ClearButton(feedScreenViewModel: FeedScreenViewModel?) {
             focusedElevation = 0.dp
         ),
         colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
             containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
@@ -84,10 +84,10 @@ fun buttonPreview(){
 
 @Composable
 fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
-    ClearButton(feedScreenViewModel)
+    ClearButton(feedScreenViewModel) // TODO() den virker ikke optimalt
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             state = rememberLazyListState()
@@ -112,7 +112,7 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
                     .width(300.dp)
                     .wrapContentHeight(),
                 shape = RoundedCornerShape(25.dp),
-                backgroundColor = Color.White,
+                backgroundColor = MaterialTheme.colorScheme.onPrimary,
                 border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
                 elevation = 5.dp
             ) {
@@ -193,7 +193,12 @@ fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
-                            Text(text = "${post.like}")
+
+                            Text(
+                                text = "${post.like}",
+                                color = MaterialTheme.colorScheme.primary
+                            )
+
                             androidx.compose.material.IconButton(onClick = {
                                 feedScreenViewModel?.onPressDislike(
                                     post
