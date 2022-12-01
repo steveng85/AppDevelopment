@@ -7,6 +7,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.sharp.Mail
+import androidx.compose.material.icons.sharp.MailOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -45,7 +48,6 @@ fun DefaultFieldBox(
                 Image(
                     painter = painterResource(id = R.drawable.ic_baseline_person_outline_24),
                     contentDescription = null,
-                    //colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(Color.LightGray),
                 )
 
 

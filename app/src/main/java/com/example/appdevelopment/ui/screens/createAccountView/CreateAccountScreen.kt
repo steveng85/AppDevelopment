@@ -53,7 +53,7 @@ fun CreateAccountScreen(
 
             Text(
                 modifier = Modifier.padding(top = 70.dp, bottom = 20.dp, start = 60.dp, end = 60.dp),
-                text = "Welcome to the Hunt",
+                text = "Welcome to Hunt",
                 color = Color.Black,
                 fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 fontWeight = FontWeight.Medium,

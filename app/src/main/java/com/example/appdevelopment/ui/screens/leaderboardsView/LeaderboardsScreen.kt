@@ -38,7 +38,10 @@ fun LeaderboardScreen(
     leaderboardViewModel: LeaderboardViewModel?
 ){
 
-    Scaffoldlayout(navController = navController, "Leaderboard", Color.White) { Leaderboard(leaderboardViewModel) }
+    Scaffoldlayout(navController = navController,
+        "Leaderboard",
+        MaterialTheme.colorScheme.onPrimary
+    ) { Leaderboard(leaderboardViewModel) }
 
 }
 
@@ -79,7 +82,7 @@ fun LeaderboardsList(boardList: List<Board>){
 
 @Composable
 fun BoardCard(rank: Int, name: String, points: Int){
-    var backgroundColor = Color.White
+    var backgroundColor = MaterialTheme.colorScheme.onPrimary
     var borderColor = MaterialTheme.colorScheme.primary
     if (rank == 1){
         backgroundColor = Gold
@@ -123,6 +126,7 @@ fun NameText(text: String, modifier: Modifier = Modifier){
     ) {
         Text(
             text = text,
+            color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier
                 .width(215.dp)
@@ -138,6 +142,7 @@ fun RankingText(text: String, modifier: Modifier = Modifier){
         modifier = modifier.semantics { heading() }
         ) {
         Text(text = text,
+            color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier
                 .width(40.dp)

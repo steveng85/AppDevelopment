@@ -9,7 +9,7 @@ fun LoginButton(onEvent: ()-> Unit){
     DefaultButton(
         onClick = onEvent,
         text = "Login",
-        contentColor = Color.White,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         containerColor = MaterialTheme.colorScheme.primary
     )
 }
