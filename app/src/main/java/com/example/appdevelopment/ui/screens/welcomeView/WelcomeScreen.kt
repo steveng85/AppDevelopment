@@ -144,7 +144,7 @@ fun GetStartedButton(navController: NavController) {
         ) {
             Text(
                 text = "Get Started",
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 }
