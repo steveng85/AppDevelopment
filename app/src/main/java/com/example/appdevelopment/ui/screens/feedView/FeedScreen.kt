@@ -9,6 +9,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -68,11 +69,10 @@ fun ClearButton(feedScreenViewModel: FeedScreenViewModel?) {
             focusedElevation = 0.dp
         ),
         colors = ButtonDefaults.buttonColors(
-            contentColor = MaterialTheme.colorScheme.onPrimary,
             containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
-        Text(text = "Clear")
+        Text(text = "Clear", color = MaterialTheme.colorScheme.onPrimary)
     }
 }
 
@@ -84,7 +84,7 @@ fun buttonPreview(){
 
 @Composable
 fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
-    ClearButton(feedScreenViewModel) // TODO() den virker ikke optimalt
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary)) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
@@ -92,10 +92,12 @@ fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
             horizontalAlignment = Alignment.CenterHorizontally,
             state = rememberLazyListState()
         ) {
+            item { ClearButton(feedScreenViewModel) }
             items(posts) { post ->
-                    PostItem(post, feedScreenViewModel)
+                PostItem(post, feedScreenViewModel)
             }
         }
+    }
 }
 
 @Composable

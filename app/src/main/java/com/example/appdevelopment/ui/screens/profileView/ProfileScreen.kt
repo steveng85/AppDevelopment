@@ -41,7 +41,7 @@ fun ProfileScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar(navController = navController, "Profile")
+            LoginTopBar(navController = navController, "Profile", { ProfileContent()})
         }
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -51,6 +51,11 @@ fun ProfileScreen(
             ProfileCard(navController, authLogic, profileViewModel,uiState, onEvent)
         }
     }
+}
+
+@Composable
+fun ProfileContent(){
+
 }
 
 @Composable
