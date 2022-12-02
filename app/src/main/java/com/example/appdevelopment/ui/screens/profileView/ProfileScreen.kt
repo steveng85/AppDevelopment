@@ -41,7 +41,7 @@ fun ProfileScreen(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar(navController = navController, "Profile")
+            LoginTopBar(navController = navController, "Profile", { ProfileContent()})
         }
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -53,10 +53,9 @@ fun ProfileScreen(
     }
 }
 
-@Preview
 @Composable
-fun hej() {
-    ProfileCard(navController = rememberNavController(), null, viewModel(), ProfileUIState(),{})
+fun ProfileContent(){
+
 }
 
 @Composable
@@ -66,17 +65,16 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
         .fillMaxWidth()
         .height(650.dp),
         shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
-        backgroundColor = Color.White,
-        border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
+        backgroundColor = MaterialTheme.colorScheme.onPrimary,
+        border = BorderStroke(width = 1.dp, MaterialTheme.colorScheme.primary),
         elevation = 5.dp
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 15.dp, top = 30.dp, bottom = 0.dp, end = 15.dp),
+            .padding(start = 15.dp, top = 30.dp, bottom = 10.dp, end = 15.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //profile.username
             user?.username?.let {
                 Text(
                     text = it,
@@ -95,7 +93,7 @@ fun ProfileCard(navController: NavController, authLogic: AuthLogic?, viewModel: 
                     viewModel.onGet()
                 }
                 ProfileStats(user)
-                ProfileBio(user, onEvent)
+                ProfileBio(user)
                 ProfileInfo(user, uiState, onEvent)
                 LogoutButton(navController, authLogic)
             }
@@ -112,7 +110,7 @@ fun ProfileStats(user: User?) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        ProfileStat("15", "Photos")
+        ProfileStat("${user?.photos}", "Photos")
         VerticalDivider()
         ProfileStat("#${user?.rank}", "Rank")
         VerticalDivider()
@@ -159,7 +157,7 @@ fun ProfileStat(
 }
 
 @Composable
-fun ProfileBio(user: User?, onEvent: (ProfileEvent) -> Unit) {
+fun ProfileBio(user: User?) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight(),
@@ -190,7 +188,7 @@ fun ProfileBio(user: User?, onEvent: (ProfileEvent) -> Unit) {
 @Composable
 fun editButton(text: String, onEvent: () -> Unit){
     Button(
-        onClick =  onEvent ,
+        onClick =  onEvent,
         modifier = Modifier
             .height(45.dp)
             .fillMaxWidth()
@@ -199,7 +197,7 @@ fun editButton(text: String, onEvent: () -> Unit){
         border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
         colors = androidx.compose.material.ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color.White)
+            contentColor = MaterialTheme.colorScheme.onPrimary)
     ) {
         Text(text = text)
     }
@@ -233,7 +231,7 @@ fun ProfileInfo(user: User?, uiState: ProfileUIState, onEvent: (ProfileEvent) ->
                     Text(text = "Username: ${user?.username}")
                     Text(text = "E-mail: ${user?.email}")
                     Text(text = "Birthday: 06-11-2000")
-                    Text(text = "Gender: Male")
+                    Text(text = "Gender: ${user?.gender}")
                     editButton(text = "editInfo") { onEvent(ProfileEvent.OnEditInfo(true))}
                 } else {
                     TextTest(text =  uiState.usernameText, label = "username", onEvent = {onEvent(ProfileEvent.OnUsernameChanged(it))})
@@ -261,8 +259,6 @@ fun TextTest(text: String, label: String, onEvent: (String) -> Unit){
             unfocusedLabelColor = Color.LightGray
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        //shape = RoundedCornerShape(ZeroCornerSize)
-
         )
 }
 
@@ -278,20 +274,20 @@ fun LogoutButton(navController: NavController, authLogic: AuthLogic?) {
         Button(
             onClick = {
                 authLogic?.logout()
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Login.route){ inclusive = true }
+
+                navController.navigate(Screen.Welcome.route) {
+                    println("hello")
+                    popUpTo(Screen.Camera.route){ inclusive = true}
                 }
-                println("logged out")
                       },
             modifier = Modifier
                 .height(45.dp)
                 .width(120.dp),
-            //.padding(top = 30.dp),
             shape = RoundedCornerShape(40.dp),
             border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.primary),
             colors = androidx.compose.material.ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White)
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text(text = "Log out")
         }

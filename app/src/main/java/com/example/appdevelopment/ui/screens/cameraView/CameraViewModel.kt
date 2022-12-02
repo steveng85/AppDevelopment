@@ -3,7 +3,6 @@ package com.example.appdevelopment.ui.screens.cameraView
 import android.content.Context
 import android.net.Uri
 import androidx.camera.view.PreviewView
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,10 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val repository: CameraRepository,
-    private val storageRepository: StorageRepository,
-    private val authLogic: AuthLogic
+    private val storageRepository: StorageRepository
 ): ViewModel() {
-    private val userID = authLogic.getCurrentUserId()
 
     private val _uiState = MutableStateFlow(CameraUIState())
     val uiState = _uiState.asStateFlow()
@@ -57,9 +54,8 @@ class CameraViewModel @Inject constructor(
             storageRepository.onImageUpload(uri)
 
             onChangeDisplayToCameraX()
-            if (userID != null) {
-                storageRepository.onGetUrl(userID, description)
-            }
+            storageRepository.onGetUrl(description)
+
         }
     }
 

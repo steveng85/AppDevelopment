@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 @ExperimentalMaterial3Api
@@ -40,7 +41,7 @@ fun WelcomeScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            .background(color = MaterialTheme.colorScheme.onPrimary)
             .padding(
                 PaddingValues(
                     start = 75.dp,
@@ -101,7 +102,6 @@ fun WelcomeScreen(navController: NavController) {
 }
 
 @ExperimentalMaterial3Api
-//@Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(navController = rememberNavController())
@@ -122,13 +122,15 @@ fun WelcomeTitle() {
 fun WelcomeText() {
     Column(
         modifier = Modifier.padding(top = 300.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
         Text(
             text = "You have the world at your feet. Go out and experience it.",
             color = MaterialTheme.colorScheme.primary,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -140,7 +142,10 @@ fun GetStartedButton(navController: NavController) {
             onClick = { navController.navigate(route = Screen.CreateAcc.route) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Get Started")
+            Text(
+                text = "Get Started",
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
 }
 
@@ -153,7 +158,7 @@ fun LoginButton(navController: NavController) {
              shape = RoundedCornerShape(16.dp),
              colors = ButtonDefaults.buttonColors(
                  contentColor = MaterialTheme.colorScheme.primary,
-                 containerColor = Color.White
+                 containerColor = MaterialTheme.colorScheme.onPrimary
              ),
              border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {

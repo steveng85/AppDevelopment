@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.navigation.Screen
 import com.example.appdevelopment.ui.screens.CreateAccountScreen
@@ -25,11 +26,12 @@ import com.example.appdevelopment.ui.screens.leaderboardsView.LeaderboardViewMod
 import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 import com.example.appdevelopment.ui.screens.profileView.ProfileScreen
 import com.example.appdevelopment.ui.screens.profileView.ProfileViewModel
+import javax.inject.Singleton
 
 @ExperimentalMaterial3Api
 @Composable
 fun NavGraph(
-    navController: NavHostController,
+    navController: NavHostController = rememberNavController(),
     viewModel: LoginViewModel,
     createAccViewModel: CreateAccountViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel,
@@ -72,6 +74,7 @@ fun NavGraph(
                     viewModel.onEvent(it)
                 }
             }
+
             composable(route = Screen.ForgotPwd.route) {
 
                 ForgotPasswordScreen(

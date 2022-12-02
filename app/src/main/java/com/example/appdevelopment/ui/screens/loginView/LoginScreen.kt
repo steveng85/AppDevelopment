@@ -1,8 +1,8 @@
 package com.example.appdevelopment.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.CircularProgressIndicator
@@ -28,11 +28,8 @@ import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.loginView.LoginEvent
 import com.example.appdevelopment.ui.screens.loginView.LoginUIState
-import com.example.appdevelopment.ui.screens.loginView.LoginViewModel
 
-
-
-//@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("SuspiciousIndentation")
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
@@ -41,80 +38,95 @@ fun LoginScreen(
     authLogic: AuthLogic?,
     onEvent: (LoginEvent) -> Unit
 ) {
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+        ) {
+            LoginTopBar(navController = navController, "Login", { LoginContent(navController, uiState, authLogic, onEvent) })
+        }
+
+
+    }
+}
+
+@Composable
+fun LoginContent(
+    navController: NavController,
+    uiState: LoginUIState,
+    authLogic: AuthLogic?,
+    onEvent: (LoginEvent) -> Unit
+) {
     val authResource = authLogic?.loginFlow?.collectAsState()
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.onPrimary),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            modifier = Modifier.padding(
+                top = 0.dp,
+                bottom = 20.dp,
+                start = 60.dp,
+                end = 60.dp
+            ),
+            text = "Login to your account",
+            color = MaterialTheme.colorScheme.outline,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            lineHeight = 1.em
+        )
+
+        Text(
+            modifier = Modifier.padding(start = 100.dp, end = 100.dp),
+            text = "Welcome back, login to your already existing account",
+            color = MaterialTheme.colorScheme.outline,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(
+                    start = 75.dp,
+                    end = 75.dp
+                )
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            LoginTopBar(navController = navController, "Login")
-        }
 
-        Column(modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            EmailBox(uiState.emailText, onEvent = { onEvent(it) })
+            PasswordBox(uiState.passwordText, onEvent = { onEvent(it) })
+            LoginButton { onEvent(LoginEvent.OnLogin) }
+            ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
 
-            Text(
-                modifier = Modifier.padding(
-                    top = 70.dp,
-                    bottom = 20.dp,
-                    start = 60.dp,
-                    end = 60.dp),
-                    text = "Login to your account",
-                    color = Color.Black,
-                    fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 1.em
-            )
-
-            Text(
-                modifier = Modifier.padding(start = 100.dp, end = 100.dp),
-                text = "Welcome back, login to your already existing account",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center)
-
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = 75.dp,
-                        end = 75.dp
-                    )
-                    .fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-
-                EmailBox(uiState.emailText, onEvent = {onEvent(it)})
-                PasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
-                LoginButton { onEvent(LoginEvent.OnLogin)}
-                ForgotPassword { navController.navigate(Screen.ForgotPwd.route) }
-
-            }
         }
     }
-    authResource?.value?.let {
-        when (it) {
-            is Resource.Failure -> {
-                val context = LocalContext.current
-                Toast.makeText(context, it.exception.message, Toast.LENGTH_SHORT).show()
-                println("faulire")
-            }
-            Resource.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
-            }
-            is Resource.Success -> {
-                LaunchedEffect(Unit) {
-                    navController.navigate(Screen.Camera.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
+authResource?.value?.let {
+    when (it) {
+        is Resource.Failure -> {
+            val context = LocalContext.current
+            Toast.makeText(context, it.exception.message, Toast.LENGTH_SHORT).show()
+        }
+        Resource.Loading -> {
+            CircularProgressIndicator(modifier = Modifier.size(20.dp))
+        }
+        is Resource.Success -> {
+            LaunchedEffect(Unit) {
+                navController.navigate(Screen.Camera.route) {
+                    popUpTo(Screen.Splash.route) { inclusive = true }
                 }
-                println("loggein")
             }
         }
     }
+}
 }
 
 @ExperimentalMaterial3Api

@@ -1,6 +1,7 @@
 package com.example.appdevelopment.ui.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.*
@@ -26,7 +27,6 @@ import com.example.appdevelopment.ui.components.LoginButton
 import com.example.appdevelopment.ui.components.LoginTopBar
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountEvent
 import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountUIState
-import com.example.appdevelopment.ui.screens.createAccountView.CreateAccountViewModel
 
 
 @ExperimentalMaterial3Api
@@ -37,77 +37,85 @@ fun CreateAccountScreen(
     authLogic: AuthLogic?,
     onEvent: (CreateAccountEvent) -> Unit
 ) {
-    val authResource = authLogic?.signupFlow?.collectAsState()
-    Surface(modifier = Modifier.fillMaxSize()) {
-
+    Column(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().weight(1f),
         ) {
-            LoginTopBar(navController = navController, "Create account")
+            LoginTopBar(
+                navController = navController,
+                "Create account",
+                { CreateAccountContent(navController, uiState, authLogic, onEvent) })
         }
+    }
+}
+
+@Composable
+fun CreateAccountContent(
+    navController: NavController,
+    uiState: CreateAccountUIState,
+    authLogic: AuthLogic?,
+    onEvent: (CreateAccountEvent) -> Unit
+) {
+    val authResource = authLogic?.signupFlow?.collectAsState()
+    Column(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            modifier = Modifier.padding(top = 0.dp, bottom = 20.dp, start = 60.dp, end = 60.dp),
+            text = "Welcome to Hunt",
+            color = MaterialTheme.colorScheme.outline,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            lineHeight = 1.em
+        )
+
+        Text(
+            modifier = Modifier.padding(start = 100.dp, end = 100.dp),
+            text = "Create an account, and let's get started!",
+            color = MaterialTheme.colorScheme.outline,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center)
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-            Text(
-                modifier = Modifier.padding(top = 70.dp, bottom = 20.dp, start = 60.dp, end = 60.dp),
-                text = "Welcome to the Hunt",
-                color = Color.Black,
-                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
-                lineHeight = 1.em
-            )
-
-            Text(
-                modifier = Modifier.padding(start = 100.dp, end = 100.dp),
-                text = "Create an account, and let's get started!",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center)
-
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = 20.dp,
-                        start = 75.dp,
-                        end = 75.dp
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                UserName(uiState.usernameText, onEvent = {onEvent(it)})
-                CEmailBox(uiState.emailText, onEvent = {onEvent(it)})
-                CPasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
-                ConfirmPasswordBox(uiState.confirmPasswordText, onEvent = {onEvent(it)})
-                LoginButton { onEvent(CreateAccountEvent.OnCreateUser) }
-            }
+            modifier = Modifier
+                .padding(
+                    top = 20.dp,
+                    start = 75.dp,
+                    end = 75.dp
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            UserName(uiState.usernameText, onEvent = {onEvent(it)})
+            CEmailBox(uiState.emailText, onEvent = {onEvent(it)})
+            CPasswordBox(uiState.passwordText, onEvent = {onEvent(it)})
+            ConfirmPasswordBox(uiState.confirmPasswordText, onEvent = {onEvent(it)})
+            LoginButton { onEvent(CreateAccountEvent.OnCreateUser) }
         }
     }
-    authResource?.value?.let {
-        when (it) {
-            is Resource.Failure -> {
-                val context = LocalContext.current
-                Toast.makeText(context, "Could not create user", Toast.LENGTH_LONG).show()
-                println("Chould not create user")
-            }
-            Resource.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
-            }
-            is Resource.Success -> {
-                LaunchedEffect(Unit) {
-                    navController.navigate(Screen.Camera.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
+
+authResource?.value?.let {
+    when (it) {
+        is Resource.Failure -> {
+            val context = LocalContext.current
+            Toast.makeText(context, "Could not create user", Toast.LENGTH_LONG).show()
+        }
+        Resource.Loading -> {
+            CircularProgressIndicator(modifier = Modifier.size(20.dp))
+        }
+        is Resource.Success -> {
+            LaunchedEffect(Unit) {
+                navController.navigate(Screen.Camera.route) {
+                    popUpTo(Screen.Splash.route) { inclusive = true }
                 }
-                val context = LocalContext.current
-                Toast.makeText(context, "Created user", Toast.LENGTH_LONG).show()
             }
         }
     }
+}
 }
 
 @ExperimentalMaterial3Api

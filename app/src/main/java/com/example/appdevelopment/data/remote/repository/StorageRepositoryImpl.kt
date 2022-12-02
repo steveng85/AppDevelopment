@@ -1,7 +1,6 @@
 package com.example.appdevelopment.data.remote.repository
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import com.example.appdevelopment.data.AuthLogic
 import com.example.appdevelopment.data.domain.repository.FireStoreRepository
@@ -44,11 +43,12 @@ class StorageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun onGetUrl(userID: String, description: String) {
+    override suspend fun onGetUrl(description: String) {
+        val userID = authLogic.getCurrentUserId()
+        val user = userID?.let { fireStoreRepository.getUserInfo(it) }
         val storageRef = firebaseStorage.getReference("images/$userID.jpeg")
-        val user = fireStoreRepository.getUserInfo(userID)
         var url = mutableStateOf<String>("")
-
+        println(userID)
         storageRef.downloadUrl.addOnSuccessListener {
             url.value = it.toString()
 
@@ -58,16 +58,22 @@ class StorageRepositoryImpl @Inject constructor(
 
         if(url.value != "") {
             try {
-                fireStoreRepository.addFeed(
-                    Feed(
-                        url.value,
-                        user.username,
-                        description,
-                        simpleDateFormat,
-                        0,
-                        userID
-                    ), user
-                )
+                if (user != null) {
+                    userID.let {
+                        Feed(
+                            url.value,
+                            user.username,
+                            description,
+                            simpleDateFormat,
+                            0,
+                            it
+                        )
+                    }.let {
+                        fireStoreRepository.addFeed(
+                            it, user
+                        )
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
 

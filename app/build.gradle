@@ -100,9 +100,8 @@ dependencies {
     // Jetpack Compose Permissions (accompanist)
     implementation "com.google.accompanist:accompanist-permissions:0.24.9-beta"
 
-    // Coil library
+    // Coil library to display image taken
     implementation "io.coil-kt:coil-compose:2.2.2"
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

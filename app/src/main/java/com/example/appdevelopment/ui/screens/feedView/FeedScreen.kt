@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.screens.feedView
 
-import android.media.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,6 +9,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -25,15 +25,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.appdevelopment.R
 import com.example.appdevelopment.data.dto.Feed
 import com.example.appdevelopment.ui.layout.Scaffoldlayout
-import com.example.appdevelopment.ui.screens.cameraView.imageUri
 
 @ExperimentalMaterial3Api
 @Composable
@@ -45,7 +42,7 @@ fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenView
         Scaffoldlayout(
             navController = navController,
             "Feed",
-            Color.White
+            MaterialTheme.colorScheme.onPrimary
         ) {
             feedScreenViewModel.feedList.collectAsState().value?.let { PostList(it, feedScreenViewModel)}
         }
@@ -53,13 +50,6 @@ fun FeedScreen(navController: NavController, feedScreenViewModel: FeedScreenView
         feedScreenViewModel.onGetFeedList()
         feedScreenViewModel.onNeedOpdate(false)
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun scaffoldprev() {
-    //Scaffoldlayout(navController = rememberNavController(), text = "dø", screenContent = { PostList(posts) } )
 }
 
 @Composable
@@ -79,11 +69,10 @@ fun ClearButton(feedScreenViewModel: FeedScreenViewModel?) {
             focusedElevation = 0.dp
         ),
         colors = ButtonDefaults.buttonColors(
-            contentColor = Color.White,
             containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
-        Text(text = "Clear")
+        Text(text = "Clear", color = MaterialTheme.colorScheme.onPrimary)
     }
 }
 
@@ -95,115 +84,141 @@ fun buttonPreview(){
 
 @Composable
 fun PostList(posts: List<Feed>, feedScreenViewModel: FeedScreenViewModel?) {
-    ClearButton(feedScreenViewModel)
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary)) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             state = rememberLazyListState()
         ) {
+            item { ClearButton(feedScreenViewModel) }
             items(posts) { post ->
                 PostItem(post, feedScreenViewModel)
             }
         }
+    }
 }
 
 @Composable
 fun PostItem(post: Feed, feedScreenViewModel: FeedScreenViewModel?) {
-    Column(modifier = Modifier
-        .wrapContentHeight()
-        .wrapContentWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Card(modifier = Modifier
-            .width(300.dp)
-            .wrapContentHeight(),
-            shape = RoundedCornerShape(25.dp),
-            backgroundColor = Color.White,
-            border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
-            elevation = 5.dp
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column {
-                //AsyncImage(model = post.image, contentDescription = null)
-                //Image(painter = AsyncImage(model = post.image, contentDescription = null))
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp),
-                    painter = rememberAsyncImagePainter(post.image),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null
-                )
-                Divider(thickness = 1.dp, color = Color.LightGray)
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                ) {
-                    Row(modifier = Modifier.padding(
-                        start = 10.dp,
-                        top = 5.dp,
-                        end = 10.dp,
-                        bottom = 5.dp)
+            Card(
+                modifier = Modifier
+                    .width(300.dp)
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(25.dp),
+                backgroundColor = MaterialTheme.colorScheme.onPrimary,
+                border = BorderStroke(width = 2.dp, MaterialTheme.colorScheme.primary),
+                elevation = 5.dp
+            ) {
+                Column {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        painter = rememberAsyncImagePainter(post.image),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null
+                    )
+                    Divider(thickness = 1.dp, color = Color.LightGray)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
                     ) {
+                        Row(
+                            modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 5.dp,
+                                end = 10.dp,
+                                bottom = 5.dp
+                            )
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(top = 5.dp, end = 5.dp),
+                                text = post.username + ":",
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 5.dp),
+                                text = post.description,
+                                color = MaterialTheme.colorScheme.primary,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                    }
+                    Column() {
                         Text(
-                            modifier = Modifier.padding(top = 5.dp, end = 5.dp),
-                            text = post.username + ":",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 5.dp),
-                            text = post.description,
-                            color = MaterialTheme.colorScheme.primary,
-                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 5.dp,
+                                end = 10.dp,
+                                bottom = 5.dp
+                            ),
+                            text = post.timestamp.toString(),
+                            fontSize = 12.5.sp,
+                            fontWeight = FontWeight.Light,
+                            color = Color.Gray
                         )
                     }
-                }
-                Column() {
-                    Text(
-                        modifier = Modifier.padding(
-                            start = 10.dp,
-                            top = 5.dp,
-                            end = 10.dp,
-                            bottom = 5.dp),
-                        text = post.timestamp.toString(),
-                        fontSize = 12.5.sp,
-                        fontWeight = FontWeight.Light,
-                        color = Color.Gray
-                    )
-                }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                ) {
-                    Divider(thickness = 1.dp, color = Color.LightGray)
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
                     ) {
-                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressLike(post) }) {
-                            Icon(painter = painterResource(
-                                id = R.drawable.ic_baseline_thumb_up_off_alt_24),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Text(text = "${post.like}")
-                        androidx.compose.material.IconButton(onClick = { feedScreenViewModel?.onPressDislike(post) }) {
-                            Icon(painter = painterResource(
-                                id = R.drawable.ic_baseline_thumb_down_off_alt_24),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
+                        Divider(thickness = 1.dp, color = Color.LightGray)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 10.dp, end = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            androidx.compose.material.IconButton(onClick = {
+                                feedScreenViewModel?.onPressLike(
+                                    post
+                                )
+                            }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_baseline_thumb_up_off_alt_24
+                                    ),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
 
+                            Text(
+                                text = "${post.like}",
+                                color = MaterialTheme.colorScheme.primary
+                            )
+
+                            androidx.compose.material.IconButton(onClick = {
+                                feedScreenViewModel?.onPressDislike(
+                                    post
+                                )
+                            }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.ic_baseline_thumb_down_off_alt_24
+                                    ),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+
+                        }
                     }
                 }
             }
-        }
+
     }
 }

@@ -10,8 +10,6 @@ import com.example.appdevelopment.data.dto.User
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class FirestoreRepositoryImpl @Inject constructor(
@@ -36,11 +34,12 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             var i = 1
             return@withContext try {
-                firebaseFirestore.collection("users").orderBy("points", Query.Direction.DESCENDING).get().await()
-                    .map { doc ->
+                firebaseFirestore.collection("users").orderBy("points", Query.Direction.DESCENDING).get().await().map { doc ->
                         firebaseFirestore.collection("users").document(doc.id).update("rank", i).await()
                         Board(i++,
-                            doc.data["username"].toString(), doc.data["points"].toString().toInt())
+                            doc.data["username"].toString(),
+                            doc.data["points"].toString().toInt()
+                        )
                     }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -53,15 +52,14 @@ class FirestoreRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             return@withContext try {
                 firebaseFirestore.collection("feed").orderBy("timestamp",Query.Direction.DESCENDING).get().await().map { doc ->
-                    Feed(
-                        doc.data["image"].toString(),
-                        doc.data["username"].toString(),
-                        doc.data["description"].toString(),
-                        //doc.getDate("timestamp")?.let { getReadableDateTime(it) },
-                        doc.data["timestamp"].toString(),
-                        doc.data["like"].toString().toInt(),
-                        doc.id
-                    )
+                        Feed(
+                            doc.data["image"].toString(),
+                            doc.data["username"].toString(),
+                            doc.data["description"].toString(),
+                            doc.data["timestamp"].toString(),
+                            doc.data["like"].toString().toInt(),
+                            doc.id
+                        )
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -94,17 +92,22 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun updateStatsInUser(userID: String, feed: Feed) {
+    override suspend fun updateStatsInUser(userID: String, feed: Feed, winnerFeed: Feed) {
         withContext(Dispatchers.IO) {
             try {
                 val user = getUserInfo(userID)
                 val newRef = firebaseFirestore.collection("users").document(userID)
-
-                if (user.token != "") {
+                if(winnerFeed.userID == feed.userID){
                     newRef.update(
                         "totalLikes", user.totalLikes + feed.like,
-                        "photos", user.photos + 1
+                        "photos", user.photos + 1,
+                        "points", user.points + 1
                     ).await()
+                } else {
+                        newRef.update(
+                            "totalLikes", user.totalLikes + feed.like,
+                            "photos", user.photos + 1
+                        ).await()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -121,7 +124,6 @@ class FirestoreRepositoryImpl @Inject constructor(
                         result.data?.get("image").toString(),
                         result.data?.get("username").toString(),
                         result.data?.get("description").toString(),
-                        //result.getDate("timestamp")?.let { getReadableDateTime(it) },
                         result.data?.get("timestamp").toString(),
                         result.data?.get("like").toString().toInt(),
                         userID
@@ -139,10 +141,13 @@ class FirestoreRepositoryImpl @Inject constructor(
                 firebaseFirestore.collection("feed").get().await().map { doc ->
                     val newRef = firebaseFirestore.collection("feed").document(doc.id)
                     val feed = getFeed(doc.id)
-                    if(feed.userID != "") {
-                        updateStatsInUser(doc.id, feed)
-                        //newRef.delete()
+                    var winnerFeed = Feed("","","", "", 0, "")
+                    if (feed.like > winnerFeed.like){
+                        winnerFeed = feed
                     }
+                        updateStatsInUser(doc.id, feed, winnerFeed)
+                        newRef.delete()
+
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -176,7 +181,8 @@ class FirestoreRepositoryImpl @Inject constructor(
             try {
                 firebaseFirestore.collection("users").document(user.token).update(
                     "description", user.description,
-                    "username", user.username
+                    "username", user.username,
+                    "gender", user.gender
                 ).await()
                 updateUsernameFeed(user.username, user.token)
             } catch (e: Exception){

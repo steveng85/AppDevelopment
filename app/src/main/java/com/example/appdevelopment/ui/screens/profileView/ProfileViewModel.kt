@@ -35,8 +35,7 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.OnSave -> onSave(
                 _uiState.value.bioText,
                 _uiState.value.usernameText,
-                _uiState.value.genderText,
-                _uiState.value.birthdayText
+                _uiState.value.genderText
             )
         }
     }
@@ -58,7 +57,7 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun onSave(bio: String, username: String, gender: String, birthday: Date) = viewModelScope.launch {
+    fun onSave(bio: String, username: String, gender: String) = viewModelScope.launch {
         if(username != "") {
             authLogic.getCurrentUserId()
                 ?.let { fireStoreRepository.updateUser(User(it, username, "", 0, 0, 0, bio, gender, 0)) }

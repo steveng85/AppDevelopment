@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             App(loginViewModel, createAccViewModel, forgotPasswordViewModel, leaderboardViewModel, feedScreenViewModel, cameraViewModel, authLogic)
         }
     }

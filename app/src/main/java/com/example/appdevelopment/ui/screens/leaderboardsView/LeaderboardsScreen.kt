@@ -30,7 +30,6 @@ import com.example.appdevelopment.ui.theme.Bronze
 import com.example.appdevelopment.ui.theme.Gold
 import com.example.appdevelopment.ui.theme.Silver
 
-//import com.example.appdevelopment.ui.components.BottomHomeBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,21 +38,23 @@ fun LeaderboardScreen(
     leaderboardViewModel: LeaderboardViewModel?
 ){
 
-    Scaffoldlayout(navController = navController, "Leaderboard", Color.White) { Leaderboard(leaderboardViewModel) }
+    Scaffoldlayout(navController = navController,
+        "Leaderboard",
+        MaterialTheme.colorScheme.onPrimary
+    ) { Leaderboard(leaderboardViewModel) }
 
 }
 
 @Composable
 fun Leaderboard(leaderboardViewModel: LeaderboardViewModel?) {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        leaderboardViewModel?.onGet()
-        leaderboardViewModel?.leaderboard?.collectAsState()?.value?.let { LeaderboardsList(it) }
-
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Bottom
-        ) { }
-    }
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary),
+            verticalArrangement = Arrangement.Top
+        ) {
+            leaderboardViewModel?.onGet()
+            leaderboardViewModel?.leaderboard?.collectAsState()?.value?.let { LeaderboardsList(it) }
+        }
+
 }
 
 @Preview
@@ -70,8 +71,6 @@ fun LeaderboardsList(boardList: List<Board>){
         verticalArrangement = Arrangement.spacedBy(14.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         state = rememberLazyListState()
-
-    //(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp)
     ){
         items(boardList){ board ->
             BoardCard(rank = board.rank, name = board.name, points = board.points)
@@ -82,8 +81,9 @@ fun LeaderboardsList(boardList: List<Board>){
 
 @Composable
 fun BoardCard(rank: Int, name: String, points: Int){
-    var backgroundColor = Color.White
+    var backgroundColor = MaterialTheme.colorScheme.onPrimary
     var borderColor = MaterialTheme.colorScheme.primary
+    var textColor = Color.Black
     if (rank == 1){
         backgroundColor = Gold
         borderColor = Gold
@@ -111,21 +111,22 @@ fun BoardCard(rank: Int, name: String, points: Int){
             verticalAlignment = Alignment.CenterVertically,
 
         ) {
-            RankingText(text = "#$rank")
-            NameText(text = name)
+            RankingText(text = "#$rank", textColor = textColor)
+            NameText(text = name, textColor = textColor)
             Text(text = "$points")
         }
     }
 }
 
 @Composable
-fun NameText(text: String, modifier: Modifier = Modifier){
+fun NameText(text: String, modifier: Modifier = Modifier, textColor: Color){
     Surface(
         color = MaterialTheme.colorScheme.onSurface.copy(0.01f),
         modifier = modifier.semantics { heading() }
     ) {
         Text(
             text = text,
+            color = textColor,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier
                 .width(215.dp)
@@ -135,12 +136,13 @@ fun NameText(text: String, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun RankingText(text: String, modifier: Modifier = Modifier){
+fun RankingText(text: String, modifier: Modifier = Modifier, textColor: Color){
     Surface(
         color = MaterialTheme.colorScheme.onSurface.copy(0.01f),
         modifier = modifier.semantics { heading() }
         ) {
         Text(text = text,
+            color = textColor,
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier
                 .width(40.dp)

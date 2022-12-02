@@ -1,11 +1,11 @@
 package com.example.appdevelopment.ui.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,76 +38,89 @@ fun ForgotPasswordScreen(
     authLogic: AuthLogic?,
     onEvent: (ForgotPasswordEvent) -> Unit
 ) {
-    val authResource = authLogic?.resetPasswordFlow?.collectAsState()
-    Surface(modifier = Modifier.fillMaxSize()) {
 
+    Column(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            LoginTopBar(navController = navController, "Forgot password")
+            LoginTopBar(
+                navController = navController,
+                "Forgot password",
+                { ForgotPasswordContent(navController,uiState, authLogic, onEvent) })
         }
+    }
+}
 
+@Composable
+fun ForgotPasswordContent(
+    navController: NavController,
+    uiState: ForgotPasswordUIState,
+    authLogic: AuthLogic?,
+    onEvent: (ForgotPasswordEvent) -> Unit
+) {
+    val authResource = authLogic?.resetPasswordFlow?.collectAsState()
+    Column(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier.padding(
+                top = 0.dp,
+                bottom = 20.dp,
+                start = 60.dp,
+                end = 60.dp),
+            text = "Forgot your password?",
+            color = MaterialTheme.colorScheme.outline,
+            fontSize = MaterialTheme.typography.displayMedium.fontSize,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            lineHeight = 1.em
+        )
+
+        Text(
+            modifier = Modifier.padding(start = 100.dp, end = 100.dp),
+
+            text = "Write your e-mail below to reset your password",
+            color = MaterialTheme.colorScheme.outline,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-            Text(
-                modifier = Modifier.padding(
-                    top = 70.dp,
-                    bottom = 20.dp,
-                    start = 60.dp,
-                    end = 60.dp),
-                text = "Forgot your password?",
-                color = Color.Black,
-                fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center,
-                lineHeight = 1.em
-            )
-
-            Text(
-                modifier = Modifier.padding(start = 100.dp, end = 100.dp),
-
-                text = "Write your e-mail below to reset your password",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = 75.dp,
-                        end = 75.dp
-                    )
-                    .fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                FEmailBox(uiState.emailText, onEvent = {onEvent(it)})
-                ResetPasswordButton{onEvent(ForgotPasswordEvent.OnResetPassword)}
-            }
-            authResource?.value?.let {
-                when (it) {
-                    is Resource.Failure -> {
-                        val context = LocalContext.current
-                        Toast.makeText(context, "could not reset password", Toast.LENGTH_LONG).show()
-                    }
-                    Resource.Loading -> {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp))
-                    }
-                    is Resource.Success -> {
-                        LaunchedEffect(Unit) {
-                            navController.navigate(Screen.PwdReset.route)
-                        }
-                        val context = LocalContext.current
-                        Toast.makeText(context, "Send email", Toast.LENGTH_LONG).show()
-                    }
+            modifier = Modifier
+                .padding(
+                    start = 75.dp,
+                    end = 75.dp
+                )
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            FEmailBox(uiState.emailText, onEvent = {onEvent(it)})
+            ResetPasswordButton{onEvent(ForgotPasswordEvent.OnResetPassword)}
+        }
+        authResource?.value?.let {
+            when (it) {
+                is Resource.Failure -> {
+                    val context = LocalContext.current
+                    Toast.makeText(context, "could not reset password", Toast.LENGTH_LONG).show()
                 }
-            }
+                Resource.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                }
+                is Resource.Success -> {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.PwdReset.route){
+                            popUpTo(Screen.Welcome.route){inclusive = true}
+                        }
+                    }
+                    val context = LocalContext.current
+                    Toast.makeText(context, "Send email", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
+}
 
 
 @ExperimentalMaterial3Api
@@ -124,7 +137,7 @@ fun FEmailBox(emailValue: String, onEvent: (ForgotPasswordEvent) -> Unit){
         onEvent = {onEvent(ForgotPasswordEvent.OnEmailChanged(it))},
         focusedColor = MaterialTheme.colorScheme.primary,
         unfocusedColor = Color.LightGray,
-        label = "Email",
+        label = "E-mail",
         type = "email",
         password = false
     )
@@ -135,7 +148,7 @@ fun ResetPasswordButton(route: ()->Unit){
     DefaultButton(
         onClick = route,
         text = "Reset password",
-        contentColor = Color.White,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         containerColor = MaterialTheme.colorScheme.primary
     )
 }

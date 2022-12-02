@@ -1,6 +1,5 @@
 package com.example.appdevelopment.ui.layout
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
@@ -15,10 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import com.example.appdevelopment.R
-import com.example.appdevelopment.mockData.dailyWord.DailyWord
-import com.example.appdevelopment.mockData.dailyWord.dailyWords
 import com.example.appdevelopment.navigation.Screen
-import java.util.*
 
 @ExperimentalMaterial3Api
 @Composable

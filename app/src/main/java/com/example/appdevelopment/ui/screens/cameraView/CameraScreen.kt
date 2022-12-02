@@ -151,14 +151,14 @@ fun TakenImage(
     uiState: CameraUIState,
     onEvent: (CameraEvent) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary)) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 120.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = rememberAsyncImagePainter(imageUri), contentDescription = null)
+            Image(modifier = Modifier.height(400.dp), painter = rememberAsyncImagePainter(imageUri), contentDescription = null)
         }
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -177,7 +177,7 @@ fun TakenImage(
                         modifier = Modifier
                             .wrapContentHeight()
                             .fillMaxWidth()
-                            .padding(bottom = 5.dp)
+                            .padding(bottom = 15.dp)
                     ) {
                         Row(
                             modifier = Modifier
