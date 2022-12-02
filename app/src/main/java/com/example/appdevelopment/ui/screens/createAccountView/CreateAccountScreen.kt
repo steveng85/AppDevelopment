@@ -3,6 +3,8 @@ package com.example.appdevelopment.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -39,7 +41,9 @@ fun CreateAccountScreen(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
         ) {
             LoginTopBar(
                 navController = navController,
@@ -58,7 +62,12 @@ fun CreateAccountContent(
 ) {
     val authResource = authLogic?.signupFlow?.collectAsState()
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.onPrimary),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.onPrimary)
+            .verticalScroll(
+                rememberScrollState()
+            ),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -1,8 +1,6 @@
 package com.example.appdevelopment
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TopAppBar
@@ -37,66 +35,67 @@ import androidx.compose.ui.text.style.TextOverflow
 @ExperimentalMaterial3Api
 @Composable
 fun WelcomeScreen(navController: NavController) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.onPrimary)
-            .padding(
-                PaddingValues(
-                    start = 75.dp,
-                    top = 12.dp,
-                    end = 75.dp,
-                    bottom = 12.dp
-                ),
-            )
-    ) {
-        Column(
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.onPrimary)
+                .padding(
+                    PaddingValues(
+                        start = 75.dp,
+                        top = 12.dp,
+                        end = 75.dp,
+                        bottom = 12.dp
+                    ),
+                )
         ) {
-            WelcomeTitle()
-            Image(
+            Column(
                 modifier = Modifier
-                    .size(20.dp)
+                    .fillMaxWidth()
                     .padding(top = 20.dp),
-                painter = painterResource(
-                    id = R.drawable.hunt_logo_white
-                ),
-                contentDescription = null
-            )
-        }
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WelcomeTitle()
+                Image(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .padding(top = 20.dp),
+                    painter = painterResource(
+                        id = R.drawable.hunt_logo_white
+                    ),
+                    contentDescription = null
+                )
+            }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            WelcomeText()
-        }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WelcomeText()
+            }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 560.dp),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            GetStartedButton(navController = navController)
-        }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 560.dp),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                GetStartedButton(navController = navController)
+            }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 620.dp),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            LoginButton(navController = navController)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 620.dp),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LoginButton(navController = navController)
+            }
         }
     }
 }
